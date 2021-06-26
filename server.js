@@ -3,6 +3,11 @@ var app = express();
 var router = express.Router();
 var bodyParser = require('body-parser');
 
+//mysql5047.site4now.net
+//db_a6478c_conta
+//a6478c_conta
+//razors1805
+
 //const execute = require('./router/connection');
 //var routerVentas = require('./router/routerVentas');
 
