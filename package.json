@@ -1,7 +1,7 @@
 {
-  "name": "conta",
+  "name": "onne-doctor",
   "version": "1.0.0",
-  "description": "sistema de contabilidad",
+  "description": "sistema para doctores",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
