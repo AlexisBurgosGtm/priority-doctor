@@ -1,4 +1,4 @@
-let classNavegar ={
+let Navegar ={
     login : ()=>{
         funciones.loadScript('./views/login.js','root')
         .then(()=>{
@@ -10,6 +10,12 @@ let classNavegar ={
             .then(()=>{
                 InicializarVista();
             })
+    },
+    recetas: ()=>{
+        funciones.loadScript('./views/viewRecetas.js','root')
+          .then(()=>{
+            initView();
+          })
     },
     consultas: ()=>{
 

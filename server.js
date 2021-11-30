@@ -9,6 +9,9 @@ var io = require('socket.io')(http);
 
 const PORT = process.env.PORT || 3334;
 
+var execute = require('./server/mysqlConnection');
+
+
 app.use(bodyParser.json());
 
 app.use(express.static('build'));
@@ -136,9 +139,3 @@ io.on('connection', function(socket){
 http.listen(PORT, function(){
   console.log('listening on *:' + PORT);
 });
-
-/*
-app.listen(PORT, function(){
-  console.log('listening on *:' + PORT);
-});
-*/
