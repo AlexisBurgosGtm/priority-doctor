@@ -124,6 +124,15 @@ app.post("/select_paciente",function(req,res){
 
 }); 
 
+app.post("/select_lista_pacientes",function(req,res){
+
+  const {} = req.body; 
+  
+  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO FROM CLIENTES`;
+  execute.query(qry, res);
+
+}); 
+
 // CLIENTES PACIENTES
 
 

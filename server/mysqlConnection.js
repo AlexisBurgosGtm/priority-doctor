@@ -12,11 +12,12 @@ let execute = {
         var pool  = mysql.createPool(config);
 
         pool.query(qry, function (error, results, fields) {
+          
             //if (error) throw error;
             if(error){
                 res.send(error);
             }else{
-                res.send(results[0]);
+                res.json(results);
             }
             //console.log('The solution is: ', results[0].solution);
             

@@ -4,7 +4,7 @@ function getView(){
             return `
                 <div class="card col-12">
                     <div class="card-header">
-                        <h4>Recetas Emitidas</h4>
+                        <h4>Listado de Pacientes</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -15,21 +15,20 @@ function getView(){
                         </div>
                         <div class="row">
                             <div class="table-responsive">
-                                <table class="table table-responsive table-hover table-striped" id="tblRecetas">
+                                <table class="table table-responsive table-hover table-striped" id="tblPacientes">
                                     <thead  class="bg-info text-white">
                                         <tr>
-                                            <td>No.</td>
-                                            <td>Fecha</td>
-                                            <td>Paciente</td>
-                                            <td></td>
+                                            <td>Paciente / Teléfono</td>
+                                            <td>Edad</td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                     </thead>
-                                </table>
-                                <tbody id="bodyTblRecetas">
+                                    <tbody id="tblListaPacientes">
                                 
-                                </tbody>
+                                    </tbody>
+                                </table>
+                              
                             </div>
 
                         </div>
@@ -44,23 +43,56 @@ function getView(){
         },
         modalNuevaReceta:()=>{
             return `
-            <div class="modal fade" id="modalNueva" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade" id="modalNuevaReceta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-success text-white">
                         <h5 class="modal-title" id="exampleModalLabel">Nueva Receta</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+                       
                     </div>
                     <div class="modal-body">
-                       
+                        <div class="form-group">
+                            <label id="lbPaciente">Consumidor Final</label>
+                           
+                        </div>
+
+                      
+
+                        <hr class="solid">
+
+                        <div class="card shadow">
+                            <div class="form-group">
+                                <label id="">Agregue un Medicamento</label>
+                                <input type="text" class="form-control" placeholder="Medicamento...">
+                                <input type="text" class="form-control" placeholder="Dosis...">
+                                <input type="text" class="form-control" placeholder="Frecuencia...">
+                                <button class="btn btn-primary">Agregar</button>
+                            </div>
+                        
+                        </div>
+                        
                         
 
+                    
+                      
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalRecetaNueva">
+                                    <i class="fa fa-angle-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                              
+
+                                <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarReceta">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                       
+
                     </div>
                     </div>
                 </div>
@@ -128,7 +160,7 @@ function getView(){
         }
     }
 
-    root.innerHTML = view.body() + view.modalNuevoPaciente();
+    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalNuevoPaciente() ;
 };
 
 function addListeners(){
@@ -151,8 +183,7 @@ function addListeners(){
     let btnGuardarCliente = document.getElementById('btnGuardarCliente');
     btnGuardarCliente.addEventListener('click',()=>{
         
-        btnGuardarCliente.disabled = true;
-        btnGuardarCliente.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+       
 
         funciones.Confirmacion('¿Está seguro que desea Guardar este Paciente?')
         .then((value)=>{
@@ -161,12 +192,16 @@ function addListeners(){
                 let fechanacimiento = funciones.devuelveFecha('FechaNacimiento');
                 let telefono = document.getElementById('Telefono') || '0';
 
+                btnGuardarCliente.disabled = true;
+                btnGuardarCliente.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+
                 insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value)
                 .then(()=>{
                     funciones.Aviso('Cliente agregado exitosamente!!')
                     btnGuardarCliente.disabled = false;
                     btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
+                    getTblRecetas();
                 })
                 .catch(()=>{
                     funciones.AvisoError('No se pudo guardar')
@@ -178,33 +213,113 @@ function addListeners(){
         })
     });
 
+    //RECETA
+    document.getElementById('btnCerrarModalRecetaNueva').addEventListener('click',()=>{$('#modalNuevaReceta').modal('hide')});
+
+    let btnGuardarReceta = document.getElementById('btnGuardarReceta');
+    btnGuardarReceta.addEventListener('click',()=>{
+        
+        
+        funciones.Confirmacion('¿Está seguro que desea Guardar este Paciente?')
+        .then((value)=>{
+            if(value==true){
+        
+                btnGuardarReceta.disabled = true;
+                btnGuardarReceta.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+
+               
+            }
+        })
+    });
+
 
 };
 
 function initView(){
     getView();
     addListeners();
-    
+    getTblRecetas();
 };
 
 
 function getTblRecetas(){
-  
+    
+
+    let container = document.getElementById('tblListaPacientes');
+    container.innerHTML = GlobalLoader;
+    let str = '';
+
+    getDataPacientes()
+    .then((data)=>{
+        data.map((r)=>{
+            str += `
+                <tr>
+                    <td>${r.NOMCLIE}
+                        <br><small class="negrita text-danger">${r.TELEFONOS}</small>
+                    </td>
+                    <td>${funciones.getEdad(r.FECHANACIMIENTO)}
+                        <br>
+                        <small class="negrita">FN:${funciones.convertDate(r.FECHANACIMIENTO)}</td></small>
+                    <td>
+                        <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.FECHANACIMIENTO}')">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+                    <td></td>
+                </tr>
+            `
+        })
+        container.innerHTML = str;
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...'
+    })
+    
+
+    
+};
+
+
+
+function getNuevaReceta(idcliente,nombre,fechanacimiento){
+
+    //document.getElementById('lbPaciente').innerText = nombre;
+
+    $('#modalNuevaReceta').modal('show');
+
+
+};
+
+
+function getDataPacientes(){
+    return new Promise((resolve, reject) => {
+
+        axios.post('/select_lista_pacientes',{
+            sucursal:GlobalCodSucursal
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
     
 };
 
 function insert_paciente(nombre,fechanacimiento,telefono){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_paciente',{
+            sucursal:GlobalCodSucursal,
             nombre:nombre,
             fechanacimiento:fechanacimiento,
             telefonos:telefono
         })
-        .then((response) => {   
-            console.log(response)            
+        .then((response) => {          
             resolve();             
         }, (error) => {
             reject();
         });
     });
-}
+};
