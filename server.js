@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3334;
 
 var execute = require('./server/mysqlConnection');
 
-
 app.use(bodyParser.json());
 
 app.use(express.static('build'));
@@ -93,15 +92,49 @@ app.get("/ticket",function(req,res){
 
 }); 
 
+// RECETAS
+
+app.post("/notify",function(req,res){
 
 
+  let qry = `SELECT * FROM RECETAS`;
+  execute.query(qry, res);
+
+}); 
+// RECETAS
+
+// CLIENTES PACIENTES
+
+app.post("/insert_paciente",function(req,res){
+
+  const {nombre,telefonos,fecha,fechanacimiento} = req.body; 
+  
+  let qry = `INSERT INTO CLIENTES (NOMCLIE,TELEFONOS,FECHANACIMIENTO) VALUES ('${nombre}','${telefonos}','${fechanacimiento}')`;
+  execute.query(qry, res);
+
+}); 
+
+
+app.post("/select_paciente",function(req,res){
+
+  const {nombre} = req.body; 
+  
+  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO FROM CLIENTES WHERE NOMCLIE LIKE '%${nombre}%'`;
+  execute.query(qry, res);
+
+}); 
+
+// CLIENTES PACIENTES
+
+
+/*
 app.get("/notify",function(req,res){
 
   io.emit('despacho nuevo', "despacho", "despacho");
   res.send('ok')
 
 }); 
-
+*/
 
 //Router para app VENTAS
 //app.use('/ventas', routerVentas);
@@ -116,25 +149,11 @@ app.use("*",function(req,res){
 // SOCKET HANDLER
 io.on('connection', function(socket){
   
-  socket.on('ordenes nueva', function(msg,form){
-	  io.emit('ordenes nueva', msg, form);
+  socket.on('recetas nueva', function(receta,cliente){
+	  io.emit('recetas nueva', receta,cliente);
   });
-
-  socket.on('ordenes escribiendo', function(msg,form){
-	  io.emit('ordenes escribiendo', msg, form);
-  });
-  
-  socket.on('ordenes finalizada', function(cliente,monto){
-	  io.emit('ordenes finalizada', cliente, monto);
-  });
-
-  socket.on('chat msn', function(msg,user){
-	  io.emit('chat msn', msg, user);
-  });
-  
-  
+    
 });
-
 
 http.listen(PORT, function(){
   console.log('listening on *:' + PORT);

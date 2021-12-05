@@ -24,4 +24,4 @@ let execute = {
     }
 }
 
-export default execute;
+module.exports = execute;
