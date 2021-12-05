@@ -4,7 +4,8 @@ const config = {
     host            : 'mysql5027.site4now.net',
     user            : 'a6478c_medical',
     password        : 'razors1805',
-    database        : 'db_a6478c_medical'
+    database        : 'db_a6478c_medical',
+    multipleStatements: true
   };
 
 let execute = {
