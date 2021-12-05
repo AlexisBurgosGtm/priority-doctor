@@ -135,6 +135,55 @@ app.post("/select_lista_pacientes",function(req,res){
 
 // CLIENTES PACIENTES
 
+// RECETAS ...
+app.post("/select_temp_receta",function(req,res){
+
+  const {sucursal} = req.body; 
+  
+  let qry = `SELECT ID, MEDICAMENTO,DOSIS,DURACION FROM TEMP_RECETA`;
+  execute.query(qry, res);
+
+}); 
+
+app.post("/insert_temp_receta",function(req,res){
+
+  const {medicamento,dosis,duracion} = req.body; 
+  
+  let qry = `INSERT INTO TEMP_RECETA (MEDICAMENTO,DOSIS,DURACION) VALUES ('${medicamento}', '${dosis}', '${duracion}')`;
+  execute.query(qry, res);
+
+}); 
+
+app.post("/delete_temp_receta",function(req,res){
+
+  const {sucursal, id} = req.body; 
+  
+  let qry = `DELETE FROM TEMP_RECETA WHERE ID=${id}`;
+  execute.query(qry, res);
+
+});
+
+app.post("/delete_all_temp_receta",function(req,res){
+
+  const {sucursal} = req.body; 
+  
+  let qry = `DELETE FROM TEMP_RECETA`;
+  execute.query(qry, res);
+
+});
+
+app.post("/insert_receta",function(req,res){
+
+  const {correlativo,idcliente,obs,fecha,hora} = req.body; 
+  
+  let qryR = `INSERT INTO RECETAS (IDRECETA,FECHA,HORA,CODCLIENTE,OBS) VALUES (${correlativo},'${fecha}','${hora}',${idcliente},'${obs}');`;
+  let qryD = `INSERT INTO RECETAS_DETALLE (IDRECETA,MEDICAMENTO,DOSIS,DURACION) SELECT ${correlativo} AS IDRECETA,TEMP_RECETA.MEDICAMENTO,TEMP_RECETA.DOSIS,TEMP_RECETA.DURACION FROM TEMP_RECETA;`
+
+  execute.query(qryD + qryR, res);
+
+}); 
+
+// RECETAS ...
 
 /*
 app.get("/notify",function(req,res){

@@ -53,7 +53,7 @@ function getView(){
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label id="lbPaciente">Consumidor Final</label>
+                            <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
                            
                         </div>
 
@@ -62,17 +62,54 @@ function getView(){
                         <hr class="solid">
 
                         <div class="card shadow">
-                            <div class="form-group">
-                                <label id="">Agregue un Medicamento</label>
-                                <input type="text" class="form-control" placeholder="Medicamento...">
-                                <input type="text" class="form-control" placeholder="Dosis...">
-                                <input type="text" class="form-control" placeholder="Frecuencia...">
-                                <button class="btn btn-primary">Agregar</button>
+                            
+                                <label id="">Agregue un Medicamento</label>                            
+                                
+                                
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                    <input type="text" class="form-control" placeholder="Medicamento..." id="txtRecetaMedicamento"> 
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                    <input type="text" class="form-control" placeholder="Dosis...Frecuencia" id="txtRecetaDosis">
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                    <input type="text" class="form-control" placeholder="Duración..." id="txtRecetaDuracion">
+                                </div>
                             </div>
-                        
+                            <br>
+                            <div class="row">
+                                <div class="col-6">
+                                </div>
+                                <div class="col-6" align="right">
+                                    <button class="btn btn-success btn-md shadow hand col-6" id="btnAgregarMedicamento">Agregar(+)</button>
+                                </div>
+                            </div>
+                            
                         </div>
-                        
-                        
+
+                        <div class="card shadow p-2">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="bg-secondary text-white">
+                                        <tr>
+                                            <td>Medicamento</td>
+                                            <td>Dosis</td>
+                                            <td>Duración</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>         
+                                    <tbody id="tblReceta">
+                                    
+                                    </tbody>                       
+                                </table>
+                                <div class="form-group p-4">
+                                    <label>Observaciones</label>
+                                    <textarea class="form-control" rows="3" placeholder="Observaciones adicionales..." id="txtRecetaObs">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
 
                     
                       
@@ -166,6 +203,10 @@ function getView(){
 
 function addListeners(){
 
+    document.getElementById('txtBuscarReceta').addEventListener('keydown',()=>{
+        funciones.FiltrarTabla('tblPacientes','txtBuscarReceta');
+    });
+
     document.getElementById('FechaNacimiento').value = funciones.getFecha();
     let btnNuevoPaciente = document.getElementById('btnNuevoPaciente');
     btnNuevoPaciente.addEventListener('click',()=>{
@@ -217,21 +258,75 @@ function addListeners(){
     //RECETA
     document.getElementById('btnCerrarModalRecetaNueva').addEventListener('click',()=>{$('#modalNuevaReceta').modal('hide')});
 
+    let btnAgregarMedicamento = document.getElementById('btnAgregarMedicamento');
+    btnAgregarMedicamento.addEventListener('click',()=>{
+        let medicamento = document.getElementById('txtRecetaMedicamento').value || 'SN';
+        let dosis = document.getElementById('txtRecetaDosis').value || 'SN';
+        let duracion = document.getElementById('txtRecetaDuracion').value || 'SN';
+
+        if(medicamento == 'SN'){funciones.AvisoError('Escriba el nombre del medicamento');return;}
+        if(dosis == 'SN'){funciones.AvisoError('Escriba la dosis');return;}
+        if(duracion == 'SN'){funciones.AvisoError('Escriba la duración del tratamiento');return;}
+
+        btnAgregarMedicamento.disabled = true;
+        btnAgregarMedicamento.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+
+        insert_temp_receta(medicamento,dosis,duracion)
+        .then(()=>{
+            btnAgregarMedicamento.disabled = false;
+            btnAgregarMedicamento.innerHTML = 'Agregar(+)';
+
+            funciones.Aviso('Medicamento agregado exitosamente!!');
+            getTblTempReceta();
+
+            document.getElementById('txtRecetaMedicamento').value ='';
+            document.getElementById('txtRecetaDosis').value ='';
+            document.getElementById('txtRecetaDuracion').value ='';
+
+            document.getElementById('txtRecetaMedicamento').focus();
+        })
+        .catch(()=>{
+            funciones.AvisoError('No se pudo agregar el medicamento')
+            btnAgregarMedicamento.disabled = false;
+            btnAgregarMedicamento.innerHTML = 'Agregar(+)';
+        })
+
+    })
+
     let btnGuardarReceta = document.getElementById('btnGuardarReceta');
     btnGuardarReceta.addEventListener('click',()=>{
         
         
-        funciones.Confirmacion('¿Está seguro que desea Guardar este Paciente?')
+        funciones.Confirmacion('¿Está seguro que desea Guardar esta Receta?')
         .then((value)=>{
             if(value==true){
         
                 btnGuardarReceta.disabled = true;
                 btnGuardarReceta.innerHTML = '<i class="fa fa-save fa-spin"></i>';
 
+                let obs = document.getElementById('txtRecetaObs').value || 'SN';
+
+                insert_receta(GlobalSelectedCodPaciente,obs)
+                .then(async()=>{
+                    funciones.Aviso('Receta Guardad exitosamente!!');
+
+                    btnGuardarReceta.disabled = false;
+                    btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
+                    $("#modalNuevaReceta").modal('hide');
+
+                    //await delete_all_TempReceta();
+
+                })
+                .catch(()=>{
+                    btnGuardarReceta.disabled = false;
+                    btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
+                    funciones.AvisoError('No se pudo guardar la receta')
+                })
                
             }
         })
     });
+
 
 
 };
@@ -267,7 +362,7 @@ function getTblRecetas(){
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-warning btn-circle btn-sm hand shadow" onclick="">
+                        <button class="btn btn-secondary btn-circle btn-sm hand shadow" onclick="">
                             <i class="fa fa-list"></i>
                         </button>
                     </td>
@@ -295,7 +390,10 @@ function getTblRecetas(){
 
 function getNuevaReceta(idcliente,nombre,fechanacimiento){
 
-    //document.getElementById('lbPaciente').innerText = nombre;
+    GlobalSelectedCodPaciente = idcliente;
+    document.getElementById('lbPaciente').innerText = nombre;
+
+    getTblTempReceta();
 
     $('#modalNuevaReceta').modal('show');
 
@@ -333,4 +431,130 @@ function insert_paciente(nombre,fechanacimiento,telefono){
             reject();
         });
     });
+};
+
+
+function insert_temp_receta(medicamento,dosis,duracion){
+    return new Promise((resolve,reject)=>{
+        axios.post('/insert_temp_receta',{
+            sucursal:GlobalCodSucursal,
+            medicamento:medicamento,
+            dosis:dosis,
+            duracion:duracion
+        })
+        .then((response) => {          
+            resolve();             
+        }, (error) => {
+            reject();
+        });
+    });
+};
+
+function delete_TempReceta(id){
+    funciones.Confirmacion("¿Está seguro que desea quitar este medicamento de la lista?")
+    .then((value)=>{
+        if(value==true){
+            let btn = document.getElementById('rtemp' + id.toString())
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa fa-trash fa-spin"></i>`;
+            
+                axios.post('/delete_temp_receta',{
+                    sucursal:GlobalCodSucursal,
+                    id:id
+                })
+                .then((response) => {   
+                    let data = response.data; 
+                    getTblTempReceta();
+                }, (error) => {
+                    funciones.AvisoError('No se pudo eliminar este item')
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa fa-trash"></i>`;
+                
+                });
+
+        }
+    })
+    
+    
+};
+
+function getDataTempReceta(){
+    return new Promise((resolve, reject) => {
+
+        axios.post('/select_temp_receta',{
+            sucursal:GlobalCodSucursal
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
+    
+};
+
+function getTblTempReceta(){
+    let container = document.getElementById('tblReceta');
+    container.innerHTML = GlobalLoader;
+    
+    let str = '';
+
+    getDataTempReceta()
+    .then((data) => {
+        data.map((r)=>{
+            str += `
+                <tr>
+                    <td>${r.MEDICAMENTO}</td>
+                    <td>${r.DOSIS}</td>
+                    <td>${r.DURACION}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger btn-circle hand shadow" onclick="delete_TempReceta('${r.ID}')" id="${'rtemp' + r.ID.toString()}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `
+        })
+        container.innerHTML =str;
+    })
+    .catch(() => {
+        container.innerHTML = 'No se pudieron cargar los datos...'
+    })
+
+};
+
+
+
+function insert_receta(idcliente,obs){
+    return new Promise((resolve,reject)=>{
+        axios.post('/insert_receta',{
+            sucursal:GlobalCodSucursal,
+            idcliente:idcliente,
+            obs:obs,
+            fecha:funciones.getFecha(),
+            hora:funciones.getHora(),
+            correlativo:1
+        })
+        .then((response) => {          
+            resolve();             
+        }, (error) => {
+            reject();
+        });
+    });
+};
+
+function delete_all_TempReceta(){
+  
+                axios.post('/delete_all_temp_receta',{
+                    sucursal:GlobalCodSucursal
+                })
+                .then((response) => {   
+                    let data = response.data; 
+                    
+                }, (error) => {
+  
+                });
+ 
+    
 };
