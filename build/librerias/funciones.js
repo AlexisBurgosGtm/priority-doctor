@@ -730,7 +730,7 @@ let funciones = {
     convertDate(date) {
    
       const [yy, mm, dd] = date.split(/-/g);
-      return `${dd}/${mm}/${yy}`.replace('T06:00:00.000Z', '');
+      return `${dd}/${mm}/${yy}`.replace('T06:00:00.000Z', '').replace('T00:00:00.000Z','');
     },
     getEdadAños(date) {
       dateString = date.replace('T06:00:00.000Z', '');

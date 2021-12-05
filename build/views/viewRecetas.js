@@ -22,6 +22,7 @@ function getView(){
                                             <td>Edad</td>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
                                         </tr>
                                     </thead>
                                     <tbody id="tblListaPacientes">
@@ -36,7 +37,7 @@ function getView(){
 
                     </div>
                 </div>
-                <button type="button" class="btn btn-success btn-xl btn-circle hand btn-right shadow" id="btnNuevoPaciente">
+                <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow" id="btnNuevoPaciente">
                     <i class="fa fa-plus"></i>
                 </button>
             `
@@ -263,6 +264,16 @@ function getTblRecetas(){
                     <td>
                         <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.FECHANACIMIENTO}')">
                             <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-circle btn-sm hand shadow" onclick="">
+                            <i class="fa fa-list"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="">
+                            <i class="fa fa-trash"></i>
                         </button>
                     </td>
                     <td></td>
