@@ -47,8 +47,8 @@ function getView(){
             <div class="modal fade" id="modalNuevaReceta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                    <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Nueva Receta</h5>
+                    <div class="modal-header bg-success">
+                        <h5 class="modal-title text-white">Nueva Receta</h5>
                        
                     </div>
                     <div class="modal-body">
@@ -142,8 +142,8 @@ function getView(){
             <div class="modal fade" id="modalNuevoPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Nuevo Paciente</h5>
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title  text-white">Nuevo Paciente</h5>
                        
                     </div>
                     <div class="modal-body">
@@ -201,8 +201,8 @@ function getView(){
             <div class="modal fade" id="modalHistorialRecetas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                    <div class="modal-header bg-secondary text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">Historial de recetas del paciente</h5>
+                    <div class="modal-header bg-secondary">
+                        <h5 class="modal-title  text-white">Historial de recetas del paciente</h5>
                        
                     </div>
                     <div class="modal-body">
@@ -441,7 +441,7 @@ function getTblRecetas(){
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="">
+                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="delete_paciente('${r.IDCLIENTE}')" id="${'p' + r.IDCLIENTE.toString()}">
                             <i class="fa fa-trash"></i>
                         </button>
                     </td>
@@ -508,6 +508,33 @@ function insert_paciente(nombre,fechanacimiento,telefono){
     });
 };
 
+function delete_paciente(id){
+    funciones.Confirmacion("¿Está seguro que desea ELIMINAR este Paciente y todo su historial?")
+    .then((value)=>{
+        if(value==true){
+            let btn = document.getElementById('p' + id.toString())
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa fa-trash fa-spin"></i>`;
+            
+                axios.post('/delete_paciente',{
+                    sucursal:GlobalCodSucursal,
+                    id:id
+                })
+                .then((response) => {   
+                    let data = response.data; 
+                    getTblRecetas();
+                }, (error) => {
+                    funciones.AvisoError('No se pudo eliminar este item')
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa fa-trash"></i>`;
+                
+                });
+
+        }
+    })
+    
+    
+};
 
 function insert_temp_receta(medicamento,dosis,duracion){
     return new Promise((resolve,reject)=>{
@@ -685,7 +712,7 @@ function getTblHistorial(idcliente,nomclie){
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-circle btn-md hand shadow" onclick="receta_eliminar('${r.IDRECETA}')">
+                            <button class="btn btn-danger btn-circle btn-md hand shadow" onclick="receta_eliminar('${r.IDRECETA}')" id="${'r' + r.IDRECETA.toString()}">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
@@ -787,7 +814,9 @@ function receta_imprimir(idreceta){
              
 
 
-            window.print();
+            
+            setTimeout(()=>{window.print();},2000)
+
             setTimeout(()=>{rootImpresion.innerHTML = '';console.log('timer...');},3000)
              
     })
@@ -812,7 +841,7 @@ function receta_eliminar(id){
                 })
                 .then((response) => {   
                     let data = response.data; 
-                    getTblHistorial(GlobalSelectedCodPaciente,GlobalSelectedNomPaciente)
+                    getTblHistorial(GlobalSelectedCodPaciente,GlobalSelectedNomPaciente);
                 }, (error) => {
                     funciones.AvisoError('No se pudo eliminar esta Receta')
                     btn.disabled = false;

@@ -112,6 +112,15 @@ app.post("/insert_paciente",function(req,res){
 
 }); 
 
+app.post("/delete_paciente",function(req,res){
+
+  const {sucursal,id} = req.body; 
+  
+  let qry = `DELETE FROM CLIENTES WHERE IDCLIENTE=${id}`;
+  execute.query(qry, res);
+
+}); 
+
 
 app.post("/select_paciente",function(req,res){
 
@@ -240,6 +249,15 @@ app.post("/select_receta",function(req,res){
 // RECETAS ...
 
 
+app.post("/login",function(req,res){
+
+  const {usuario,pass} = req.body; 
+  
+  let qry = `SELECT TOKEN, USER FROM USUARIOS WHERE USER='${usuario}' AND PASS='${pass}' `;
+
+  execute.query(qry, res);
+
+});
 
 //Router para app VENTAS
 //app.use('/ventas', routerVentas);

@@ -68,6 +68,9 @@ background: radial-gradient(circle, rgba(10,10,10,1) 0%, rgba(85,17,0,1) 97%);
   overflow-y: scroll; 
 }
 
+.text-white{
+  color: white;
+}
 
 .negrita {
   font-weight: bold;

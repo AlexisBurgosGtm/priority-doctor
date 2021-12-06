@@ -1,5 +1,5 @@
 function iniciar(){
-    Navegar.recetas();
+    Navegar.login();
     
 }
 

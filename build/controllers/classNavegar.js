@@ -2,6 +2,9 @@ let Navegar ={
     login : ()=>{
         funciones.loadScript('./views/login.js','root')
         .then(()=>{
+            GlobalCodSucursal = '';
+            GlobalSelectedCodPaciente = 0;
+            GlobalSelectedNomPaciente = '';
             InicializarVista();
         })
     },
