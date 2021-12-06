@@ -215,7 +215,7 @@ function getView(){
                                             <td>Fecha</td>
                                             <td>W</td>
                                             <td>P</td>
-                                            <td></td>
+                                            <td>E</td>
                                         </tr>
                                     </thead>         
                                     <tbody id="tblHistorialRecetas">
@@ -662,8 +662,10 @@ function getTblHistorial(idcliente,nomclie){
         data.map((r)=> {
             str += `<tr>
                         <td>${funciones.convertDate(r.FECHA)}
-                        <br>
+                            <br>
                             <small class="negrita">Hora:${r.HORA}</small>
+                            <br>
+                            <small class="negrita">No.:${r.IDRECETA}</small>
                         </td>
                         <td>
                             <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}')">
@@ -696,7 +698,7 @@ function getTblHistorial(idcliente,nomclie){
 
 
 function receta_whatsapp(idreceta){
-    
+
     $('#modalHistorialRecetas').modal('hide');
 
     funciones.enviarRecetaWhatsapp(idreceta);
@@ -704,9 +706,113 @@ function receta_whatsapp(idreceta){
 };
 
 function receta_imprimir(idreceta){
-    
+  
+    $('#modalHistorialRecetas').modal('hide');
+
+    rootImpresion.innerHTML = ''; //
+    let str = '';
+    let fecha = ''; let paciente = ''; let obs = '';
+
+    get_data_receta(idreceta)
+    .then((data)=>{
+        //console.log(data);
+        data.map((r)=>{
+            fecha = funciones.convertDate(r.FECHA);
+            paciente = r.NOMCLIE;
+            obs = r.OBS;
+            str += `
+                <li class="negrita"> ${r.MEDICAMENTO} - ${r.DOSIS} - ${r.DURACION}</li>
+            `
+        })
+        console.log(fecha);
+       
+        rootImpresion.innerHTML = `
+           
+            <div class="row">
+                <div class="col-3">
+                    <img src="./img/logoreceta.png" width="110" height="200">
+                </div>
+                <div class="col-9 text-center">
+                    <h5 class="negrita cursiva">Clínica Médica "Niño Jesús"</h5>
+                    <h4>Dr. Pablo A. Vásquez Ampié</h4>
+                    <small class="cursiva">Miembro de la Asociación de Médicos y Cirujanos de Guatemala</small><br>
+                    <small class="cursiva">Miembro de la Asociación Pediátrica de Guatemala.</small><br>
+                    <small class="cursiva">Colegiado Activo 8,871</small><br>
+                    <small>3a. Avenida 5-02 Zona 1, Edificio El Colorado,</small><br>
+                    <small>Frente al Centro de Salud, Retalhuleu.</small><br>
+                    <small>Teléfono 7771-2416 * Celular 5199-5119</small><br>
+                    <small>e-mail: pablovasapmie@hotmail.com</small>
+                </div>
+            </div> 
+            <h5>_________________________________________________________________________________</h5> 
+           
+            <div class="row" style="font-size:80%">
+                <h5>Retalhuleu, ${fecha}</h5>
+                <h5>Nombre del Paciente: ${paciente}</h5>
+            </div>  
+            <h5>_________________________________________________________________________________</h5>
+           
+            <div class="row">
+                <div class="col-12">
+                    ${str}
+                </div>
+            
+            </div>
+            <br><br><br>
+            <div class="row">
+                <div class="form-group">
+                    <label class="negrita">Observaciones:</label>
+                    <br>
+                    <label>${obs}</label>
+                </div>
+            </div>
+            <br>
+             
+            <div class="row footer text-center">
+            <h5>PRÓXIMA CITA: ______________________________________________</h5>
+            <small>NO CAMBIAR LA RECETA SIN AUTORIZACIÓN DE SU MÉDICO</small>
+            <h3 class="bg-info text-white">EMERGENCIAS LAS 24 HORAS</h3>
+            <small>Onne-Doctor Online</small>
+            </div>  
+  
+            `
+
+             
+
+
+            window.print();
+            setTimeout(()=>{rootImpresion.innerHTML = '';console.log('timer...');},3000)
+             
+    })
+    .catch(()=>{
+        funciones.AvisoError('No se pudo generar la impresión');
+    })
+
+     
 };
 
-function receta_eliminar(idreceta){
-    
+function receta_eliminar(id){
+    funciones.Confirmacion("¿Está seguro que desea ELIMINAR esta receta?")
+    .then((value)=>{
+        if(value==true){
+            let btn = document.getElementById('r' + id.toString())
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa fa-trash fa-spin"></i>`;
+            
+                axios.post('/delete_receta',{
+                    sucursal:GlobalCodSucursal,
+                    id:id
+                })
+                .then((response) => {   
+                    let data = response.data; 
+                    
+                }, (error) => {
+                    funciones.AvisoError('No se pudo eliminar esta Receta')
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa fa-trash"></i>`;
+                
+                });
+
+        }
+    })
 };

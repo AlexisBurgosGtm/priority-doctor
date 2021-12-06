@@ -13,7 +13,7 @@ let funciones = {
         let destino = '502' + numero.toString();
         let strmensaje = '';
         let msg = '';
-        let encabezado = 'Receta médica' + "\n" + '--------------' + "\n";
+       
         let footer = '';
 
         get_data_receta(idreceta)
@@ -21,10 +21,10 @@ let funciones = {
           
             data.map((r)=>{
               strmensaje += `* ${r.MEDICAMENTO} - ${r.DOSIS} - ${r.DURACION}` + "\n" + '--------------' + "\n";
-              footer = r.OBS;
+              footer = r.OBS + "\n";
             })   
     
-            msg = encabezado + strmensaje + footer;
+            msg = GlobalEncabezadoReceta + strmensaje + footer + GlobalFooterReceta;
             msg = encodeURIComponent(msg);
             window.open('https://api.whatsapp.com/send?phone='+destino+'&text='+msg);
         })

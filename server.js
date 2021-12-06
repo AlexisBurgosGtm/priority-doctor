@@ -38,9 +38,9 @@ app.get("/",function(req,res){
 	res.sendFile(path + 'index.html');
 }); 
 
-app.get("/ticket",function(req,res){
-  console.log(req.query);
-  const {fecha,codprod,desprod,codmedida,cantidad,persona,totalentregado,obs} = req.query;
+app.get("/receta2",function(req,res){
+  
+  const {idreceta} = req.query;
   
   res.format ({
     'text/html': function() {
@@ -93,14 +93,12 @@ app.get("/ticket",function(req,res){
 }); 
 
 // RECETAS
-
-app.post("/notify",function(req,res){
-
-
-  let qry = `SELECT * FROM RECETAS`;
-  execute.query(qry, res);
+app.get("/receta",function(req,res){
+  
+  
 
 }); 
+
 // RECETAS
 
 // CLIENTES PACIENTES
@@ -208,23 +206,23 @@ app.post("/select_receta",function(req,res){
   const {sucursal,correlativo} = req.body; 
   
   let qry = `SELECT
-  recetas.IDRECETA,
-  recetas.FECHA,
-  recetas.HORA,
-  recetas.CODCLIENTE,
-  clientes.NOMCLIE,
-  clientes.TELEFONOS,
-  clientes.FECHANACIMIENTO,
-  recetas.OBS,
-  recetas_detalle.MEDICAMENTO,
-  recetas_detalle.DOSIS,
-  recetas_detalle.DURACION
-FROM recetas
-  LEFT OUTER JOIN recetas_detalle
-    ON recetas.IDRECETA = recetas_detalle.IDRECETA
-  LEFT OUTER JOIN clientes
-    ON recetas.CODCLIENTE = clientes.IDCLIENTE
-WHERE recetas.IDRECETA = ${correlativo}`;
+              recetas.IDRECETA,
+              recetas.FECHA,
+              recetas.HORA,
+              recetas.CODCLIENTE,
+              clientes.NOMCLIE,
+              clientes.TELEFONOS,
+              clientes.FECHANACIMIENTO,
+              recetas.OBS,
+              recetas_detalle.MEDICAMENTO,
+              recetas_detalle.DOSIS,
+              recetas_detalle.DURACION
+            FROM recetas
+              LEFT OUTER JOIN recetas_detalle
+                ON recetas.IDRECETA = recetas_detalle.IDRECETA
+              LEFT OUTER JOIN clientes
+                ON recetas.CODCLIENTE = clientes.IDCLIENTE
+            WHERE recetas.IDRECETA = ${correlativo}`;
 
   execute.query(qry, res);
 
@@ -232,14 +230,7 @@ WHERE recetas.IDRECETA = ${correlativo}`;
 
 // RECETAS ...
 
-/*
-app.get("/notify",function(req,res){
 
-  io.emit('despacho nuevo', "despacho", "despacho");
-  res.send('ok')
-
-}); 
-*/
 
 //Router para app VENTAS
 //app.use('/ventas', routerVentas);
