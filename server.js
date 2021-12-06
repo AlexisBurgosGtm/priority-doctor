@@ -190,7 +190,16 @@ app.post("/insert_receta",function(req,res){
 
   execute.query(qryD + qryR + qryDoc, res);
 
-}); 
+});
+
+app.post("/delete_receta",function(req,res){
+
+  const {sucursal, id} = req.body; 
+  
+  let qry = `DELETE FROM RECETAS WHERE IDRECETA=${id}; DELETE FROM RECETAS_DETALLE WHERE IDRECETA=${id}; `;
+  execute.query(qry, res);
+
+});
 
 app.post("/select_historial_recetas",function(req,res){
 

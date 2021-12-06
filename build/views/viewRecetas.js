@@ -363,8 +363,12 @@ function addListeners(){
                     btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
                     $("#modalNuevaReceta").modal('hide');
 
+                    receta_imprimir(GlobalCorrelativo);
+
                     getCorrelativoCoddoc();
                     await delete_all_TempReceta();
+
+                    
 
                 })
                 .catch(()=>{
@@ -654,6 +658,9 @@ function getDataHistorialReceta(codcliente){
 
 function getTblHistorial(idcliente,nomclie){
 
+    GlobalSelectedCodPaciente = idcliente;
+    GlobalSelectedNomPaciente = nomclie;
+
     let container = document.getElementById('tblHistorialRecetas');
     container.innerHTML = GlobalLoader;
     let str ='';
@@ -805,7 +812,7 @@ function receta_eliminar(id){
                 })
                 .then((response) => {   
                     let data = response.data; 
-                    
+                    getTblHistorial(GlobalSelectedCodPaciente,GlobalSelectedNomPaciente)
                 }, (error) => {
                     funciones.AvisoError('No se pudo eliminar esta Receta')
                     btn.disabled = false;
