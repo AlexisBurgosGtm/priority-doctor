@@ -135,6 +135,15 @@ app.post("/select_lista_pacientes",function(req,res){
 
 // CLIENTES PACIENTES
 
+app.post("/select_correlativo",function(req,res){
+
+  const {sucursal,coddoc} = req.body; 
+  
+  let qry = `SELECT CORRELATIVO FROM TIPODOCUMENTOS WHERE TOKEN='${sucursal}' AND CODDOC='${coddoc}'`;
+  execute.query(qry, res);
+
+});
+
 // RECETAS ...
 app.post("/select_temp_receta",function(req,res){
 
@@ -174,14 +183,52 @@ app.post("/delete_all_temp_receta",function(req,res){
 
 app.post("/insert_receta",function(req,res){
 
-  const {correlativo,idcliente,obs,fecha,hora} = req.body; 
-  
+  const {correlativo,idcliente,obs,fecha,hora, coddoc} = req.body; 
+  let nuevocorrelativo = Number(correlativo) + 1;
+
   let qryR = `INSERT INTO RECETAS (IDRECETA,FECHA,HORA,CODCLIENTE,OBS) VALUES (${correlativo},'${fecha}','${hora}',${idcliente},'${obs}');`;
   let qryD = `INSERT INTO RECETAS_DETALLE (IDRECETA,MEDICAMENTO,DOSIS,DURACION) SELECT ${correlativo} AS IDRECETA,TEMP_RECETA.MEDICAMENTO,TEMP_RECETA.DOSIS,TEMP_RECETA.DURACION FROM TEMP_RECETA;`
+  let qryDoc = `UPDATE TIPODOCUMENTOS SET CORRELATIVO=${nuevocorrelativo} WHERE CODDOC='${coddoc}';`
 
-  execute.query(qryD + qryR, res);
+  execute.query(qryD + qryR + qryDoc, res);
 
 }); 
+
+app.post("/select_historial_recetas",function(req,res){
+
+  const {sucursal,codclie} = req.body; 
+  
+  let qry = `SELECT ID, IDRECETA, FECHA, HORA, OBS FROM RECETAS WHERE CODCLIENTE=${codclie} ORDER BY ID DESC;`;
+  execute.query(qry, res);
+
+});
+
+app.post("/select_receta",function(req,res){
+
+  const {sucursal,correlativo} = req.body; 
+  
+  let qry = `SELECT
+  recetas.IDRECETA,
+  recetas.FECHA,
+  recetas.HORA,
+  recetas.CODCLIENTE,
+  clientes.NOMCLIE,
+  clientes.TELEFONOS,
+  clientes.FECHANACIMIENTO,
+  recetas.OBS,
+  recetas_detalle.MEDICAMENTO,
+  recetas_detalle.DOSIS,
+  recetas_detalle.DURACION
+FROM recetas
+  LEFT OUTER JOIN recetas_detalle
+    ON recetas.IDRECETA = recetas_detalle.IDRECETA
+  LEFT OUTER JOIN clientes
+    ON recetas.CODCLIENTE = clientes.IDCLIENTE
+WHERE recetas.IDRECETA = ${correlativo}`;
+
+  execute.query(qry, res);
+
+});
 
 // RECETAS ...
 

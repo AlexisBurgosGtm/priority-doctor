@@ -1,5 +1,5 @@
 let funciones = {
-    enviarPedidoWhatsapp2: function(fecha,coddoc,correlativo){
+    enviarRecetaWhatsapp: function(idreceta){
     swal({
       text: 'Escriba el número a donde se enviará:',
       content: "input",
@@ -10,7 +10,29 @@ let funciones = {
     })
     .then(numero => {
       if (!numero) throw null;
-        let stn = '502' + numero.toString();
+        let destino = '502' + numero.toString();
+        let strmensaje = '';
+        let msg = '';
+        let encabezado = 'Receta médica' + "\n" + '--------------' + "\n";
+        let footer = '';
+
+        get_data_receta(idreceta)
+        .then((data)=>{
+          
+            data.map((r)=>{
+              strmensaje += `* ${r.MEDICAMENTO} - ${r.DOSIS} - ${r.DURACION}` + "\n" + '--------------' + "\n";
+              footer = r.OBS;
+            })   
+    
+            msg = encabezado + strmensaje + footer;
+            msg = encodeURIComponent(msg);
+            window.open('https://api.whatsapp.com/send?phone='+destino+'&text='+msg);
+        })
+        .catch((error)=>{
+          console.log(error)
+          funciones.AvisoError('No se enviará la receta...')
+        })
+
         //api.digitadorDetallePedidoWhatsapp(fecha,coddoc,correlativo,stn);
     })
     },

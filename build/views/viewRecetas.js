@@ -54,7 +54,7 @@ function getView(){
                     <div class="modal-body">
                         <div class="form-group">
                             <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
-                           
+                           <label>Receta No.</label><label class="negrita text-danger" id="lbCorrelativo">0</label>
                         </div>
 
                       
@@ -195,10 +195,59 @@ function getView(){
                 </div>
             </div>
             `
+        },
+        modalHistorialRecetas:()=>{
+            return `
+            <div class="modal fade" id="modalHistorialRecetas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header bg-secondary text-white">
+                        <h5 class="modal-title" id="exampleModalLabel">Historial de recetas del paciente</h5>
+                       
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-danger" id="lbPacienteHistorial">CONSUMIDOR FINAL</h5>
+                        <div class="card shadow p-2">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="bg-secondary text-white">
+                                        <tr>
+                                            <td>Fecha</td>
+                                            <td>W</td>
+                                            <td>P</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>         
+                                    <tbody id="tblHistorialRecetas">
+                                    
+                                    </tbody>                       
+                                </table>
+                           
+                            </div>
+                        </div>
+
+                    
+                      
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalHistorialRecetaNueva">
+                                    <i class="fa fa-angle-left"></i>
+                                </button>
+                            </div>
+                        </div>
+                       
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+            `
         }
     }
 
-    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalNuevoPaciente() ;
+    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalHistorialRecetas() + view.modalNuevoPaciente();
 };
 
 function addListeners(){
@@ -306,7 +355,7 @@ function addListeners(){
 
                 let obs = document.getElementById('txtRecetaObs').value || 'SN';
 
-                insert_receta(GlobalSelectedCodPaciente,obs)
+                insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo)
                 .then(async()=>{
                     funciones.Aviso('Receta Guardad exitosamente!!');
 
@@ -314,7 +363,8 @@ function addListeners(){
                     btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
                     $("#modalNuevaReceta").modal('hide');
 
-                    //await delete_all_TempReceta();
+                    getCorrelativoCoddoc();
+                    await delete_all_TempReceta();
 
                 })
                 .catch(()=>{
@@ -327,9 +377,29 @@ function addListeners(){
         })
     });
 
+    getCorrelativoCoddoc();
+
+
+    //HISTORIAL RECETAS
+    document.getElementById('btnCerrarModalHistorialRecetaNueva').addEventListener('click',()=>{$('#modalHistorialRecetas').modal('hide');});
+
+
+
 
 
 };
+
+function getCorrelativoCoddoc(){
+    get_correlativo(GlobalCoddoc)
+    .then((correlativo)=> {
+        document.getElementById('lbCorrelativo').innerText = correlativo;
+        GlobalCorrelativo = correlativo;
+    })
+    .catch(()=>{
+        document.getElementById('lbCorrelativo').innerText = 0;
+        GlobalCorrelativo = 0;
+    })
+}
 
 function initView(){
     getView();
@@ -362,7 +432,7 @@ function getTblRecetas(){
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-secondary btn-circle btn-sm hand shadow" onclick="">
+                        <button class="btn btn-secondary btn-circle btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
                             <i class="fa fa-list"></i>
                         </button>
                     </td>
@@ -392,6 +462,7 @@ function getNuevaReceta(idcliente,nombre,fechanacimiento){
 
     GlobalSelectedCodPaciente = idcliente;
     document.getElementById('lbPaciente').innerText = nombre;
+    document.getElementById('txtRecetaObs').value = '';
 
     getTblTempReceta();
 
@@ -526,7 +597,7 @@ function getTblTempReceta(){
 
 
 
-function insert_receta(idcliente,obs){
+function insert_receta(idcliente,obs,correlativo){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_receta',{
             sucursal:GlobalCodSucursal,
@@ -534,7 +605,8 @@ function insert_receta(idcliente,obs){
             obs:obs,
             fecha:funciones.getFecha(),
             hora:funciones.getHora(),
-            correlativo:1
+            correlativo:correlativo,
+            coddoc:GlobalCoddoc
         })
         .then((response) => {          
             resolve();             
@@ -556,5 +628,85 @@ function delete_all_TempReceta(){
   
                 });
  
+    
+};
+
+
+
+//Historial
+
+function getDataHistorialReceta(codcliente){
+    return new Promise((resolve, reject) => {
+
+        axios.post('/select_historial_recetas',{
+            sucursal:GlobalCodSucursal,
+            codclie:codcliente
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
+    
+};
+
+function getTblHistorial(idcliente,nomclie){
+
+    let container = document.getElementById('tblHistorialRecetas');
+    container.innerHTML = GlobalLoader;
+    let str ='';
+    getDataHistorialReceta(idcliente)
+    .then((data)=> {
+        data.map((r)=> {
+            str += `<tr>
+                        <td>${funciones.convertDate(r.FECHA)}
+                        <br>
+                            <small class="negrita">Hora:${r.HORA}</small>
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}')">
+                                <i class="fa fa-whatsapp"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-circle btn-md hand shadow" onclick="receta_imprimir('${r.IDRECETA}')">
+                                <i class="fa fa-print"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-circle btn-md hand shadow" onclick="receta_eliminar('${r.IDRECETA}')">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`
+        })
+        container.innerHTML = str;
+
+    })
+    .catch(()=> {
+        container.innerHTML = 'No se pudieron cargar los datos...';
+    })
+
+    document.getElementById('lbPacienteHistorial').innerText = nomclie;
+    $('#modalHistorialRecetas').modal('show');
+
+};
+
+
+function receta_whatsapp(idreceta){
+    
+    $('#modalHistorialRecetas').modal('hide');
+
+    funciones.enviarRecetaWhatsapp(idreceta);
+
+};
+
+function receta_imprimir(idreceta){
+    
+};
+
+function receta_eliminar(idreceta){
     
 };
