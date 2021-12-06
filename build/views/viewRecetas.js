@@ -743,6 +743,7 @@ function receta_imprimir(idreceta){
   
     $('#modalHistorialRecetas').modal('hide');
 
+   
     rootImpresion.innerHTML = ''; //
     let str = '';
     let fecha = ''; let paciente = ''; let obs = '';
