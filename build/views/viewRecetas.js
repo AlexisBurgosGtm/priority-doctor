@@ -308,12 +308,38 @@ function getView(){
                             <h5 class="modal-title  text-white">Detalle de la Consulta</h5>
                         
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body card shadow">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="negrita">Fecha</label>
+                                        <h5 class="text-danger" id="lbCFecha"></h5>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="negrita">Peso</label>
+                                        <h5 class="text-danger" id="lbCPeso"></h5>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="negrita">Talla</label>
+                                        <h5 class="text-danger" id="lbCTalla"></h5>
+                                    </div>
+                                </div>
+                            </div>
 
-                      
+                            <div class="form-group">
+                                <label class="negrita">Motivo de la Consulta</label>
+                                <textarea class="form-control" id="lbCMotivo"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="negrita">Diagnóstico</label>
+                                <textarea class="form-control" id="lbCDiagnostico"></textarea>
+                            </div>
                         
-                        <hr class="solid">
-
                         </div>
                         <div class="modal-footer">
                             <div class="row">
@@ -766,7 +792,6 @@ function delete_all_TempReceta(){
 };
 
 
-
 //Historial
 
 function getDataHistorialReceta(codcliente){
@@ -791,11 +816,14 @@ function getTblHistorial(idcliente,nomclie){
     GlobalSelectedCodPaciente = idcliente;
     GlobalSelectedNomPaciente = nomclie;
 
+    let datapeso = [];
+
     let container = document.getElementById('tblHistorialRecetas');
     container.innerHTML = GlobalLoader;
     let str ='';
     getDataHistorialReceta(idcliente)
     .then((data)=> {
+        datapeso.push(Number(data.PESO));
         data.map((r)=> {
             str += `<tr>
                         <td>${funciones.convertDate(r.FECHA)}
@@ -805,7 +833,7 @@ function getTblHistorial(idcliente,nomclie){
                             <small class="negrita">No.:${r.IDRECETA}</small>
                         </td>
                         <td>
-                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${r.IDRECETA}','${r.PESO}','${r.TALLA}','${r.MOTIVO}','${r.DIAGNOSTICO}')">
+                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO}','${r.DIAGNOSTICO}')">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </td>
@@ -827,6 +855,7 @@ function getTblHistorial(idcliente,nomclie){
                     </tr>`
         })
         container.innerHTML = str;
+        grafica_peso(datapeso);
 
     })
     .catch(()=> {
@@ -838,7 +867,18 @@ function getTblHistorial(idcliente,nomclie){
 
 };
 
-function receta_consulta(idreceta,fecha,peso,talla,motivo,diagnostico){
+function grafica_peso(data){
+
+};
+
+function receta_consulta(fecha,peso,talla,motivo,diagnostico){
+
+    document.getElementById('lbCFecha').innerText = fecha;
+    document.getElementById('lbCPeso').innerText = peso;
+    document.getElementById('lbCTalla').innerText = talla;
+    document.getElementById('lbCMotivo').value = motivo;
+    document.getElementById('lbCDiagnostico').value = diagnostico;
+
     $('#modalDatosConsulta').modal('show');
 
 };
