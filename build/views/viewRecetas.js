@@ -968,7 +968,7 @@ function receta_imprimir(idreceta){
 
 
             
-            setTimeout(()=>{window.print();},2000)
+            setTimeout(()=>{window.print();},5000)
 
             setTimeout(()=>{rootImpresion.innerHTML = '';console.log('timer...');},3000)
              
