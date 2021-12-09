@@ -190,10 +190,11 @@ app.post("/delete_all_temp_receta",function(req,res){
 
 app.post("/insert_receta",function(req,res){
 
-  const {correlativo,idcliente,obs,fecha,hora, coddoc} = req.body; 
+  const {correlativo,idcliente,obs,fecha,hora, coddoc,peso,talla,motivo,diagnostico} = req.body; 
   let nuevocorrelativo = Number(correlativo) + 1;
 
-  let qryR = `INSERT INTO RECETAS (IDRECETA,FECHA,HORA,CODCLIENTE,OBS) VALUES (${correlativo},'${fecha}','${hora}',${idcliente},'${obs}');`;
+  let qryR = `INSERT INTO RECETAS (IDRECETA,FECHA,HORA,CODCLIENTE,OBS,PESO,TALLA,MOTIVO,DIAGNOSTICO) 
+      VALUES (${correlativo},'${fecha}','${hora}',${idcliente},'${obs}',${peso},${talla},'${motivo}','${diagnostico}');`;
   let qryD = `INSERT INTO RECETAS_DETALLE (IDRECETA,MEDICAMENTO,DOSIS,DURACION) SELECT ${correlativo} AS IDRECETA,TEMP_RECETA.MEDICAMENTO,TEMP_RECETA.DOSIS,TEMP_RECETA.DURACION FROM TEMP_RECETA;`
   let qryDoc = `UPDATE TIPODOCUMENTOS SET CORRELATIVO=${nuevocorrelativo} WHERE CODDOC='${coddoc}';`
 
@@ -214,7 +215,7 @@ app.post("/select_historial_recetas",function(req,res){
 
   const {sucursal,codclie} = req.body; 
   
-  let qry = `SELECT ID, IDRECETA, FECHA, HORA, OBS FROM RECETAS WHERE CODCLIENTE=${codclie} ORDER BY ID DESC;`;
+  let qry = `SELECT ID, IDRECETA, FECHA, HORA, OBS,PESO, TALLA, MOTIVO, DIAGNOSTICO FROM RECETAS WHERE CODCLIENTE=${codclie} ORDER BY ID DESC;`;
   execute.query(qry, res);
 
 });

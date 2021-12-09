@@ -45,75 +45,40 @@ function getView(){
         modalNuevaReceta:()=>{
             return `
             <div class="modal fade" id="modalNuevaReceta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                     <div class="modal-header bg-success">
                         <h5 class="modal-title text-white">Nueva Receta</h5>
                        
                     </div>
+
                     <div class="modal-body">
-                        <div class="form-group">
-                            <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
-                           <label>Receta No.</label><label class="negrita text-danger" id="lbCorrelativo">0</label>
-                        </div>
+                             <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
 
-                      
+                             <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">Consulta</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">Receta</a>
+                                </li>
+                               
+                            </ul>
 
-                        <hr class="solid">
-
-                        <div class="card shadow">
-                            
-                                <label id="">Agregue un Medicamento</label>                            
-                                
-                                
-                            <div class="row">
-                                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                    <input type="text" class="form-control" placeholder="Medicamento..." id="txtRecetaMedicamento"> 
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="consulta" role="tabpanel" aria-labelledby="home-tab">
+                                    ${view.formConsulta()}
                                 </div>
-                                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                    <input type="text" class="form-control" placeholder="Dosis...Frecuencia" id="txtRecetaDosis">
-                                </div>
-                                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                                    <input type="text" class="form-control" placeholder="Duración..." id="txtRecetaDuracion">
+                           
+                                <div class="tab-pane fade" id="receta" role="tabpanel" aria-labelledby="profile-tab">
+                                    ${view.formReceta()}
                                 </div>
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-6">
-                                </div>
-                                <div class="col-6" align="right">
-                                    <button class="btn btn-success btn-md shadow hand col-6" id="btnAgregarMedicamento">Agregar(+)</button>
-                                </div>
-                            </div>
-                            
-                        </div>
-
-                        <div class="card shadow p-2">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="bg-secondary text-white">
-                                        <tr>
-                                            <td>Medicamento</td>
-                                            <td>Dosis</td>
-                                            <td>Duración</td>
-                                            <td></td>
-                                        </tr>
-                                    </thead>         
-                                    <tbody id="tblReceta">
-                                    
-                                    </tbody>                       
-                                </table>
-                                <div class="form-group p-4">
-                                    <label>Observaciones</label>
-                                    <textarea class="form-control" rows="3" placeholder="Observaciones adicionales..." id="txtRecetaObs">
-                                    </textarea>
-                                </div>
-                            </div>
-                        </div>
 
                     
-                      
                     </div>
+
+              
                     <div class="modal-footer">
                         <div class="row">
                             <div class="col-6">
@@ -213,6 +178,7 @@ function getView(){
                                     <thead class="bg-secondary text-white">
                                         <tr>
                                             <td>Fecha</td>
+                                            <td>C</td>
                                             <td>W</td>
                                             <td>P</td>
                                             <td>E</td>
@@ -244,13 +210,137 @@ function getView(){
                 </div>
             </div>
             `
+        },
+        formConsulta:()=>{
+            return `
+           
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                        <div class="form-group">
+                            <label class="negrita">Peso</label>
+                            <input type="number" class="form-control" id="txtCPeso">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                        <div class="form-group">
+                            <label class="negrita">Talla</label>
+                            <input type="number" class="form-control" id="txtCTalla">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="negrita">Motivo de la consulta</label>
+                    <textarea class="form-control" id="txtCMotivo" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="negrita">Diagnóstico</label>
+                    <textarea class="form-control" id="txtCDiagnostico" rows="4"></textarea>
+                </div>
+           
+            `
+        },
+        formReceta:()=>{
+            return `
+                <div class="form-group">
+                    <label>Receta No.</label><label class="negrita text-danger" id="lbCorrelativo">0</label>
+                </div>                     
+
+                <hr class="solid">
+
+                <div class="card shadow">
+                    <label id="">Agregue un Medicamento</label>                                   
+                        
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <input type="text" class="form-control" placeholder="Medicamento..." id="txtRecetaMedicamento"> 
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <input type="text" class="form-control" placeholder="Dosis...Frecuencia" id="txtRecetaDosis">
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <input type="text" class="form-control" placeholder="Duración..." id="txtRecetaDuracion">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6" align="right">
+                            <button class="btn btn-success btn-md shadow hand col-6" id="btnAgregarMedicamento">Agregar(+)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow p-2">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="bg-secondary text-white">
+                                <tr>
+                                    <td>Medicamento</td>
+                                    <td>Dosis</td>
+                                    <td>Duración</td>
+                                    <td></td>
+                                </tr>
+                            </thead>         
+                            <tbody id="tblReceta">
+                            
+                            </tbody>                       
+                        </table>
+
+                        <div class="form-group p-4">
+                            <label>Observaciones</label>
+                            <textarea class="form-control" rows="3" placeholder="Observaciones adicionales..." id="txtRecetaObs">
+                            </textarea>
+                        </div>
+
+                    </div>
+                </div>
+            `
+        }, 
+        modalDatosConsulta:()=>{
+            return `
+            <div class="modal fade" id="modalDatosConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info">
+                            <h5 class="modal-title  text-white">Detalle de la Consulta</h5>
+                        
+                        </div>
+                        <div class="modal-body">
+
+                      
+                        
+                        <hr class="solid">
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalDetConsulta">
+                                        <i class="fa fa-angle-left"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            `
         }
     }
 
-    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalHistorialRecetas() + view.modalNuevoPaciente();
+    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalHistorialRecetas() + view.modalDatosConsulta() + view.modalNuevoPaciente();
 };
 
 function addListeners(){
+
+    $('#myTab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
 
     document.getElementById('txtBuscarReceta').addEventListener('keydown',()=>{
         funciones.FiltrarTabla('tblPacientes','txtBuscarReceta');
@@ -353,9 +443,14 @@ function addListeners(){
                 btnGuardarReceta.disabled = true;
                 btnGuardarReceta.innerHTML = '<i class="fa fa-save fa-spin"></i>';
 
-                let obs = document.getElementById('txtRecetaObs').value || 'SN';
+                let obs = funciones.limpiarTexto(document.getElementById('txtRecetaObs').value) || 'SN';
 
-                insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo)
+                let peso = document.getElementById('txtCPeso').value || '0';
+                let talla = document.getElementById('txtCTalla').value || '0';
+                let motivo = funciones.limpiarTexto(document.getElementById('txtCMotivo').value) || 'SN';
+                let diagnostico = funciones.limpiarTexto(document.getElementById('txtCDiagnostico').value) || 'SN'
+
+                insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo,peso,talla,motivo,diagnostico)
                 .then(async()=>{
                     funciones.Aviso('Receta Guardad exitosamente!!');
 
@@ -386,8 +481,7 @@ function addListeners(){
 
     //HISTORIAL RECETAS
     document.getElementById('btnCerrarModalHistorialRecetaNueva').addEventListener('click',()=>{$('#modalHistorialRecetas').modal('hide');});
-
-
+    document.getElementById('btnCerrarModalDetConsulta').addEventListener('click',()=>{$('#modalDatosConsulta').modal('hide')});
 
 
 
@@ -467,6 +561,11 @@ function getNuevaReceta(idcliente,nombre,fechanacimiento){
     GlobalSelectedCodPaciente = idcliente;
     document.getElementById('lbPaciente').innerText = nombre;
     document.getElementById('txtRecetaObs').value = '';
+
+    document.getElementById('txtCPeso').value = '0';
+    document.getElementById('txtCTalla').value = '0';
+    document.getElementById('txtCMotivo').value = 'SN';
+    document.getElementById('txtCDiagnostico').value = 'SN'
 
     getTblTempReceta();
 
@@ -628,7 +727,7 @@ function getTblTempReceta(){
 
 
 
-function insert_receta(idcliente,obs,correlativo){
+function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_receta',{
             sucursal:GlobalCodSucursal,
@@ -637,7 +736,11 @@ function insert_receta(idcliente,obs,correlativo){
             fecha:funciones.getFecha(),
             hora:funciones.getHora(),
             correlativo:correlativo,
-            coddoc:GlobalCoddoc
+            coddoc:GlobalCoddoc,
+            peso:peso,
+            talla:talla,
+            motivo:motivo,
+            diagnostico: diagnostico
         })
         .then((response) => {          
             resolve();             
@@ -702,6 +805,11 @@ function getTblHistorial(idcliente,nomclie){
                             <small class="negrita">No.:${r.IDRECETA}</small>
                         </td>
                         <td>
+                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${r.IDRECETA}','${r.PESO}','${r.TALLA}','${r.MOTIVO}','${r.DIAGNOSTICO}')">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <td>
                             <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}')">
                                 <i class="fa fa-whatsapp"></i>
                             </button>
@@ -730,6 +838,10 @@ function getTblHistorial(idcliente,nomclie){
 
 };
 
+function receta_consulta(idreceta,fecha,peso,talla,motivo,diagnostico){
+    $('#modalDatosConsulta').modal('show');
+
+};
 
 function receta_whatsapp(idreceta){
 
