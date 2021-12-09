@@ -21,7 +21,7 @@ let funciones = {
           
             data.map((r)=>{
               strmensaje += `* ${r.MEDICAMENTO} - ${r.DOSIS} - ${r.DURACION}` + "\n" + '--------------' + "\n";
-              footer = r.OBS + "\n";
+              footer = r.OBS + "\n" + 'NO CAMBIAR LA RECETA SIN AUTORIZACIÓN DE SU MÉDICO' + "\n";
             })   
     
             msg = GlobalEncabezadoReceta + strmensaje + footer + GlobalFooterReceta;

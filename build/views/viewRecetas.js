@@ -21,8 +21,6 @@ function getView(){
                                             <td>Paciente / Teléfono</td>
                                             <td>Edad</td>
                                             <td></td>
-                                            <td></td>
-                                            <td></td>
                                         </tr>
                                     </thead>
                                     <tbody id="tblListaPacientes">
@@ -546,19 +544,19 @@ function getTblRecetas(){
                 <tr>
                     <td>${r.NOMCLIE}
                         <br><small class="negrita text-danger">${r.TELEFONOS}</small>
+                        <br>
+                        <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.FECHANACIMIENTO}')">
+                            <i class="fa fa-edit"></i>Nueva Consulta/Receta
+                        </button>
                     </td>
                     <td>${funciones.getEdad(r.FECHANACIMIENTO)}
                         <br>
-                        <small class="negrita">FN:${funciones.convertDate(r.FECHANACIMIENTO)}</td></small>
-                    <td>
-                        <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.FECHANACIMIENTO}')">
-                            <i class="fa fa-edit"></i>
+                        <small class="negrita">FN:${funciones.convertDate(r.FECHANACIMIENTO)}</small>
+                        <br>
+                        <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
+                            <i class="fa fa-list"></i>Historial
                         </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-secondary btn-circle btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
-                            <i class="fa fa-list"></i>
-                        </button>
+                      
                     </td>
                     <td>
                         <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="delete_paciente('${r.IDCLIENTE}')" id="${'p' + r.IDCLIENTE.toString()}">

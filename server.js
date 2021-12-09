@@ -245,7 +245,7 @@ app.post("/select_receta",function(req,res){
               recetas_detalle.DURACION
             FROM recetas
               LEFT OUTER JOIN recetas_detalle
-                ON recetas.IDRECETA = recetas_detalle.IDRECETA AND recetas.TOEKN= recetas_detalle.TOKEN
+                ON recetas.IDRECETA = recetas_detalle.IDRECETA AND recetas.TOKEN= recetas_detalle.TOKEN
               LEFT OUTER JOIN clientes
                 ON recetas.CODCLIENTE = clientes.IDCLIENTE
                   AND recetas.TOKEN= clientes.TOKEN

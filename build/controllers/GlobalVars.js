@@ -15,5 +15,5 @@ let GlobalSelectedCodPaciente = 0;
 let GlobalSelectedNomPaciente = '';
 
 
-let GlobalEncabezadoReceta = 'Clínica Médica Niño Jesús - Dr. Pablo A. Vásquez Ampié' + "\n" + "-----------------" + "\n";
-let GlobalFooterReceta = 'Dirección: Frente al centro de salud, Retalhuleu. Teléfono: 7771-2416 / 5199-5119';
+let GlobalEncabezadoReceta = 'Clínica Médica Niño Jesús - Dr. Pablo A. Vásquez Ampié' + "\n" + 'Dirección: Frente al centro de salud, Retalhuleu. Teléfono: 7771-2416 / 5199-5119' + "\n" + "-----------------" + "\n";
+let GlobalFooterReceta = '';
