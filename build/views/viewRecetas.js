@@ -55,10 +55,12 @@ function getView(){
 
                              <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">Consulta</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">
+                                        <i class="fa fa-edit"></i>Consulta</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">Receta</a>
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">
+                                        <i class="fa fa-print"></i>Receta</a>
                                 </li>
                                
                             </ul>
