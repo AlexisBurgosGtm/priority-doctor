@@ -26,7 +26,7 @@ function getView(){
 
                     </div>
                     <div class="card-footer p-4">
-                        <small class="negrita">Creado por Alexis Burgos(+502-57255092)</small>
+                        <small class="negrita">Onne-Doctor por Alexis Burgos(+502-57255092)</small>
                     </div>
                 </div>
             `
