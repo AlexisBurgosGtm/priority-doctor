@@ -868,7 +868,7 @@ function getTblHistorial(idcliente,nomclie){
 };
 
 function grafica_peso(data){
-
+    
 };
 
 function receta_consulta(fecha,peso,talla,motivo,diagnostico){
