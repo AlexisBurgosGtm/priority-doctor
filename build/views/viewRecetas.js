@@ -171,6 +171,8 @@ function getView(){
                        
                     </div>
                     <div class="modal-body">
+                        <canvas id="containerGraficaPeso" height="100"></canvas>
+
                         <h5 class="text-danger" id="lbPacienteHistorial">CONSUMIDOR FINAL</h5>
                         <div class="card shadow p-2">
                             <div class="table-responsive">
@@ -816,14 +818,11 @@ function getTblHistorial(idcliente,nomclie){
     GlobalSelectedCodPaciente = idcliente;
     GlobalSelectedNomPaciente = nomclie;
 
-    let datapeso = [];
-
     let container = document.getElementById('tblHistorialRecetas');
     container.innerHTML = GlobalLoader;
     let str ='';
     getDataHistorialReceta(idcliente)
-    .then((data)=> {
-        datapeso.push(Number(data.PESO));
+    .then(async(data)=> {  
         data.map((r)=> {
             str += `<tr>
                         <td>${funciones.convertDate(r.FECHA)}
@@ -855,8 +854,7 @@ function getTblHistorial(idcliente,nomclie){
                     </tr>`
         })
         container.innerHTML = str;
-        grafica_peso(datapeso);
-
+        await grafica_peso(data);
     })
     .catch(()=> {
         container.innerHTML = 'No se pudieron cargar los datos...';
@@ -867,9 +865,6 @@ function getTblHistorial(idcliente,nomclie){
 
 };
 
-function grafica_peso(data){
-    
-};
 
 function receta_consulta(fecha,peso,talla,motivo,diagnostico){
 
@@ -1004,4 +999,95 @@ function receta_eliminar(id){
 
         }
     })
+};
+
+
+
+
+function grafica_peso(data){
+   
+  
+    let container = document.getElementById('containerGraficaPeso').innerHTML = '';
+    //container.innerHTML = '<canvas id="myChart1" width="40" height="40"></canvas>';
+
+    let label = []; let valor = []; let bgColor = [];
+      
+    data.map((r)=>{
+            label.push(r.IDRECETA);
+            valor.push( Number(r.PESO));
+            bgColor.push(getRandomColor())
+    })
+
+    console.log(valor);
+
+    var ctx = document.getElementById('containerGraficaPeso').getContext('2d');
+    var myChart = new Chart(ctx, {
+        plugins: [ChartDataLabels],
+        type: 'line',
+        data: {
+            labels: label.reverse(),
+            datasets: [{
+                data:valor.reverse(),
+                borderColor: 'gray',
+                backgroundColor:bgColor
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: 'GRAFICA POR PESO'
+                  },
+                // Change options for ALL labels of THIS CHART
+                datalabels: {
+                  anchor:'end',
+                  align:'end',
+                  listeners: {
+                    click: function(context) {
+                      // Receives `click` events only for labels of the first dataset.
+                      // The clicked label index is available in `context.dataIndex`.
+                      console.log(context);
+                    }
+                  },
+                  formatter: function(value) {
+                    return value;
+                    // eq. return ['line1', 'line2', value]
+                  },
+                  color: function(context) {
+                    return context.dataset.backgroundColor;
+                  },
+                  //borderColor: 'white',
+                  borderRadius: 25,
+                  borderWidth: 0,
+                  font: {
+                    weight: 'bold'
+                  }
+                }
+            }
+        }
+    });
+
+
+    
+
+};
+
+
+
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 };
