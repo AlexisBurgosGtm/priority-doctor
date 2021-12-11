@@ -821,7 +821,7 @@ let funciones = {
       }
 
       //return edad + " años, " + meses + " meses y " + dias + " días";
-      return " a:" +edad +  ", m:" + meses;
+      return  edad + " a," + meses +  " m";
     
     }
 };
