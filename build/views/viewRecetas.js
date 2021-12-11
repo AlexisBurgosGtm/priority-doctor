@@ -59,7 +59,7 @@ function getView(){
                                         <i class="fa fa-edit"></i>Consulta</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">
+                                    <a class="nav-link" id="receta-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">
                                         <i class="fa fa-print"></i>Receta</a>
                                 </li>
                                
@@ -68,10 +68,35 @@ function getView(){
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="consulta" role="tabpanel" aria-labelledby="home-tab">
                                     ${view.formConsulta()}
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-success btn-xl btn-circle hand shadow" id="btnIrReceta">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                            
-                                <div class="tab-pane fade" id="receta" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="tab-pane fade" id="receta" role="tabpanel" aria-labelledby="receta-tab">
                                     ${view.formReceta()}
+
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalRecetaNueva">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-6">
+                                            
+                
+                                                <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarReceta">
+                                                    <i class="fa fa-save"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -79,24 +104,7 @@ function getView(){
                     </div>
 
               
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="col-6">
-                                <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalRecetaNueva">
-                                    <i class="fa fa-angle-left"></i>
-                                </button>
-                            </div>
-                            <div class="col-6">
-                              
-
-                                <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarReceta">
-                                    <i class="fa fa-save"></i>
-                                </button>
-                            </div>
-                        </div>
-                       
-
-                    </div>
+                 
                     </div>
                 </div>
             </div>
@@ -124,7 +132,7 @@ function getView(){
 
 
                         <div class="form-group col-8">
-                            <label class="negrita">Nombre del Paciente</label>
+                            <label class="negrita">Fecha de nacimiento</label>
                             <input type="date" class="form-control" id="FechaNacimiento"
                         </div>
                        
@@ -503,6 +511,8 @@ function addListeners(){
             }
         })
     });
+
+    document.getElementById('btnIrReceta').addEventListener('click',()=>{document.getElementById('receta-tab').click()})
 
     getCorrelativoCoddoc();
 
