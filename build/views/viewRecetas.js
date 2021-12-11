@@ -550,7 +550,7 @@ function getTblRecetas(){
                         <br><small class="negrita text-danger">${r.TELEFONOS}</small>
                         <br>
                         <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.FECHANACIMIENTO}')">
-                            <i class="fa fa-edit"></i>Nueva Consulta/Receta
+                            <i class="fa fa-edit"></i> Nueva Consulta
                         </button>
                     </td>
                     <td>${funciones.getEdad(r.FECHANACIMIENTO)}
@@ -1008,6 +1008,8 @@ function grafica_peso(data){
    
   
     let container = document.getElementById('containerGraficaPeso').innerHTML = '';
+    container.innerHTML ='';
+
     //container.innerHTML = '<canvas id="myChart1" width="40" height="40"></canvas>';
 
     let label = []; let valor = []; let bgColor = [];
@@ -1015,7 +1017,7 @@ function grafica_peso(data){
     data.map((r)=>{
             label.push(r.IDRECETA);
             valor.push( Number(r.PESO));
-            bgColor.push(getRandomColor())
+            bgColor.push('red')
     })
 
     console.log(valor);
@@ -1028,7 +1030,7 @@ function grafica_peso(data){
             labels: label.reverse(),
             datasets: [{
                 data:valor.reverse(),
-                borderColor: 'gray',
+                borderColor: 'red',
                 backgroundColor:bgColor
             }]
         },
