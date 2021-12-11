@@ -864,7 +864,12 @@ function getTblHistorial(idcliente,nomclie){
                     </tr>`
         })
         container.innerHTML = str;
-        await grafica_peso(data);
+        try {
+            grafica_peso(data);
+        } catch (error) {
+            
+        }
+       
     })
     .catch(()=> {
         container.innerHTML = 'No se pudieron cargar los datos...';
