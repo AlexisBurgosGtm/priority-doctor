@@ -241,12 +241,12 @@ function getView(){
 
                 <div class="form-group">
                     <label class="negrita">Motivo de la consulta</label>
-                    <textarea class="form-control" id="txtCMotivo" rows="4"></textarea>
+                    <textarea class="form-control" id="txtCMotivo" rows="4" placeholder="Escriba el motivo de la consulta..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="negrita">Diagnóstico</label>
-                    <textarea class="form-control" id="txtCDiagnostico" rows="4"></textarea>
+                    <textarea class="form-control" id="txtCDiagnostico" rows="4" placeholder="Escriba el diagnóstico de la consulta..."></textarea>
                 </div>
            
             `
@@ -342,12 +342,12 @@ function getView(){
 
                             <div class="form-group">
                                 <label class="negrita">Motivo de la Consulta</label>
-                                <textarea class="form-control" id="lbCMotivo"></textarea>
+                                <textarea class="form-control" id="lbCMotivo" rows="5"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label class="negrita">Diagnóstico</label>
-                                <textarea class="form-control" id="lbCDiagnostico"></textarea>
+                                <textarea class="form-control" id="lbCDiagnostico" rows="5"></textarea>
                             </div>
                         
                         </div>
@@ -842,7 +842,7 @@ function getTblHistorial(idcliente,nomclie){
                             <small class="negrita">No.:${r.IDRECETA}</small>
                         </td>
                         <td>
-                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "")}')">
+                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "*-")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "*-")}')">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </td>

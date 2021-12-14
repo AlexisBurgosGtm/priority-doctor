@@ -656,6 +656,7 @@ let funciones = {
       modif = "g" + (ignorarMayMin ? "i" : ""),
       regex = new RegExp(reemplazarQue, modif);
       return texto.replace(regex,reemplazarCon);
+      //   .replace(/(\r\n|\n|\r)/gm, "")
     },
     quitarCaracteres: ( texto, reemplazarQue, reemplazarCon, ignorarMayMin) =>{
       var reemplazarQue = reemplazarQue.replace(/[\\^$.|?*+()[{]/g, "\\$&"),
