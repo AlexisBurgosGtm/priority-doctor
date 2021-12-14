@@ -446,7 +446,7 @@ function addListeners(){
         btnAgregarMedicamento.disabled = true;
         btnAgregarMedicamento.innerHTML = '<i class="fa fa-save fa-spin"></i>';
 
-        insert_temp_receta(medicamento,dosis,duracion)
+        insert_temp_receta(funciones.limpiarTexto(medicamento),dosis,duracion)
         .then(()=>{
             btnAgregarMedicamento.disabled = false;
             btnAgregarMedicamento.innerHTML = 'Agregar(+)';
@@ -600,10 +600,10 @@ function getNuevaReceta(idcliente,nombre,fechanacimiento){
     document.getElementById('lbPaciente').innerText = nombre;
     document.getElementById('txtRecetaObs').value = '';
 
-    document.getElementById('txtCPeso').value = '0';
-    document.getElementById('txtCTalla').value = '0';
-    document.getElementById('txtCMotivo').value = 'SN';
-    document.getElementById('txtCDiagnostico').value = 'SN'
+    document.getElementById('txtCPeso').value = '';
+    document.getElementById('txtCTalla').value = '';
+    document.getElementById('txtCMotivo').value = '';
+    document.getElementById('txtCDiagnostico').value = ''
 
     getTblTempReceta();
 
@@ -842,7 +842,7 @@ function getTblHistorial(idcliente,nomclie){
                             <small class="negrita">No.:${r.IDRECETA}</small>
                         </td>
                         <td>
-                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO}','${r.DIAGNOSTICO}')">
+                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "")}')">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </td>
