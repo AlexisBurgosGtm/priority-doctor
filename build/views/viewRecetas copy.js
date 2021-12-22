@@ -3,101 +3,42 @@ function getView(){
         body:()=>{
             return `
                 <div class="card col-12">
-
-                    <ul class="nav nav-tabs" id="myTabHome" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
-                                <i class="fa fa-edit"></i>Listado de Pacientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
-                                <i class="fa fa-print"></i>Lista de Espera</a>
-                        </li>             
-                    </ul>
-
-                    <div class="tab-content" id="myTabHomeContent">
-                        <div class="tab-pane fade show active" id="pacientes" role="tabpanel" aria-labelledby="home-tab">
-                                   
-                            ${view.homePacientes()}
-                                   
-                        </div>
-                           
-                        <div class="tab-pane fade" id="espera" role="tabpanel" aria-labelledby="receta-tab">
-
-                            ${view.homeEspera()}
-
-                        </div>
+                    <div class="card-header">
+                        <h4>Listado de Pacientes</h4>
                     </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                                <input type="text" class="form-control" id="txtBuscarReceta" placeholder="Escriba para Buscar...">
+                            </div>
+                          
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table table-responsive table-hover table-striped" id="tblPacientes">
+                                    <thead  class="bg-info text-white">
+                                        <tr>
+                                            <td>Paciente / Teléfono</td>
+                                            <td>Edad</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblListaPacientes">
+                                
+                                    </tbody>
+                                </table>
+                              
+                            </div>
 
-                </div>
-               
-            `
-        },
-        homePacientes:()=>{
-            return `
-            <div class="card-body">
-                <h5>Listado de Pacientes</h5>
-                
-                <div class="row">
-                    <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <input type="text" class="form-control" id="txtBuscarReceta" placeholder="Escriba para Buscar...">
-                    </div>
-                
-                </div>
-                <div class="row">
-                    <div class="table-responsive">
-                        <table class="table table-responsive table-hover table-striped" id="tblPacientes">
-                            <thead  class="bg-info text-white">
-                                <tr>
-                                    <td>Paciente / Teléfono</td>
-                                    <td>Edad</td>
-                                    <td></td>
-                                </tr>
-                            </thead>
-                            <tbody id="tblListaPacientes">
+                        </div>
                         
-                            </tbody>
-                        </table>
+
                     </div>
                 </div>
-
-            </div>
-            <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow" id="btnNuevoPaciente">
-                <i class="fa fa-plus"></i>
-            </button>
+                <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow" id="btnNuevoPaciente">
+                    <i class="fa fa-plus"></i>
+                </button>
             `
-        },
-        homeEspera:()=>{
-            return `
-            <div class="card shadow p-2">
-                <div class="card-body">
-                    <h5>Lista de Espera</h5>
-                    <button class="btn btn-xl btn-success btn-circle" onclick="getTblTurnos()">
-                        <i class="fa fa-sync"></i>
-                    </button>
-                    <div class="table-responsive">
-                        <table class="table table-responsive table-hover table-bordered table-striped" id="tblEspera">
-                            <thead class="bg-secondary text-white">
-                                <tr>
-                                    <td>Paciente</td>
-                                    <td>
-                                       
-                                    </td>
-                                    <td>
-                                      
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody id="tblEsperaData">
-                            
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-            `
-
         },
         modalNuevaReceta:()=>{
             return `
@@ -435,16 +376,10 @@ function addListeners(){
     $('#myTab a').on('click', function (e) {
         e.preventDefault()
         $(this).tab('show')
-    })
-
-    $('#myTabHome a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
+      })
 
     document.getElementById('txtBuscarReceta').addEventListener('keydown',()=>{
         funciones.FiltrarTabla('tblPacientes','txtBuscarReceta');
-        funciones.OcultarRows('tblPacientes');
     });
 
     document.getElementById('FechaNacimiento').value = funciones.getFecha();
@@ -483,7 +418,7 @@ function addListeners(){
                     btnGuardarCliente.disabled = false;
                     btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
-                    getTblPacientes();
+                    getTblRecetas();
                 })
                 .catch(()=>{
                     funciones.AvisoError('No se pudo guardar')
@@ -559,11 +494,6 @@ function addListeners(){
                     btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
                     $("#modalNuevaReceta").modal('hide');
 
-                    if(Number(GlobalSelectedIdTurno)==0){
-                    }else{
-                        await delete_turno(GlobalSelectedIdTurno);
-                    };
-
                     receta_imprimir(GlobalCorrelativo);
 
                     getCorrelativoCoddoc();
@@ -591,7 +521,6 @@ function addListeners(){
     document.getElementById('btnCerrarModalHistorialRecetaNueva').addEventListener('click',()=>{$('#modalHistorialRecetas').modal('hide');});
     document.getElementById('btnCerrarModalDetConsulta').addEventListener('click',()=>{$('#modalDatosConsulta').modal('hide')});
 
-  
 
 
 };
@@ -611,12 +540,11 @@ function getCorrelativoCoddoc(){
 function initView(){
     getView();
     addListeners();
-    getTblPacientes();
-    getTblTurnos();
+    getTblRecetas();
 };
 
 
-function getTblPacientes(){
+function getTblRecetas(){
     
 
     let container = document.getElementById('tblListaPacientes');
@@ -631,7 +559,7 @@ function getTblPacientes(){
                     <td>${r.NOMCLIE}
                         <br><small class="negrita text-danger">${r.TELEFONOS}</small>
                         <br>
-                        <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0')">
+                        <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.FECHANACIMIENTO}')">
                             <i class="fa fa-edit"></i> Nueva Consulta
                         </button>
                     </td>
@@ -654,7 +582,6 @@ function getTblPacientes(){
             `
         })
         container.innerHTML = str;
-        funciones.OcultarRows('tblPacientes');
     })
     .catch((error)=>{
         console.log(error);
@@ -667,7 +594,7 @@ function getTblPacientes(){
 
 
 
-function getNuevaReceta(idcliente,nombre,idturno){
+function getNuevaReceta(idcliente,nombre,fechanacimiento){
 
     GlobalSelectedCodPaciente = idcliente;
     document.getElementById('lbPaciente').innerText = nombre;
@@ -677,8 +604,6 @@ function getNuevaReceta(idcliente,nombre,idturno){
     document.getElementById('txtCTalla').value = '';
     document.getElementById('txtCMotivo').value = '';
     document.getElementById('txtCDiagnostico').value = ''
-
-    GlobalSelectedIdTurno = Number(idturno);
 
     getTblTempReceta();
 
@@ -734,7 +659,7 @@ function delete_paciente(id){
                 })
                 .then((response) => {   
                     let data = response.data; 
-                    getTblPacientes();
+                    getTblRecetas();
                 }, (error) => {
                     funciones.AvisoError('No se pudo eliminar este item')
                     btn.disabled = false;
@@ -1183,112 +1108,3 @@ function getRandomColor() {
     }
     return color;
 };
-
-
-//********************* */
-//turnos de Espera
-//********************* */
-
-function getDataTurnos(){
-    return new Promise((resolve, reject) => {
-
-        axios.post('/select_lista_espera',{
-            sucursal:GlobalCodSucursal
-        })
-        .then((response) => {   
-            let data = response.data; 
-            resolve(data);
-        }, (error) => {
-            reject(error);
-        });
-    })
-    
-};
-
-function getTblTurnos(){
-    
-
-    let container = document.getElementById('tblEsperaData');
-    container.innerHTML = GlobalLoader;
-    let str = '';
-
-    getDataTurnos()
-    .then((data)=>{
-        data.map((r)=>{
-            str += `
-                <tr>
-                    <td>${r.NOMCLIE}
-                        <div class="row">
-                            <div class="col-4">
-                                <small class="negrita text-danger">Temp: ${r.TEMPERATURA}</small>
-                            </div>
-                            <div class="col-4">
-                                <small class="negrita text-danger">P/A: ${r.PA}</small>
-                            </div>
-                            <div class="col-4">
-                                <small class="negrita text-info">Hora: ${r.HORA}</small>
-                            </div>
-                        </div>
-                       
-                    </td>
-                   
-                    <td>
-                        <button class="btn btn-success btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                    </td>
-
-                    <td>
-                        <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
-                            <i class="fa fa-bullhorn"></i>
-                        </button>
-                    </td>
-                
-                </tr>
-            `
-        })
-        container.innerHTML = str;
-    })
-    .catch((error)=>{
-        console.log(error);
-        container.innerHTML = 'No se pudieron cargar los datos...'
-    })
-    
-
-    
-};
-
-function insert_turno(idcliente,temperatura,pa){
-    return new Promise((resolve,reject)=>{
-        axios.post('/insert_receta',{
-            sucursal:GlobalCodSucursal,
-            idcliente:idcliente,
-            temperatura:temperatura,
-            pa:pa,
-            hora:funciones.getHora()
-        })
-        .then((response) => {          
-            resolve();             
-        }, (error) => {
-            reject();
-        });
-    });
-};
-
-function delete_turno(idturno){
-    axios.post('/delete_temp_espera',{
-        sucursal:GlobalCodSucursal,
-        id:idturno
-        })
-    .then(async(response) => {          
-        console.log('turno eliminado ' +  idturno.toString())
-        GlobalSelectedIdTurno = 0;
-        await getTblTurnos();             
-    }, (error) => {
-        console.log('turno no eliminado');
-    });
-
-}
- 
-//********************* */
-//********************* */

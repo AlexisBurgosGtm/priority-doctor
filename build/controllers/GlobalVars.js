@@ -9,6 +9,7 @@ let GlobalCodSucursal = 'AMPIE';
 let GlobalCoddoc='REC01';
 let GlobalCorrelativo = 0;
 
+let GlobalSelectedIdTurno = 0;
 
 //paciente
 let GlobalSelectedCodPaciente = 0;

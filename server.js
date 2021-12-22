@@ -257,6 +257,49 @@ app.post("/select_receta",function(req,res){
 
 // RECETAS ...
 
+//TURNOS ESPERA
+app.post("/select_lista_espera",function(req,res){
+
+  const {sucursal} = req.body; 
+  
+  let qry = `SELECT
+  temp_turnos.ID,
+  temp_turnos.IDCLIENTE,
+  clientes.NOMCLIE,
+  temp_turnos.TEMPERATURA,
+  temp_turnos.PA,
+  temp_turnos.HORA
+FROM temp_turnos
+  LEFT OUTER JOIN clientes
+    ON temp_turnos.IDCLIENTE = clientes.IDCLIENTE
+WHERE temp_turnos.TOKEN = '${sucursal}'
+ ORDER BY temp_turnos.ID ASC`;
+
+  execute.query(qry, res);
+
+});
+
+app.post("/insert_temp_espera",function(req,res){
+
+  const {sucursal,idcliente,temperatura,pa,hora} = req.body; 
+  
+  let qry = `INSERT INTO TEMP_TURNOS (TOKEN,IDCLIENTE,TEMPERATURA,PA,HORA)
+   VALUES ('${sucursal}', ${idcliente}, ${temperatura},'${pa}','${hora}')`;
+  execute.query(qry, res);
+
+}); 
+
+app.post("/delete_temp_espera",function(req,res){
+
+  const {sucursal,id} = req.body; 
+  
+  let qry = `DELETE FROM TEMP_TURNOS WHERE ID=${id} AND TOKEN='${sucursal}' `;
+ 
+  execute.query(qry, res);
+
+}); 
+
+//TURNOS ESPERA
 
 app.post("/login",function(req,res){
 
