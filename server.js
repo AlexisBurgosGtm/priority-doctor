@@ -124,10 +124,10 @@ app.post("/delete_paciente",function(req,res){
 
 app.post("/select_paciente",function(req,res){
 
-  const {nombre,sucursal} = req.body; 
+  const {filtro,sucursal} = req.body; 
   
-  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO 
-  FROM CLIENTES WHERE NOMCLIE LIKE '%${nombre}%' AND TOKEN='${sucursal}'`;
+  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, DIRCLIE 
+  FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' AND TOKEN='${sucursal}'`;
   execute.query(qry, res);
 
 }); 
@@ -136,7 +136,7 @@ app.post("/select_lista_pacientes",function(req,res){
 
   const {sucursal} = req.body; 
   
-  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO
+  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, DIRCLIE
            FROM CLIENTES WHERE TOKEN='${sucursal}' `;
   execute.query(qry, res);
 
