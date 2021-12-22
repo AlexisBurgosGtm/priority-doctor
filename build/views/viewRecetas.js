@@ -1258,22 +1258,6 @@ function getTblTurnos(){
     
 };
 
-function insert_turno(idcliente,temperatura,pa){
-    return new Promise((resolve,reject)=>{
-        axios.post('/insert_receta',{
-            sucursal:GlobalCodSucursal,
-            idcliente:idcliente,
-            temperatura:temperatura,
-            pa:pa,
-            hora:funciones.getHora()
-        })
-        .then((response) => {          
-            resolve();             
-        }, (error) => {
-            reject();
-        });
-    });
-};
 
 function delete_turno(idturno){
     axios.post('/delete_temp_espera',{

@@ -16,7 +16,7 @@ function getView(){
                                     <td></td>
                                 </tr>
                             </thead>
-                            <tbody id="tblTurnosData">
+                            <tbody id="tblEsperaData">
                             
                             </tbody>
                         </table>
@@ -42,22 +42,18 @@ function getView(){
                     <hr class="solid">
 
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-6">
                             <div class="form-group">
                                 <label class="negrita">Código</label>
                                 <input type="text" class="form-control" id="tPacienteCodigo" disabled="true">
                             </div>    
                         </div>
-                        <div class="col-4">
+                        <div class="col-6">
                             <button class="btn btn-info btn-xl btn-circle shadow" id="btnBuscarPaciente">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
-                        <div class="col-4">
-                            <button class="btn btn-success btn-xl btn-circle shadow" id="btnNuevoPaciente">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
+                      
                     </div>
                     
 
@@ -121,14 +117,25 @@ function getView(){
 
                     <hr class="solid">
                    
-
-                    <div class="form-group">
-                        <label class="negrita">Busque al paciente por Nombre</label>
-                        <input type="text" class="form-control" id="txtBuscarPaciente" placeholder="Escriba el nombre para buscar...">
-                        <button class="btn btn-md btn-secondary shadow" id="btnBuscar">
-                            <i class="fa fa-search"></i>
-                        </button>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label class="negrita">Busque al paciente por Nombre</label>
+                                <input type="text" class="form-control" id="txtBuscarPaciente" placeholder="Escriba el nombre para buscar...">
+                                <button class="btn btn-md btn-secondary shadow" id="btnBuscar">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>    
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-success btn-xl btn-circle shadow" id="btnNuevoPaciente">
+                                <i class="fa fa-plus"></i>
+                            </button>    
+                        </div>
                     </div>
+                    
+
+                    
                                      
                     <hr class="solid">
                   
@@ -257,6 +264,7 @@ function addListeners(){
     btnBuscarPaciente.addEventListener('click',()=>{
 
         document.getElementById('txtBuscarPaciente').value= '';
+        document.getElementById('tblPacientesData').innerHTML = '';
         $('#modalPacientes').modal('show');
 
     });
@@ -268,10 +276,45 @@ function addListeners(){
 
     });
 
+    document.getElementById('txtBuscarPaciente').addEventListener('keydown',(e)=>{
+        if (e.key == 'Enter' || e.keyCode == 13) {
+            btnBuscar.click();
+        };
+    })
+
     let btnGuardarTurno = document.getElementById('btnGuardarTurno');
     btnGuardarTurno.addEventListener('click',()=>{
 
-        funciones.Aviso('proceso para guardar turno');
+        funciones.Confirmacion('¿Está seguro que desea agregar este Turno a la cola de Espera?')
+        .then((value)=>{
+            if(value==true){
+                let codigo = document.getElementById('tPacienteCodigo').value;
+                if(codigo=='0'){
+                    funciones.AvisoError('Debe indicar el paciente');
+                    return
+                };
+
+                let temperatura = document.getElementById('tTemperatura').value  || '36';
+                let pa = document.getElementById('tPA').value || '0/0';
+                btnGuardarTurno.disabled = true;
+                btnGuardarTurno.innerHTML =  '<i class="fa fa-save fa-spin"></i>';
+                insert_turno(codigo,temperatura,pa)
+                .then(()=>{
+                    btnGuardarTurno.disabled = false;
+                    btnGuardarTurno.innerHTML =  '<i class="fa fa-save"></i>';
+                    funciones.Aviso('Cliente agregado exitosamente!!');
+                    getTblTurnos();
+                    $('#modalNuevoTurno').modal('hide');
+
+                })
+                .catch(()=>{
+                    btnGuardarTurno.disabled = false;
+                    btnGuardarTurno.innerHTML =  '<i class="fa fa-save"></i>';
+                    funciones.AvisoError('No se pudo agregar este turno a la Espera');
+                })
+
+            }
+        })
 
     });
 
@@ -313,7 +356,9 @@ function addListeners(){
                     btnGuardarCliente.disabled = false;
                     btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
-                    getTblPacientes();
+                    
+                    document.getElementById('txtBuscarPaciente').value= nombre.value;
+                    btnBuscar.click();
                 })
                 .catch(()=>{
                     funciones.AvisoError('No se pudo guardar')
@@ -325,6 +370,8 @@ function addListeners(){
         })
     });
 
+
+    getTblTurnos();
 
 
 };
@@ -412,3 +459,126 @@ function agregar_espera(codigo,nombre){
     document.getElementById('tPacienteNombre').value = nombre;
     $('#modalPacientes').modal('hide');
 };
+
+function insert_paciente(nombre,fechanacimiento,telefono){
+    return new Promise((resolve,reject)=>{
+        axios.post('/insert_paciente',{
+            sucursal:GlobalCodSucursal,
+            nombre:nombre,
+            fechanacimiento:fechanacimiento,
+            telefonos:telefono
+        })
+        .then((response) => {
+
+            resolve();             
+        }, (error) => {
+            reject();
+        });
+    });
+};
+
+
+//********************* */
+//turnos de Espera
+//********************* */
+
+function getDataTurnos(){
+    return new Promise((resolve, reject) => {
+
+        axios.post('/select_lista_espera',{
+            sucursal:GlobalCodSucursal
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
+    
+};
+
+function getTblTurnos(){
+    
+
+    let container = document.getElementById('tblEsperaData');
+    container.innerHTML = GlobalLoader;
+    let str = '';
+
+    getDataTurnos()
+    .then((data)=>{
+        data.map((r)=>{
+            str += `
+                <tr>
+                    <td>${r.NOMCLIE}
+                        <div class="row">
+                            <div class="col-4">
+                                <small class="negrita text-danger">Temp: ${r.TEMPERATURA}</small>
+                            </div>
+                            <div class="col-4">
+                                <small class="negrita text-danger">P/A: ${r.PA}</small>
+                            </div>
+                            <div class="col-4">
+                                <small class="negrita text-info">Hora: ${r.HORA}</small>
+                            </div>
+                        </div>
+                       
+                    </td>
+                   
+                    <td>
+                        <button class="btn btn-success btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
+                            <i class="fa fa-bullhorn"></i>
+                        </button>
+                    </td>
+                
+                </tr>
+            `
+        })
+        container.innerHTML = str;
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...'
+    })
+    
+
+    
+};
+
+function insert_turno(idcliente,temperatura,pa){
+    return new Promise((resolve,reject)=>{
+        axios.post('/insert_temp_espera',{
+            sucursal:GlobalCodSucursal,
+            idcliente:idcliente,
+            temperatura:temperatura,
+            pa:pa,
+            hora:funciones.getHora()
+        })
+        .then((response) => {     
+            resolve();             
+        }, (error) => {
+            reject();
+        });
+    });
+};
+
+function delete_turno(idturno){
+    axios.post('/delete_temp_espera',{
+        sucursal:GlobalCodSucursal,
+        id:idturno
+        })
+    .then(async(response) => {          
+        console.log('turno eliminado ' +  idturno.toString())
+        GlobalSelectedIdTurno = 0;
+        await getTblTurnos();             
+    }, (error) => {
+        console.log('turno no eliminado');
+    });
+
+}

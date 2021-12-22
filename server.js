@@ -126,7 +126,7 @@ app.post("/select_paciente",function(req,res){
 
   const {filtro,sucursal} = req.body; 
   
-  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, DIRCLIE 
+  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE 
   FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' AND TOKEN='${sucursal}'`;
   execute.query(qry, res);
 
@@ -136,7 +136,7 @@ app.post("/select_lista_pacientes",function(req,res){
 
   const {sucursal} = req.body; 
   
-  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, DIRCLIE
+  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE
            FROM CLIENTES WHERE TOKEN='${sucursal}' `;
   execute.query(qry, res);
 
@@ -284,7 +284,7 @@ app.post("/insert_temp_espera",function(req,res){
   const {sucursal,idcliente,temperatura,pa,hora} = req.body; 
   
   let qry = `INSERT INTO TEMP_TURNOS (TOKEN,IDCLIENTE,TEMPERATURA,PA,HORA)
-   VALUES ('${sucursal}', ${idcliente}, ${temperatura},'${pa}','${hora}')`;
+   VALUES ('${sucursal}', ${idcliente}, ${temperatura},'${pa}','${hora}'); select IDENT_CURRENT('TEMP_TURNOS') as id;`;
   execute.query(qry, res);
 
 }); 
