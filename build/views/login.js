@@ -59,13 +59,18 @@ function addListeners(){
             data.map((r)=>{
                 us = r.USER;
                 GlobalCodSucursal = r.TOKEN;
+                GlobalTipoUsuario = r.TIPO;
             })
             let resultado = us.toString()==u.toString();
            
             if(resultado==false){
                 funciones.AvisoError('Usuario o clave incorrecta'); 
             }else{
-                Navegar.recetas();
+                if(GlobalTipoUsuario=='DOCTOR'){
+                    Navegar.recetas();
+                }else{
+                    Navegar.recepcion();
+                }
             }
             console.log(resultado);
             

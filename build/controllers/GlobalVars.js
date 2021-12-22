@@ -11,6 +11,8 @@ let GlobalCorrelativo = 0;
 
 let GlobalSelectedIdTurno = 0;
 
+let GlobalTipoUsuario = '';
+
 //paciente
 let GlobalSelectedCodPaciente = 0;
 let GlobalSelectedNomPaciente = '';

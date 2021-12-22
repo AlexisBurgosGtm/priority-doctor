@@ -8,19 +8,16 @@ let Navegar ={
             InicializarVista();
         })
     },
-    pacientes: ()=>{
-          funciones.loadScript('./views/pacientes.js','root')
-            .then(()=>{
-                InicializarVista();
-            })
-    },
     recetas: ()=>{
         funciones.loadScript('./views/viewRecetas.js','root')
           .then(()=>{
             initView();
           })
     },
-    consultas: ()=>{
-
+    recepcion: ()=>{
+        funciones.loadScript('./views/viewTurnos.js','root')
+        .then(()=>{
+          initView();
+        })
     }
 }

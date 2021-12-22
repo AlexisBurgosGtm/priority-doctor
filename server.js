@@ -305,7 +305,7 @@ app.post("/login",function(req,res){
 
   const {usuario,pass} = req.body; 
   
-  let qry = `SELECT TOKEN, USER FROM USUARIOS WHERE USER='${usuario}' AND PASS='${pass}' `;
+  let qry = `SELECT TOKEN, USER, TIPO FROM USUARIOS WHERE USER='${usuario}' AND PASS='${pass}' `;
 
   execute.query(qry, res);
 
