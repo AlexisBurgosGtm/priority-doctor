@@ -7,11 +7,15 @@ function getView(){
                     <h5>Listado de Turnos Pendientes</h5>
                 </div>
                 <div class="card-body">
+                    <div class="">
+                        <label class="negrita">Turnos Pendientes: </label><label class="negrita text-danger" id="lbTotalTurnos">0</label>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-responsive table-hover table-bordered" id="tblTurnos">
                             <thead class="bg-info text-white">
                                 <tr>
                                     <td>PACIENTE</td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -503,11 +507,17 @@ function getTblTurnos(){
 
     let container = document.getElementById('tblEsperaData');
     container.innerHTML = GlobalLoader;
+    let lbTotalTurnos = document.getElementById('lbTotalTurnos');
+    lbTotalTurnos.innerText = '--';
+
     let str = '';
+
+    let contador = 0;
 
     getDataTurnos()
     .then((data)=>{
         data.map((r)=>{
+            contador += 1;
             str += `
                 <tr>
                     <td>${r.NOMCLIE}
@@ -536,11 +546,18 @@ function getTblTurnos(){
                             <i class="fa fa-bullhorn"></i>
                         </button>
                     </td>
+
+                    <td>
+                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno(${'row' + r.ID.toString()})" id="${'row' + r.ID.toString()}" >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
                 
                 </tr>
             `
         })
         container.innerHTML = str;
+        lbTotalTurnos.innerText = conteo;
     })
     .catch((error)=>{
         console.log(error);
@@ -568,17 +585,45 @@ function insert_turno(idcliente,temperatura,pa){
     });
 };
 
+function eliminar_turno(idturno){
+    funciones.Confirmacion('¿Está seguro que desea ELIMINAR este turno?')
+    .then((value)=>{
+        if(value==true){
+
+            document.getElementById(idturno).disabled = true;
+            document.getElementById(idturno).innerHTML = '<i class="fa fa-trash fa-spin"></i>'
+
+            delete_turno(idturno)
+            .then(async()=>{
+                funciones.Aviso('Turno eliminado exitosamente!!');
+                await getTblTurnos();
+            })
+            .catch(()=>{
+                funciones.AvisoError('No se pudo eliminar este turno');
+                document.getElementById(idturno).disabled = false;
+                document.getElementById(idturno).innerHTML = '<i class="fa fa-trash"></i>'
+            })
+
+        }
+    })
+}
+
 function delete_turno(idturno){
-    axios.post('/delete_temp_espera',{
-        sucursal:GlobalCodSucursal,
-        id:idturno
-        })
-    .then(async(response) => {          
-        console.log('turno eliminado ' +  idturno.toString())
-        GlobalSelectedIdTurno = 0;
-        await getTblTurnos();             
-    }, (error) => {
-        console.log('turno no eliminado');
-    });
+    return new Promise((resolve, reject) => {
+
+        axios.post('/delete_temp_espera',{
+            sucursal:GlobalCodSucursal,
+            id:idturno
+            })
+        .then(async(response) => {          
+            GlobalSelectedIdTurno = 0;
+            resolve();    
+        }, (error) => {
+            console.log('turno no eliminado');
+            reject();
+        });
+
+    })
+    
 
 }
