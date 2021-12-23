@@ -557,7 +557,7 @@ function getTblTurnos(){
             `
         })
         container.innerHTML = str;
-        lbTotalTurnos.innerText = conteo;
+        lbTotalTurnos.innerText = contador;
     })
     .catch((error)=>{
         console.log(error);

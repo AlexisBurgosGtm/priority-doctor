@@ -72,9 +72,17 @@ function getView(){
             <div class="card shadow p-2">
                 <div class="card-body">
                     <h5>Lista de Espera</h5>
-                    <button class="btn btn-xl btn-success btn-circle" onclick="getTblTurnos()">
-                        <i class="fa fa-sync"></i>
-                    </button>
+                    <div class="row">
+                        <div class="col-6">
+                            <button class="btn btn-xl btn-success btn-circle" onclick="getTblTurnos()">
+                                <i class="fa fa-sync"></i>
+                            </button>    
+                        </div>
+                        <div class="col-6">
+                            <label class="negrita">Total Turnos: </label><label class="negrita text-danger" id="lbTotalTurnos">0</label>
+                        </div>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table table-responsive table-hover table-bordered table-striped" id="tblEspera">
                             <thead class="bg-secondary text-white">
@@ -1210,11 +1218,16 @@ function getTblTurnos(){
 
     let container = document.getElementById('tblEsperaData');
     container.innerHTML = GlobalLoader;
+    let lbTotalTurnos = document.getElementById('lbTotalTurnos');
+    lbTotalTurnos.innerText = '--';
+
     let str = '';
+    let conteo = 0;
 
     getDataTurnos()
     .then((data)=>{
         data.map((r)=>{
+            conteo += 1;
             str += `
                 <tr>
                     <td>${r.NOMCLIE}
@@ -1248,6 +1261,7 @@ function getTblTurnos(){
             `
         })
         container.innerHTML = str;
+        lbTotalTurnos.innerText = conteo;
     })
     .catch((error)=>{
         console.log(error);
