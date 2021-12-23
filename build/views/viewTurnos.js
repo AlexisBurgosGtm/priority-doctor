@@ -518,6 +518,7 @@ function getTblTurnos(){
     .then((data)=>{
         data.map((r)=>{
             contador += 1;
+            let rowid = r.ID.toString() + 'row';
             str += `
                 <tr>
                     <td>${r.NOMCLIE}
@@ -548,7 +549,7 @@ function getTblTurnos(){
                     </td>
 
                     <td>
-                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno(${'row' + r.ID.toString()})" id="${'row' + r.ID.toString()}" >
+                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno('${rowid}')" id='${rowid}'>
                             <i class="fa fa-trash"></i>
                         </button>
                     </td>
