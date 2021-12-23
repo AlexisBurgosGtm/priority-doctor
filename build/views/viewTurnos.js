@@ -17,7 +17,6 @@ function getView(){
                                     <td>PACIENTE</td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody id="tblEsperaData">
@@ -536,12 +535,7 @@ function getTblTurnos(){
                        
                     </td>
                    
-                    <td>
-                        <button class="btn btn-success btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                    </td>
-
+      
                     <td>
                         <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
                             <i class="fa fa-bullhorn"></i>

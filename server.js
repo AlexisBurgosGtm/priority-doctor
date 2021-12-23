@@ -325,8 +325,8 @@ app.use("*",function(req,res){
 // SOCKET HANDLER
 io.on('connection', function(socket){
   
-  socket.on('recetas nueva', function(receta,cliente){
-	  io.emit('recetas nueva', receta,cliente);
+  socket.on('nuevo turno', function(){
+	  io.emit('nuevo turno');
   });
     
 });
