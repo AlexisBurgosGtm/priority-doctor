@@ -662,7 +662,7 @@ function getTblPacientes(){
             `
         })
         container.innerHTML = str;
-        funciones.OcultarRows('tblPacientes');
+        //funciones.OcultarRows('tblPacientes');
     })
     .catch((error)=>{
         console.log(error);
