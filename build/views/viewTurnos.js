@@ -549,7 +549,7 @@ function getTblTurnos(){
                     </td>
 
                     <td>
-                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno('${rowid}')" id='${rowid}'>
+                        <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno('${rowid}','${r.ID}')" id='${rowid}'>
                             <i class="fa fa-trash"></i>
                         </button>
                     </td>
@@ -586,7 +586,7 @@ function insert_turno(idcliente,temperatura,pa){
     });
 };
 
-function eliminar_turno(idturno){
+function eliminar_turno(idturno, id){
     funciones.Confirmacion('¿Está seguro que desea ELIMINAR este turno?')
     .then((value)=>{
         if(value==true){
@@ -594,7 +594,7 @@ function eliminar_turno(idturno){
             document.getElementById(idturno).disabled = true;
             document.getElementById(idturno).innerHTML = '<i class="fa fa-trash fa-spin"></i>'
 
-            delete_turno(idturno)
+            delete_turno(id)
             .then(async()=>{
                 funciones.Aviso('Turno eliminado exitosamente!!');
                 await getTblTurnos();
