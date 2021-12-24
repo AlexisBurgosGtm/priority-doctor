@@ -79,7 +79,7 @@ function getView(){
                             </button>    
                         </div>
                         <div class="col-6">
-                            <label class="negrita">Total Turnos: </label><label class="negrita text-danger" id="lbTotalTurnos">0</label>
+                            <label class="negrita">Total Turnos: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
                         </div>
                     </div>
                     
@@ -450,9 +450,14 @@ function addListeners(){
         $(this).tab('show')
     })
 
-    document.getElementById('txtBuscarReceta').addEventListener('keydown',()=>{
+
+    let txtBuscarReceta = document.getElementById('txtBuscarReceta');
+    txtBuscarReceta.addEventListener('keydown',()=>{
         funciones.FiltrarTabla('tblPacientes','txtBuscarReceta');
-        funciones.OcultarRows('tblPacientes');
+        if(txtBuscarReceta.value==''){
+            funciones.OcultarRows('tblPacientes');  
+        }
+        //funciones.OcultarRows('tblPacientes');
     });
 
     document.getElementById('FechaNacimiento').value = funciones.getFecha();
@@ -662,7 +667,7 @@ function getTblPacientes(){
             `
         })
         container.innerHTML = str;
-        //funciones.OcultarRows('tblPacientes');
+        funciones.OcultarRows('tblPacientes');
     })
     .catch((error)=>{
         console.log(error);

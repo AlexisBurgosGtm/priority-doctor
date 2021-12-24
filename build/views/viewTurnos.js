@@ -8,7 +8,7 @@ function getView(){
                 </div>
                 <div class="card-body">
                     <div class="">
-                        <label class="negrita">Turnos Pendientes: </label><label class="negrita text-danger" id="lbTotalTurnos">0</label>
+                        <label class="negrita">Turnos Pendientes: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-responsive table-hover table-bordered" id="tblTurnos">
