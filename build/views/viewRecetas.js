@@ -2,16 +2,16 @@ function getView(){
     let view = {
         body:()=>{
             return `
-                <div class="card col-12">
+                <div class="col-12 p-0">
 
                     <ul class="nav nav-tabs" id="myTabHome" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
-                                <i class="fa fa-edit"></i>Listado de Pacientes</a>
+                                <i class="fa fa-edit"></i>Pacientes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
-                                <i class="fa fa-print"></i>Lista de Espera</a>
+                                <i class="fa fa-print"></i>Turnos Espera</a>
                         </li>             
                     </ul>
 
@@ -35,7 +35,7 @@ function getView(){
         },
         homePacientes:()=>{
             return `
-            <div class="card-body">
+            <div class="card-body p-0">
                 <h5>Listado de Pacientes</h5>
                 
                 <div class="row">
@@ -69,7 +69,7 @@ function getView(){
         },
         homeEspera:()=>{
             return `
-            <div class="card shadow p-2">
+            <div class="card shadow p-0">
                 <div class="card-body">
                     <h5>Lista de Espera</h5>
                     <div class="row">
@@ -644,18 +644,24 @@ function getTblPacientes(){
                     <td>${r.NOMCLIE}
                         <br><small class="negrita text-danger">${r.TELEFONOS}</small>
                         <br>
-                        <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0')">
-                            <i class="fa fa-edit"></i> Nueva Consulta
-                        </button>
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0')">
+                                    <i class="fa fa-edit"></i> Consulta
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
+                                    <i class="fa fa-list"></i>Historial
+                                </button>
+                            </div>
+                        </div>
+                        
                     </td>
                     <td>${funciones.getEdad(r.FECHANACIMIENTO)}
                         <br>
                         <small class="negrita">FN:${funciones.convertDate(r.FECHANACIMIENTO)}</small>
-                        <br>
-                        <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
-                            <i class="fa fa-list"></i>Historial
-                        </button>
-                      
+                                             
                     </td>
                     <td>
                         <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="delete_paciente('${r.IDCLIENTE}')" id="${'p' + r.IDCLIENTE.toString()}">
