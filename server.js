@@ -305,8 +305,24 @@ app.post("/login",function(req,res){
 
   const {usuario,pass} = req.body; 
   
-  let qry = `SELECT TOKEN, USER, TIPO FROM USUARIOS WHERE USER='${usuario}' AND PASS='${pass}' `;
+  let qryX = `SELECT TOKEN, USER, TIPO FROM USUARIOS WHERE USER='${usuario}' AND PASS='${pass}' `;
 
+  let qry = `
+  SELECT
+  usuarios.TOKEN,
+  usuarios.USER,
+  usuarios.TIPO,
+  tokens.EMPRESA,
+  tokens.DIRECCION,
+  tokens.FOOTER,
+  tokens.TELEFONO,
+  tokens.LOGO
+FROM usuarios
+  LEFT OUTER JOIN tokens
+    ON usuarios.TOKEN = tokens.TOKEN
+    WHERE usuarios.USER='${usuario}' AND usuarios.PASS='${pass}' 
+    AND tokens.HABILITADO='SI';
+  `
   execute.query(qry, res);
 
 });

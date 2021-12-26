@@ -20,3 +20,9 @@ let GlobalSelectedNomPaciente = '';
 
 let GlobalEncabezadoReceta = 'Clínica Médica Niño Jesús - Dr. Pablo A. Vásquez Ampié' + "\n" + 'Dirección: Frente al centro de salud, Retalhuleu. Teléfono: 7771-2416 / 5199-5119' + "\n" + "-----------------" + "\n";
 let GlobalFooterReceta = '';
+
+let GlobalRecetaEmpresa = '';
+let GlobalRecetaDireccion = '';
+let GlobalRecetaTelefono = '';
+let GlobalRecetaFooter = '';
+let GlobalRecetaLogo = '';

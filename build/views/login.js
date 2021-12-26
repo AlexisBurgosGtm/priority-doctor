@@ -60,6 +60,10 @@ function addListeners(){
                 us = r.USER;
                 GlobalCodSucursal = r.TOKEN;
                 GlobalTipoUsuario = r.TIPO;
+                GlobalRecetaEmpresa = r.EMPRESA;
+                GlobalRecetaDireccion = r.DIRECCION;
+                GlobalRecetaTelefono = r.TELEFONO;
+                GlobalRecetaLogo = r.LOGO;
             })
             let resultado = us.toString()==u.toString();
            
