@@ -1238,7 +1238,8 @@ function delete_turno(idturno){
     .then(async(response) => {          
         console.log('turno eliminado ' +  idturno.toString())
         GlobalSelectedIdTurno = 0;
-        await getTblTurnos();             
+        socket.emit('turno finalizado doctor', GlobalCodSucursal, idturno)
+        //await getTblTurnos();             
     }, (error) => {
         console.log('turno no eliminado');
     });

@@ -341,9 +341,17 @@ app.use("*",function(req,res){
 // SOCKET HANDLER
 io.on('connection', function(socket){
   
-  socket.on('nuevo turno', function(){
-	  io.emit('nuevo turno');
+  socket.on('turno nuevo', function(token,paciente){
+	  io.emit('turno nuevo', token, paciente);
   });
+
+  socket.on('turno finalizado', function(token,id){
+    io.emit('turno finalizado', token, id)
+  })
+
+  socket.on('turno finalizado doctor', function(token,id){
+    io.emit('turno finalizado doctor', token, id)
+  })
     
 });
 

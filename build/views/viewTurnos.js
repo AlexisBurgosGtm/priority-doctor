@@ -2,15 +2,15 @@ function getView(){
     let view = {
         body:()=>{
             return `
-            <div class="card shadow p-4">
+            <div class="card shadow p-0">
                 <div class="card-header">
                     <h5>Listado de Turnos Pendientes</h5>
                 </div>
-                <div class="card-body">
+             
                     <div class="">
                         <label class="negrita">Turnos Pendientes: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive p-0">
                         <table class="table table-responsive table-hover table-bordered" id="tblTurnos">
                             <thead class="bg-info text-white">
                                 <tr>
@@ -24,7 +24,7 @@ function getView(){
                             </tbody>
                         </table>
                     </div>
-                </div>
+               
             </div>
             
             <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow" id="btnNuevoTurno">
@@ -306,8 +306,14 @@ function addListeners(){
                     btnGuardarTurno.disabled = false;
                     btnGuardarTurno.innerHTML =  '<i class="fa fa-save"></i>';
                     funciones.Aviso('Cliente agregado exitosamente!!');
+                    
+                    let nombre = document.getElementById('tPacienteNombre').value;
+                   
                     getTblTurnos();
                     $('#modalNuevoTurno').modal('hide');
+
+                    socket.emit('turno nuevo', GlobalCodSucursal, nombre);
+
 
                 })
                 .catch(()=>{
@@ -591,7 +597,9 @@ function eliminar_turno(idturno, id){
             delete_turno(id)
             .then(async()=>{
                 funciones.Aviso('Turno eliminado exitosamente!!');
+               
                 await getTblTurnos();
+                socket.emit('turno finalizado', GlobalCodSucursal, idturno);
             })
             .catch(()=>{
                 funciones.AvisoError('No se pudo eliminar este turno');
