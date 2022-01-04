@@ -268,7 +268,8 @@ app.post("/select_lista_espera",function(req,res){
   clientes.NOMCLIE,
   temp_turnos.TEMPERATURA,
   temp_turnos.PA,
-  temp_turnos.HORA
+  temp_turnos.HORA,
+  clientes.FECHANACIMIENTO
 FROM temp_turnos
   LEFT OUTER JOIN clientes
     ON temp_turnos.IDCLIENTE = clientes.IDCLIENTE

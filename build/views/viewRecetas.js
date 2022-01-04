@@ -114,7 +114,7 @@ function getView(){
 
                     <div class="modal-body">
                              <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
-
+                                <h5 class="text-info" id="lbEdadPaciente">-</h5>
                              <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">
@@ -643,7 +643,7 @@ function getTblPacientes(){
                         <br>
                         <div class="row">
                             <div class="col-6">
-                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0')">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0','${funciones.getEdad(r.FECHANACIMIENTO)}')">
                                     <i class="fa fa-edit"></i> Consulta
                                 </button>
                             </div>
@@ -683,10 +683,12 @@ function getTblPacientes(){
 
 
 
-function getNuevaReceta(idcliente,nombre,idturno){
+function getNuevaReceta(idcliente,nombre,idturno, edad){
 
     GlobalSelectedCodPaciente = idcliente;
     document.getElementById('lbPaciente').innerText = nombre;
+    document.getElementById('lbEdadPaciente').innerText = edad;
+
     document.getElementById('txtRecetaObs').value = '';
 
     document.getElementById('txtCPeso').value = '';
@@ -1204,7 +1206,7 @@ function getTblTurnos(){
                                 </button>        
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}','${funciones.getEdad(r.FECHANACIMIENTO)}')">
                                     <i class="fa fa-edit"></i>Consulta
                                 </button>
                             </div>
