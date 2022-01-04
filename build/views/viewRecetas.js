@@ -1186,7 +1186,7 @@ function getTblTurnos(){
             conteo += 1;
             str += `
                 <tr>
-                    <td>${r.NOMCLIE}
+                    <td>(T:${conteo}) - ${r.NOMCLIE}
                         <div class="row">
                             <div class="col-4">
                                 <small class="negrita text-danger">Temp: ${r.TEMPERATURA}</small>
@@ -1244,7 +1244,7 @@ function delete_turno(idturno){
         console.log('turno eliminado ' +  idturno.toString())
         GlobalSelectedIdTurno = 0;
         socket.emit('turno finalizado doctor', GlobalCodSucursal, idturno)
-        //await getTblTurnos();             
+        await getTblTurnos();             
     }, (error) => {
         console.log('turno no eliminado');
     });
