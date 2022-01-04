@@ -88,12 +88,7 @@ function getView(){
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <td>Paciente</td>
-                                    <td>
-                                       
-                                    </td>
-                                    <td>
-                                      
-                                    </td>
+                                   
                                 </tr>
                             </thead>
                             <tbody id="tblEsperaData">
@@ -1199,21 +1194,27 @@ function getTblTurnos(){
                                 <small class="negrita text-info">Hora: ${r.HORA}</small>
                             </div>
                         </div>
-                       
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
+                                    <i class="fa fa-list"></i>Historial
+                                </button>        
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-success btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
+                                    <i class="fa fa-edit"></i>Consulta
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
+                                    <i class="fa fa-bullhorn"></i>Llamar
+                                </button>    
+                            </div>
+                            
+                        </div>
                     </td>
                    
-                    <td>
-                        <button class="btn btn-success btn-circle btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                    </td>
-
-                    <td>
-                        <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
-                            <i class="fa fa-bullhorn"></i>
-                        </button>
-                    </td>
-                
                 </tr>
             `
         })
