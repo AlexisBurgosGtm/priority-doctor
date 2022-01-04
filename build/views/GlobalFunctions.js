@@ -57,7 +57,7 @@ function getFormatoReceta(sucursal,fecha,paciente,data,obs){
                     <small>3a. Avenida 5-02 Zona 1, Edificio El Colorado,</small><br>
                     <small>Frente al Centro de Salud, Retalhuleu.</small><br>
                     <small>Teléfono 7771-2416 * Celular 5199-5119</small><br>
-                    <small>e-mail: pablovasapmie@hotmail.com</small>
+                    <small>e-mail: pablovasampie@hotmail.com</small>
                 </div>
             </div> 
             <h5>_________________________________________________________________________________</h5> 
