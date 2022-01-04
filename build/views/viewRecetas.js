@@ -566,10 +566,12 @@ function addListeners(){
                     btnGuardarReceta.disabled = false;
                     btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
                     $("#modalNuevaReceta").modal('hide');
+                    //regresa a la tab inicial en la consulta
+                    document.getElementById('home-tab').click();
 
                     if(Number(GlobalSelectedIdTurno)==0){
                     }else{
-                        await delete_turno(GlobalSelectedIdTurno);
+                        delete_turno(GlobalSelectedIdTurno);
                     };
 
                     receta_imprimir(GlobalCorrelativo);
