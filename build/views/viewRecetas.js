@@ -1202,12 +1202,12 @@ function getTblTurnos(){
                                 </button>        
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-success btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}')">
                                     <i class="fa fa-edit"></i>Consulta
                                 </button>
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-info btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
+                                <button class="btn btn-success btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
                                     <i class="fa fa-bullhorn"></i>Llamar
                                 </button>    
                             </div>
