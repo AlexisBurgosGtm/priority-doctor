@@ -746,8 +746,9 @@ let funciones = {
       }
       return `${age} / ${m}` ;
     },
-    getEdad:(fecha)=>{
+    getEdad:(fech)=>{
         // Si la fecha es correcta, calculamos la edad
+      let fecha = fech.replace('T06:00:00.000Z','').replace('T00:00:00.000Z','');
 
         if (typeof fecha != "string" && fecha && esNumero(fecha.getTime())) {
           fecha = formatDate(fecha, "yyyy-MM-dd");
@@ -757,7 +758,8 @@ let funciones = {
       var dia = values[2];
       var mes = values[1];
       var ano = values[0];
-
+      
+   
       // cogemos los valores actuales
       var fecha_hoy = new Date();
       var ahora_ano = fecha_hoy.getYear();
