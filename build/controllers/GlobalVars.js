@@ -2,7 +2,23 @@
 let root = document.getElementById('root');
 let rootImpresion = document.getElementById('rootImpresion');
 
-let GlobalLoader = `<i class="fa fa-arrow-right fa-spin"></i><i class="fa fa-arrow-up fa-spin"></i><i class="fa fa-arrow-left fa-spin"></i><i class="fa fa-arrow-down fa-spin"></i>`;
+let GlobalLoader = `
+    <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+`;
 
 
 let GlobalCodSucursal = 'AMPIE';

@@ -44,11 +44,11 @@ function getFormatoReceta(sucursal,fecha,paciente,data,obs){
         case 'AMPIE':
             view = `
            
-            <div class="row">
+            <div class="row p-4">
                 <div class="col-3">
-                    <img src="./img/logoreceta.png" width="110" height="200">
+                    <img src="./img/logoreceta.png" width="110" height="180">
                 </div>
-                <div class="col-9 text-center">
+                <div class="col-6 text-center">
                     <h5 class="negrita cursiva">Clínica Médica "Niño Jesús"</h5>
                     <h4>Dr. Pablo A. Vásquez Ampié</h4>
                     <small class="cursiva">Miembro de la Asociación de Médicos y Cirujanos de Guatemala</small><br>
@@ -59,23 +59,25 @@ function getFormatoReceta(sucursal,fecha,paciente,data,obs){
                     <small>Teléfono 7771-2416 * Celular 5199-5119</small><br>
                     <small>e-mail: pablovasampie@hotmail.com</small>
                 </div>
+                <div class="col-3">
+                </div>
             </div> 
             <h5>_________________________________________________________________________________</h5> 
            
-            <div class="row" style="font-size:80%">
+            <div class="row p-4" style="font-size:80%">
                 <h5>Retalhuleu, ${fecha}</h5>
                 <h5>Nombre del Paciente: ${paciente}</h5>
             </div>  
             <h5>_________________________________________________________________________________</h5>
            
-            <div class="row">
+            <div class="row p-4">
                 <div class="col-12">
                     ${data}
                 </div>
             
             </div>
             <br><br><br>
-            <div class="row">
+            <div class="row p-4">
                 <div class="form-group">
                     <label class="negrita">Observaciones:</label>
                     <br>
@@ -84,11 +86,14 @@ function getFormatoReceta(sucursal,fecha,paciente,data,obs){
             </div>
             <br>
              
-            <div class="row footer text-center">
-            <h5>PRÓXIMA CITA: ______________________________________________</h5>
-            <small>NO CAMBIAR LA RECETA SIN AUTORIZACIÓN DE SU MÉDICO</small>
-            <h3 class="bg-info text-white">EMERGENCIAS LAS 24 HORAS</h3>
-            <small>Onne-Doctor Online</small>
+            <div class="row footer text-center p-4">
+               
+                <h5>PRÓXIMA CITA: ______________________________________________</h5>    
+                <br>
+                <small>NO CAMBIAR LA RECETA SIN AUTORIZACIÓN DE SU MÉDICO</small>
+                <br>
+                <h3 class="bg-info text-white">EMERGENCIAS LAS 24 HORAS</h3>
+                
             </div>  
   
             `

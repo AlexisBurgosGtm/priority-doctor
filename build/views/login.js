@@ -2,8 +2,8 @@ function getView(){
     let view = {
         formLogin:()=>{
             return `
-                <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                    <div class="card-header text-center">
+                <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 card-rounded shadow">
+                    <div class="card-header text-center bg-white">
                          <img src="../favicon.png" with="120" height="120">
                     </div>
                     <div class="card-body">
@@ -19,7 +19,7 @@ function getView(){
                         <br>
                         <div class="form-group text-right">
                             <button class="btn btn-info shadow btn-lg" id="btnIniciar">
-                                <i class="fa fa-lock"></i> Iniciar
+                                <i class="fal fa-lock"></i> Iniciar
                             </button>
                         </div>
 
@@ -51,7 +51,7 @@ function addListeners(){
         if(p=='SN'){funciones.AvisoError('Escriba su contraseña');return;}
 
         btnIniciar.disabled = true;
-        btnIniciar.innerHTML = '<i class="fa fa-unlock fa-spin"></i>';
+        btnIniciar.innerHTML = '<i class="fal fa-unlock fa-spin"></i>';
         let us = '';
 
         login(u,p)
@@ -79,13 +79,13 @@ function addListeners(){
             console.log(resultado);
             
             btnIniciar.disabled = false;
-            btnIniciar.innerHTML = '<i class="fa fa-lock"></i> Iniciar';
+            btnIniciar.innerHTML = '<i class="fal fa-lock"></i> Iniciar';
         })
         .catch(()=>{
             funciones.AvisoError('No se pudo iniciar sesión');
             GlobalCodSucursal = '';
             btnIniciar.disabled = false;
-            btnIniciar.innerHTML = '<i class="fa fa-lock"></i> Iniciar';
+            btnIniciar.innerHTML = '<i class="fal fa-lock"></i> Iniciar';
         })
         
         

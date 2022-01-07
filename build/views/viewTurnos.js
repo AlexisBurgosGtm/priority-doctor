@@ -2,15 +2,21 @@ function getView(){
     let view = {
         body:()=>{
             return `
-            <div class="card shadow p-0">
-                <div class="card-header">
-                    <h5>Listado de Turnos Pendientes</h5>
+            <div class="card shadow p-2 col-12 card-rounded">
+                <div class="card-header bg-white">
+                    <h5 class="negrita text-danger">Listado de Turnos Pendientes</h5>
                 </div>
              
-                    <div class="">
-                        <label class="negrita">Turnos Pendientes: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <label class="negrita">Turnos Pendientes: </label>
+                        </div>
+                        <div class="col-6 text-left">
+                            <h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
+                        </div>
+                        
                     </div>
-                    <div class="table-responsive p-0">
+                    <div class="table-responsive p-0 col-12">
                         <table class="table table-responsive table-hover table-bordered" id="tblTurnos">
                             <thead class="bg-info text-white">
                                 <tr>
@@ -27,15 +33,15 @@ function getView(){
                
             </div>
             
-            <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow" id="btnNuevoTurno">
-                <i class="fa fa-plus"></i>
+            <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow btn-right" id="btnNuevoTurno">
+                <i class="fal fa-plus"></i>
             </button>
             `
         },
         modalNuevoTurno:()=>{
             return `
         <div class="modal fade" id="modalNuevoTurno" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-dialog modal-dialog-right modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header bg-info">
                     <h5 class="modal-title  text-white">Nuevo Turno</h5>
@@ -53,7 +59,7 @@ function getView(){
                         </div>
                         <div class="col-6">
                             <button class="btn btn-info btn-xl btn-circle shadow" id="btnBuscarPaciente">
-                                <i class="fa fa-search"></i>
+                                <i class="fal fa-search"></i>
                             </button>
                         </div>
                       
@@ -89,14 +95,14 @@ function getView(){
                     <div class="row">
                         <div class="col-6">
                             <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalTurno">
-                                <i class="fa fa-angle-left"></i>
+                                <i class="fal fa-angle-left"></i>
                             </button>
                         </div>
                         <div class="col-6">
                           
 
                             <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarTurno">
-                                <i class="fa fa-save"></i>
+                                <i class="fal fa-save"></i>
                             </button>
                         </div>
                     </div>
@@ -125,15 +131,15 @@ function getView(){
                             <div class="form-group">
                                 <label class="negrita">Busque al paciente por Nombre</label>
                                 <input type="text" class="form-control" id="txtBuscarPaciente" placeholder="Escriba el nombre para buscar...">
-                                <button class="btn btn-md btn-secondary shadow" id="btnBuscar">
-                                    <i class="fa fa-search"></i>
-                                </button>
+                               
                             </div>    
                         </div>
                         <div class="col-4">
-                            <button class="btn btn-success btn-xl btn-circle shadow" id="btnNuevoPaciente">
-                                <i class="fa fa-plus"></i>
-                            </button>    
+                            <br>
+                            <button class="btn btn-md btn-secondary shadow" id="btnBuscar">
+                                <i class="fal fa-search"></i>
+                            </button>
+                               
                         </div>
                     </div>
                     
@@ -142,13 +148,12 @@ function getView(){
                                      
                     <hr class="solid">
                   
-                    <div class="table-responsive">
+                    <div class="table-responsive col-12 p-0">
                         <table class="table table-responsive table-hover table-bordered">
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <td>Paciente</td>
                                     <td>Edad</td>
-                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody id="tblPacientesData">
@@ -164,12 +169,18 @@ function getView(){
                 </div>
                 <div class="modal-footer">
                     <div class="row">
+                        
                         <div class="col-6">
                             <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalListado">
-                                <i class="fa fa-angle-left"></i>
+                                <i class="fal fa-angle-left"></i>
                             </button>
                         </div>
                       
+                        <div class="col-6">
+                            <button class="btn btn-success btn-xl btn-circle shadow" id="btnNuevoPaciente">
+                                <i class="fal fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
                    
 
@@ -182,19 +193,19 @@ function getView(){
         modalNuevoPaciente:()=>{
             return `
             <div class="modal fade" id="modalNuevoPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-md" role="document">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                    <div class="modal-header bg-info">
-                        <h5 class="modal-title  text-white">Nuevo Paciente</h5>
-                       
-                    </div>
+                        <div class="modal-header bg-info">
+                            <h5 class="modal-title  text-white">Nuevo Paciente</h5>
+                        
+                        </div>
                     <div class="modal-body">
 
                         <hr class="solid">
 
                         <div class="form-group">
                             <label class="negrita">Nombre del Paciente</label>
-                            <input type="text" class="form-control" id="Nombre"
+                            <input type="text" class="form-control" id="Nombre">
                         </div>
 
                         <hr class="solid">
@@ -202,14 +213,14 @@ function getView(){
 
                         <div class="form-group col-8">
                             <label class="negrita">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="FechaNacimiento"
+                            <input type="date" class="form-control" id="FechaNacimiento">
                         </div>
                        
                         <hr class="solid">
 
                         <div class="form-group col-8">
                             <label class="negrita">Teléfono del Paciente</label>
-                            <input type="number" class="form-control" id="Telefono"
+                            <input type="number" class="form-control" id="Telefono">
                         </div>
                         
                         <hr class="solid">
@@ -219,14 +230,14 @@ function getView(){
                         <div class="row">
                             <div class="col-6">
                                 <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalClienteNuevo">
-                                    <i class="fa fa-angle-left"></i>
+                                    <i class="fal fa-angle-left"></i>
                                 </button>
                             </div>
                             <div class="col-6">
                               
 
                                 <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarCliente">
-                                    <i class="fa fa-save"></i>
+                                    <i class="fal fa-save"></i>
                                 </button>
                             </div>
                         </div>
@@ -300,11 +311,11 @@ function addListeners(){
                 let temperatura = document.getElementById('tTemperatura').value  || '36';
                 let pa = document.getElementById('tPA').value || '0/0';
                 btnGuardarTurno.disabled = true;
-                btnGuardarTurno.innerHTML =  '<i class="fa fa-save fa-spin"></i>';
+                btnGuardarTurno.innerHTML =  '<i class="fal fa-save fa-spin"></i>';
                 insert_turno(codigo,temperatura,pa)
                 .then(()=>{
                     btnGuardarTurno.disabled = false;
-                    btnGuardarTurno.innerHTML =  '<i class="fa fa-save"></i>';
+                    btnGuardarTurno.innerHTML =  '<i class="fal fa-save"></i>';
                     funciones.Aviso('Cliente agregado exitosamente!!');
                     
                     let nombre = document.getElementById('tPacienteNombre').value;
@@ -318,7 +329,7 @@ function addListeners(){
                 })
                 .catch(()=>{
                     btnGuardarTurno.disabled = false;
-                    btnGuardarTurno.innerHTML =  '<i class="fa fa-save"></i>';
+                    btnGuardarTurno.innerHTML =  '<i class="fal fa-save"></i>';
                     funciones.AvisoError('No se pudo agregar este turno a la Espera');
                 })
 
@@ -357,13 +368,13 @@ function addListeners(){
                 let telefono = document.getElementById('Telefono') || '0';
 
                 btnGuardarCliente.disabled = true;
-                btnGuardarCliente.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+                btnGuardarCliente.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
                 insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value)
                 .then(()=>{
                     funciones.Aviso('Cliente agregado exitosamente!!')
                     btnGuardarCliente.disabled = false;
-                    btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
+                    btnGuardarCliente.innerHTML = '<i class="fal fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
                     
                     document.getElementById('txtBuscarPaciente').value= nombre.value;
@@ -372,7 +383,7 @@ function addListeners(){
                 .catch(()=>{
                     funciones.AvisoError('No se pudo guardar')
                     btnGuardarCliente.disabled = false;
-                    btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
+                    btnGuardarCliente.innerHTML = '<i class="fal fa-save"></i>';
                 })
                
             }
@@ -441,7 +452,7 @@ function getTblPaciente(filtro){
                         <br><small class="negrita text-danger">${r.TELEFONOS}</small>
                         <br>
                         <button class="btn btn-info btn-sm hand shadow" onclick="agregar_espera('${r.IDCLIENTE}','${r.NOMCLIE}')">
-                            <i class="fa fa-edit"></i>Agregar a Espera...
+                            <i class="fal fa-edit"></i>Agregar a Espera...
                         </button>
                     </td>
                     <td>${funciones.getEdad(r.FECHANACIMIENTO)}
@@ -544,13 +555,13 @@ function getTblTurnos(){
       
                     <td>
                         <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
-                            <i class="fa fa-bullhorn"></i>
+                            <i class="fal fa-bullhorn"></i>
                         </button>
                     </td>
 
                     <td>
                         <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno('${rowid}','${r.ID}')" id='${rowid}'>
-                            <i class="fa fa-trash"></i>
+                            <i class="fal fa-trash"></i>
                         </button>
                     </td>
                 
@@ -592,7 +603,7 @@ function eliminar_turno(idturno, id){
         if(value==true){
 
             document.getElementById(idturno).disabled = true;
-            document.getElementById(idturno).innerHTML = '<i class="fa fa-trash fa-spin"></i>'
+            document.getElementById(idturno).innerHTML = '<i class="fal fa-trash fa-spin"></i>'
 
             delete_turno(id)
             .then(async()=>{
@@ -604,7 +615,7 @@ function eliminar_turno(idturno, id){
             .catch(()=>{
                 funciones.AvisoError('No se pudo eliminar este turno');
                 document.getElementById(idturno).disabled = false;
-                document.getElementById(idturno).innerHTML = '<i class="fa fa-trash"></i>'
+                document.getElementById(idturno).innerHTML = '<i class="fal fa-trash"></i>'
             })
 
         }

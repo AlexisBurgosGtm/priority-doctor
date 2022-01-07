@@ -28,3 +28,6 @@ function iniciar(){
 
 
 iniciar();
+
+
+funciones.instalationHandlers('btnInstalarApp');

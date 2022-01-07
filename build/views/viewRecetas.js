@@ -2,16 +2,16 @@ function getView(){
     let view = {
         body:()=>{
             return `
-                <div class="col-12 p-0">
+                <div class="col-12 p-0 shadow bg-white card-rounded">
 
                     <ul class="nav nav-tabs" id="myTabHome" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
-                                <i class="fa fa-edit"></i>Pacientes</a>
+                            <a class="nav-link active negrita text-info" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
+                                <i class="fal fa-edit"></i>Pacientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
-                                <i class="fa fa-print"></i>Turnos Espera</a>
+                            <a class="nav-link negrita text-success" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
+                                <i class="fal fa-list"></i>Turnos Espera</a>
                         </li>             
                     </ul>
 
@@ -35,8 +35,8 @@ function getView(){
         },
         homePacientes:()=>{
             return `
-            <div class="card-body p-0">
-                <h5>Listado de Pacientes</h5>
+            <div class="card-body bg-white shadow">
+                <h5 class="text-info negrita">Listado de Pacientes</h5>
                 
                 <div class="row">
                     <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-4">
@@ -44,13 +44,16 @@ function getView(){
                     </div>
                 
                 </div>
+                
+                <br>
+
                 <div class="row">
-                    <div class="table-responsive">
-                        <table class="table table-responsive table-hover table-striped" id="tblPacientes">
+                    <div class="table-responsive col-12">
+                        <table class="table table-responsive table-hover" id="tblPacientes">
                             <thead  class="bg-info text-white">
                                 <tr>
-                                    <td>Paciente / Teléfono</td>
-                                    <td>Edad</td>
+                                    <td>Paciente / Teléfono / Edad</td>
+                                  
                                     <td></td>
                                 </tr>
                             </thead>
@@ -63,32 +66,33 @@ function getView(){
 
             </div>
             <button type="button" class="btn btn-info btn-xl btn-circle hand btn-right shadow" id="btnNuevoPaciente">
-                <i class="fa fa-plus"></i>
+                <i class="fal fa-plus"></i>
             </button>
             `
         },
         homeEspera:()=>{
             return `
             <div class="card shadow p-0">
-                <div class="card-body">
-                    <h5>Lista de Espera</h5>
-                    <div class="row">
-                        <div class="col-6">
-                            <button class="btn btn-xl btn-success btn-circle" onclick="getTblTurnos()">
-                                <i class="fa fa-sync"></i>
-                            </button>    
-                        </div>
-                        <div class="col-6">
-                            <label class="negrita">Total Turnos: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
+                <div class="card-body p-0">
+                    <div class="p-4">
+                        <h5 class="text-success negrita">Lista de Espera</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-lg btn-success btn-circle" onclick="getTblTurnos()">
+                                    <i class="fal fa-sync"></i>
+                                </button>    
+                            </div>
+                            <div class="col-6">
+                                <label class="negrita">Total Turnos: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="table-responsive">
-                        <table class="table table-responsive table-hover table-bordered table-striped" id="tblEspera">
+                                        
+                    <div class="table-responsive col-12">
+                        <table class="table table-responsive table-hover" id="tblEspera">
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <td>Paciente</td>
-                                   
                                 </tr>
                             </thead>
                             <tbody id="tblEsperaData">
@@ -105,24 +109,20 @@ function getView(){
         modalNuevaReceta:()=>{
             return `
             <div class="modal fade" id="modalNuevaReceta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-dialog modal-dialog-right modal-xl" role="document">
                     <div class="modal-content">
-                    <div class="modal-header bg-success">
-                        <h5 class="modal-title text-white">Nueva Receta</h5>
-                       
-                    </div>
-
-                    <div class="modal-body">
-                             <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
+                   
+                        <div class="modal-body">
+                                <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
                                 <h5 class="text-info" id="lbEdadPaciente">-</h5>
-                             <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">
-                                        <i class="fa fa-edit"></i>Consulta</a>
+                                    <a class="nav-link active negrita text-info" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">
+                                        <i class="fal fa-edit"></i>Consulta</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="receta-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">
-                                        <i class="fa fa-print"></i>Receta</a>
+                                    <a class="nav-link negrita text-primary" id="receta-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">
+                                        <i class="fal fa-print"></i>Receta</a>
                                 </li>
                                
                             </ul>
@@ -133,7 +133,7 @@ function getView(){
                                     <div class="row">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-success btn-xl btn-circle hand shadow" id="btnIrReceta">
-                                                <i class="fa fa-arrow-right"></i>
+                                                <i class="fal fa-arrow-right"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -146,27 +146,22 @@ function getView(){
                                         <div class="row">
                                             <div class="col-6">
                                                 <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalRecetaNueva">
-                                                    <i class="fa fa-angle-left"></i>
+                                                    <i class="fal fa-angle-left"></i>
                                                 </button>
                                             </div>
                                             <div class="col-6">
-                                            
-                
                                                 <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarReceta">
-                                                    <i class="fa fa-save"></i>
+                                                    <i class="fal fa-save"></i>
                                                 </button>
                                             </div>
                                         </div>
+
                                     </div>
-
                                 </div>
+
                             </div>
+                        </div>
 
-                    
-                    </div>
-
-              
-                 
                     </div>
                 </div>
             </div>
@@ -175,7 +170,7 @@ function getView(){
         modalNuevoPaciente:()=>{
             return `
             <div class="modal fade" id="modalNuevoPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-md" role="document">
+                <div class="modal-dialog modal-dialog-right modal-lg" role="document">
                     <div class="modal-content">
                     <div class="modal-header bg-info">
                         <h5 class="modal-title  text-white">Nuevo Paciente</h5>
@@ -187,7 +182,7 @@ function getView(){
 
                         <div class="form-group">
                             <label class="negrita">Nombre del Paciente</label>
-                            <input type="text" class="form-control" id="Nombre"
+                            <input type="text" class="form-control" id="Nombre">
                         </div>
 
                         <hr class="solid">
@@ -195,14 +190,14 @@ function getView(){
 
                         <div class="form-group col-8">
                             <label class="negrita">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="FechaNacimiento"
+                            <input type="date" class="form-control" id="FechaNacimiento">
                         </div>
                        
                         <hr class="solid">
 
                         <div class="form-group col-8">
                             <label class="negrita">Teléfono del Paciente</label>
-                            <input type="number" class="form-control" id="Telefono"
+                            <input type="number" class="form-control" id="Telefono">
                         </div>
                         
                         <hr class="solid">
@@ -212,14 +207,14 @@ function getView(){
                         <div class="row">
                             <div class="col-6">
                                 <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalClienteNuevo">
-                                    <i class="fa fa-angle-left"></i>
+                                    <i class="fal fa-angle-left"></i>
                                 </button>
                             </div>
                             <div class="col-6">
                               
 
                                 <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarCliente">
-                                    <i class="fa fa-save"></i>
+                                    <i class="fal fa-save"></i>
                                 </button>
                             </div>
                         </div>
@@ -233,36 +228,63 @@ function getView(){
         },
         modalHistorialRecetas:()=>{
             return `
-            <div class="modal fade" id="modalHistorialRecetas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+            <div class="modal fade modal-with-scroll" id="modalHistorialRecetas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-right modal-xl" role="document">
                     <div class="modal-content">
-                    <div class="modal-header bg-secondary">
-                        <h5 class="modal-title  text-white">Historial de recetas del paciente</h5>
-                       
-                    </div>
+                        <div class="modal-header bg-secondary">
+                            <h5 class="modal-title  text-white">Historial de recetas del paciente</h5>
+                            <button class="btn btn-secondary btn-sm border-white" data-dismiss="modal">
+                                Cerrar
+                            </button>
+                        </div>
                     <div class="modal-body">
-                        <canvas id="containerGraficaPeso" height="100"></canvas>
-
+                    
                         <h5 class="text-danger" id="lbPacienteHistorial">CONSUMIDOR FINAL</h5>
-                        <div class="card shadow p-2">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="bg-secondary text-white">
-                                        <tr>
-                                            <td>Fecha</td>
-                                            <td>C</td>
-                                            <td>W</td>
-                                            <td>P</td>
-                                            <td>E</td>
-                                        </tr>
-                                    </thead>         
-                                    <tbody id="tblHistorialRecetas">
-                                    
-                                    </tbody>                       
-                                </table>
-                           
+                        
+                        <ul class="nav nav-tabs" id="myTabHome" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tab-cons-listado" data-toggle="tab" href="#tconslistado" role="tab" aria-controls="home" aria-selected="true">
+                                    <i class="fal fa-list"></i>Historial</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-cons-graficas" data-toggle="tab" href="#tconsgraficas" role="tab" aria-controls="profile" aria-selected="false">
+                                    <i class="fal fa-chart"></i>Gráficas</a>
+                            </li>             
+                        </ul>
+
+                        <div class="tab-content" id="myTabHomeContent">
+                            <div class="tab-pane fade show active" id="tconslistado" role="tabpanel" aria-labelledby="home-tab">
+                                
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-secondary text-white">
+                                                <tr>
+                                                    <td>Fecha</td>
+                                                    <td>C</td>
+                                                    <td>W</td>
+                                                    <td>P</td>
+                                                    <td>E</td>
+                                                </tr>
+                                                </thead>         
+                                            <tbody id="tblHistorialRecetas">
+                                            
+                                            </tbody>                       
+                                        </table>
+                                
+                                    </div>
+                                            
+                                                                  
+                            </div>
+                            
+                            <div class="tab-pane fade" id="tconsgraficas" role="tabpanel" aria-labelledby="receta-tab">
+                                <canvas id="containerGraficaPeso" height="100"></canvas>
+
+                              
                             </div>
                         </div>
+
+                        
+                        
 
                     
                       
@@ -271,7 +293,7 @@ function getView(){
                         <div class="row">
                             <div class="col-6">
                                 <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalHistorialRecetaNueva">
-                                    <i class="fa fa-angle-left"></i>
+                                    <i class="fal fa-angle-left"></i>
                                 </button>
                             </div>
                         </div>
@@ -287,13 +309,13 @@ function getView(){
             return `
            
                 <div class="row">
-                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                    <div class="col-6">
                         <div class="form-group">
                             <label class="negrita">Peso</label>
                             <input type="number" class="form-control" id="txtCPeso">
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                    <div class="col-6">
                         <div class="form-group">
                             <label class="negrita">Talla</label>
                             <input type="number" class="form-control" id="txtCTalla">
@@ -302,14 +324,40 @@ function getView(){
                 </div>
 
                 <div class="form-group">
-                    <label class="negrita">Motivo de la consulta</label>
-                    <textarea class="form-control" id="txtCMotivo" rows="4" placeholder="Escriba el motivo de la consulta..."></textarea>
+                    <label class="negrita">(MC) Motivo de la consulta</label>
+                    <textarea class="form-control" id="txtCMotivo" rows="2" placeholder="Escriba el motivo de la consulta..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="negrita">Diagnóstico</label>
-                    <textarea class="form-control" id="txtCDiagnostico" rows="4" placeholder="Escriba el diagnóstico de la consulta..."></textarea>
+                    <label class="negrita">(HEA) Historia de la Enfermedad Actual</label>
+                    <textarea class="form-control" id="txtCHEA" rows="2" placeholder="Historia de la Enfermedad..."></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label class="negrita">Antecedentes</label>
+                    <textarea class="form-control" id="txtCAntecedentes" rows="2" placeholder="Describa los antecedentes si los hay..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="negrita">(EF) Exámen Físico</label>
+                    <textarea class="form-control" id="txtCEF" rows="2" placeholder="Exámen físico..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="negrita">(PLAN DX) Plan Diagnóstico</label>
+                    <textarea class="form-control" id="txtCDiagnostico" rows="2" placeholder="Escriba el diagnóstico de la consulta..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="negrita">(IC) Impresión Clínica</label>
+                    <textarea class="form-control" id="txtCIC" rows="2" placeholder="Impresión clínica..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="negrita">(PLAN TX) Plan Tratamiento</label>
+                    <textarea class="form-control" id="txtCPTX" rows="2" placeholder="Escriba el plan tratamiento..."></textarea>
+                </div>
+                
            
             `
         },
@@ -374,11 +422,11 @@ function getView(){
         modalDatosConsulta:()=>{
             return `
             <div class="modal fade" id="modalDatosConsulta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-md" role="document">
+                <div class="modal-dialog modal-dialog-right modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-info">
                             <h5 class="modal-title  text-white">Detalle de la Consulta</h5>
-                        
+                            <button class="btn btn-sm btn-info border-white" data-dismiss="modal">Cerrar</button>
                         </div>
                         <div class="modal-body card shadow">
                             <div class="row">
@@ -404,20 +452,52 @@ function getView(){
 
                             <div class="form-group">
                                 <label class="negrita">Motivo de la Consulta</label>
-                                <textarea class="form-control" id="lbCMotivo" rows="5"></textarea>
+                                <textarea class="form-control" id="lbCMotivo" rows="2"></textarea>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="negrita">(HEA) Historia de la Enfermedad Actual</label>
+                                <textarea class="form-control" id="lbCHEA" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label class="negrita">Diagnóstico</label>
-                                <textarea class="form-control" id="lbCDiagnostico" rows="5"></textarea>
+                                <label class="negrita">Antecedentes</label>
+                                <textarea class="form-control" id="lbCAntecedentes" rows="2"></textarea>
                             </div>
+
+                            <div class="form-group">
+                                <label class="negrita">(EF) Exámen Físico</label>
+                                <textarea class="form-control" id="lbCEF" rows="2"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="negrita">(PLAN DX) Plan Diagnóstico</label>
+                                <textarea class="form-control" id="lbCDiagnostico" rows="2"></textarea>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="negrita">(IC) Impresión Clínica</label>
+                                <textarea class="form-control" id="lbCIC" rows="2"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="negrita">(PLAN TX) Plan Tratamiento</label>
+                                <textarea class="form-control" id="lbCPTX" rows="2"></textarea>
+                            </div>
+
+
+
+                            
                         
                         </div>
                         <div class="modal-footer">
                             <div class="row">
                                 <div class="col-6">
                                     <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalDetConsulta">
-                                        <i class="fa fa-angle-left"></i>
+                                        <i class="fal fa-angle-left"></i>
                                     </button>
                                 </div>
                             </div>
@@ -435,6 +515,7 @@ function getView(){
 
 function addListeners(){
 
+    /* 
     $('#myTab a').on('click', function (e) {
         e.preventDefault()
         $(this).tab('show')
@@ -444,7 +525,7 @@ function addListeners(){
         e.preventDefault()
         $(this).tab('show')
     })
-
+    */
 
     let txtBuscarReceta = document.getElementById('txtBuscarReceta');
     txtBuscarReceta.addEventListener('keydown',()=>{
@@ -483,20 +564,20 @@ function addListeners(){
                 let telefono = document.getElementById('Telefono') || '0';
 
                 btnGuardarCliente.disabled = true;
-                btnGuardarCliente.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+                btnGuardarCliente.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
                 insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value)
                 .then(()=>{
                     funciones.Aviso('Cliente agregado exitosamente!!')
                     btnGuardarCliente.disabled = false;
-                    btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
+                    btnGuardarCliente.innerHTML = '<i class="fal fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
                     getTblPacientes();
                 })
                 .catch(()=>{
                     funciones.AvisoError('No se pudo guardar')
                     btnGuardarCliente.disabled = false;
-                    btnGuardarCliente.innerHTML = '<i class="fa fa-save"></i>';
+                    btnGuardarCliente.innerHTML = '<i class="fal fa-save"></i>';
                 })
                
             }
@@ -517,7 +598,7 @@ function addListeners(){
         if(duracion == 'SN'){funciones.AvisoError('Escriba la duración del tratamiento');return;}
 
         btnAgregarMedicamento.disabled = true;
-        btnAgregarMedicamento.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+        btnAgregarMedicamento.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
         insert_temp_receta(funciones.limpiarTexto(medicamento),dosis,duracion)
         .then(()=>{
@@ -550,7 +631,7 @@ function addListeners(){
             if(value==true){
         
                 btnGuardarReceta.disabled = true;
-                btnGuardarReceta.innerHTML = '<i class="fa fa-save fa-spin"></i>';
+                btnGuardarReceta.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
                 let obs = funciones.limpiarTexto(document.getElementById('txtRecetaObs').value) || 'SN';
 
@@ -559,12 +640,18 @@ function addListeners(){
                 let motivo = funciones.limpiarTexto(document.getElementById('txtCMotivo').value) || 'SN';
                 let diagnostico = funciones.limpiarTexto(document.getElementById('txtCDiagnostico').value) || 'SN'
 
-                insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo,peso,talla,motivo,diagnostico)
+                let txtCHEA = document.getElementById('txtCHEA').value || 'SN';
+                let txtCAntecedentes = document.getElementById('txtCAntecedentes').value || 'SN';
+                let txtCEF = document.getElementById('txtCEF').value || 'SN';
+                let txtCIC = document.getElementById('txtCIC').value || 'SN';
+                let txtCPTX = document.getElementById('txtCPTX').value || 'SN';
+
+                insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo,peso,talla,motivo,diagnostico,txtCHEA, txtCAntecedentes, txtCEF, txtCIC, txtCPTX)
                 .then(async()=>{
                     funciones.Aviso('Receta Guardad exitosamente!!');
 
                     btnGuardarReceta.disabled = false;
-                    btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
+                    btnGuardarReceta.innerHTML = '<i class="fal fa-save"></i>';
                     $("#modalNuevaReceta").modal('hide');
                     //regresa a la tab inicial en la consulta
                     document.getElementById('home-tab').click();
@@ -584,7 +671,7 @@ function addListeners(){
                 })
                 .catch(()=>{
                     btnGuardarReceta.disabled = false;
-                    btnGuardarReceta.innerHTML = '<i class="fa fa-save"></i>';
+                    btnGuardarReceta.innerHTML = '<i class="fal fa-save"></i>';
                     funciones.AvisoError('No se pudo guardar la receta')
                 })
                
@@ -601,7 +688,7 @@ function addListeners(){
     document.getElementById('btnCerrarModalHistorialRecetaNueva').addEventListener('click',()=>{$('#modalHistorialRecetas').modal('hide');});
     document.getElementById('btnCerrarModalDetConsulta').addEventListener('click',()=>{$('#modalDatosConsulta').modal('hide')});
 
-  
+    funciones.slideAnimationTabs();
 
 
 };
@@ -637,35 +724,35 @@ function getTblPacientes(){
     .then((data)=>{
         data.map((r)=>{
             str += `
-                <tr>
+                <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td>${r.NOMCLIE}
-                        <br><small class="negrita text-danger">${r.TELEFONOS}</small>
                         <br>
+                            <small class="negrita text-danger">${funciones.getEdad(r.FECHANACIMIENTO)} (${funciones.convertDate(r.FECHANACIMIENTO)})</small>
+                        <br>
+                            <small class="negrita text-primary">${r.TELEFONOS}</small>
+                        <br>
+
                         <div class="row">
                             <div class="col-6">
                                 <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0','${funciones.getEdad(r.FECHANACIMIENTO)}')">
-                                    <i class="fa fa-edit"></i> Consulta
+                                    <i class="fal fa-edit"></i> Consulta
                                 </button>
                             </div>
                             <div class="col-6">
                                 <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
-                                    <i class="fa fa-list"></i>Historial
+                                    <i class="fal fa-list"></i>Historial
                                 </button>
                             </div>
                         </div>
                         
                     </td>
-                    <td>${funciones.getEdad(r.FECHANACIMIENTO)}
-                        <br>
-                        <small class="negrita">FN:${funciones.convertDate(r.FECHANACIMIENTO)}</small>
-                                             
-                    </td>
+                    
                     <td>
                         <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="delete_paciente('${r.IDCLIENTE}')" id="${'p' + r.IDCLIENTE.toString()}">
-                            <i class="fa fa-trash"></i>
+                            <i class="fal fa-trash"></i>
                         </button>
                     </td>
-                    <td></td>
+                    
                 </tr>
             `
         })
@@ -694,7 +781,14 @@ function getNuevaReceta(idcliente,nombre,idturno, edad){
     document.getElementById('txtCPeso').value = '';
     document.getElementById('txtCTalla').value = '';
     document.getElementById('txtCMotivo').value = '';
-    document.getElementById('txtCDiagnostico').value = ''
+    document.getElementById('txtCDiagnostico').value = '';
+
+    document.getElementById('txtCHEA').value = '';
+    document.getElementById('txtCAntecedentes').value = '';
+    document.getElementById('txtCEF').value = '';
+    document.getElementById('txtCIC').value = '';
+    document.getElementById('txtCPTX').value = '';
+
 
     GlobalSelectedIdTurno = Number(idturno);
 
@@ -744,7 +838,7 @@ function delete_paciente(id){
         if(value==true){
             let btn = document.getElementById('p' + id.toString())
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa fa-trash fa-spin"></i>`;
+            btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
             
                 axios.post('/delete_paciente',{
                     sucursal:GlobalCodSucursal,
@@ -756,7 +850,7 @@ function delete_paciente(id){
                 }, (error) => {
                     funciones.AvisoError('No se pudo eliminar este item')
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fa fa-trash"></i>`;
+                    btn.innerHTML = `<i class="fal fa-trash"></i>`;
                 
                 });
 
@@ -788,7 +882,7 @@ function delete_TempReceta(id){
         if(value==true){
             let btn = document.getElementById('rtemp' + id.toString())
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa fa-trash fa-spin"></i>`;
+            btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
             
                 axios.post('/delete_temp_receta',{
                     sucursal:GlobalCodSucursal,
@@ -800,7 +894,7 @@ function delete_TempReceta(id){
                 }, (error) => {
                     funciones.AvisoError('No se pudo eliminar este item')
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fa fa-trash"></i>`;
+                    btn.innerHTML = `<i class="fal fa-trash"></i>`;
                 
                 });
 
@@ -842,7 +936,7 @@ function getTblTempReceta(){
                     <td>${r.DURACION}</td>
                     <td>
                         <button class="btn btn-sm btn-danger btn-circle hand shadow" onclick="delete_TempReceta('${r.ID}')" id="${'rtemp' + r.ID.toString()}">
-                            <i class="fa fa-trash"></i>
+                            <i class="fal fa-trash"></i>
                         </button>
                     </td>
                 </tr>
@@ -858,7 +952,7 @@ function getTblTempReceta(){
 
 
 
-function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico){
+function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_receta',{
             sucursal:GlobalCodSucursal,
@@ -871,7 +965,13 @@ function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico){
             peso:peso,
             talla:talla,
             motivo:motivo,
-            diagnostico: diagnostico
+            diagnostico: diagnostico,
+            historia:historia,
+            antecedentes:antecedentes,
+            examenf:examenf,
+            impclinica:impclinica,
+            plantx:plantx,
+            idmorbilidad:0
         })
         .then((response) => {          
             resolve();             
@@ -935,23 +1035,23 @@ function getTblHistorial(idcliente,nomclie){
                             <small class="negrita">No.:${r.IDRECETA}</small>
                         </td>
                         <td>
-                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "*-")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "*-")}')">
-                                <i class="fa fa-edit"></i>
+                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "*-")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "*-")}','${funciones.quitarEnter(r.HISTORIAENF)}','${funciones.quitarEnter(r.ANTECEDENTES)}','${funciones.quitarEnter(r.EXAMENFISICO)}','${funciones.quitarEnter(r.IMPRESIONCLINICA)}','${funciones.quitarEnter(r.PLANTX)}')">
+                                <i class="fal fa-edit"></i>
                             </button>
                         </td>
                         <td>
                             <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}')">
-                                <i class="fa fa-whatsapp"></i>
+                                <i class="fal fa-whatsapp"></i>w
                             </button>
                         </td>
                         <td>
                             <button class="btn btn-info btn-circle btn-md hand shadow" onclick="receta_imprimir('${r.IDRECETA}')">
-                                <i class="fa fa-print"></i>
+                                <i class="fal fa-print"></i>
                             </button>
                         </td>
                         <td>
                             <button class="btn btn-danger btn-circle btn-md hand shadow" onclick="receta_eliminar('${r.IDRECETA}')" id="${'r' + r.IDRECETA.toString()}">
-                                <i class="fa fa-trash"></i>
+                                <i class="fal fa-trash"></i>
                             </button>
                         </td>
                     </tr>`
@@ -974,13 +1074,19 @@ function getTblHistorial(idcliente,nomclie){
 };
 
 
-function receta_consulta(fecha,peso,talla,motivo,diagnostico){
+function receta_consulta(fecha,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
 
     document.getElementById('lbCFecha').innerText = fecha;
     document.getElementById('lbCPeso').innerText = peso;
     document.getElementById('lbCTalla').innerText = talla;
     document.getElementById('lbCMotivo').value = motivo;
     document.getElementById('lbCDiagnostico').value = diagnostico;
+
+    document.getElementById('lbCHEA').value = historia;
+    document.getElementById('lbCAntecedentes').value = antecedentes;
+    document.getElementById('lbCEF').value = examenf;
+    document.getElementById('lbCIC').value = impclinica;
+    document.getElementById('lbCPTX').value = plantx;
 
     $('#modalDatosConsulta').modal('show');
 
@@ -1035,7 +1141,7 @@ function receta_eliminar(id){
         if(value==true){
             let btn = document.getElementById('r' + id.toString())
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa fa-trash fa-spin"></i>`;
+            btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
             
                 axios.post('/delete_receta',{
                     sucursal:GlobalCodSucursal,
@@ -1047,7 +1153,7 @@ function receta_eliminar(id){
                 }, (error) => {
                     funciones.AvisoError('No se pudo eliminar esta Receta')
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fa fa-trash"></i>`;
+                    btn.innerHTML = `<i class="fal fa-trash"></i>`;
                 
                 });
 
@@ -1185,7 +1291,7 @@ function getTblTurnos(){
         data.map((r)=>{
             conteo += 1;
             str += `
-                <tr>
+                <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td>(T:${conteo}) - ${r.NOMCLIE}
                         <div class="row">
                             <div class="col-4">
@@ -1202,17 +1308,17 @@ function getTblTurnos(){
                         <div class="row">
                             <div class="col-4">
                                 <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
-                                    <i class="fa fa-list"></i>Historial
+                                    <i class="fal fa-list"></i>Histor
                                 </button>        
                             </div>
                             <div class="col-4">
                                 <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}','${funciones.getEdad(r.FECHANACIMIENTO)}')">
-                                    <i class="fa fa-edit"></i>Consulta
+                                    <i class="fal fa-edit"></i>Consul
                                 </button>
                             </div>
                             <div class="col-4">
                                 <button class="btn btn-success btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
-                                    <i class="fa fa-bullhorn"></i>Llamar
+                                    <i class="fal fa-bullhorn"></i>Llamar
                                 </button>    
                             </div>
                             
@@ -1249,7 +1355,7 @@ function delete_turno(idturno){
         console.log('turno no eliminado');
     });
 
-}
+};
  
 //********************* */
 //********************* */
