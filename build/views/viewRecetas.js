@@ -144,14 +144,19 @@ function getView(){
 
                                     <div class="modal-footer">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="btnCerrarModalRecetaNueva">
                                                     <i class="fal fa-angle-left"></i>
                                                 </button>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarReceta">
                                                     <i class="fal fa-save"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="button" class="btn btn-outline-info btn-xl btn-circle hand shadow" id="btnGuardarRecetaPrint">
+                                                    <i class="fal fa-print"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -622,7 +627,13 @@ function addListeners(){
 
     })
 
+    let imprimeReceta = 'NO';
     let btnGuardarReceta = document.getElementById('btnGuardarReceta');
+    let btnGuardarRecetaPrint = document.getElementById('btnGuardarRecetaPrint');
+    btnGuardarRecetaPrint.addEventListener('click',()=>{
+        imprimeReceta = 'SI';
+        btnGuardarReceta.click();
+    })
     btnGuardarReceta.addEventListener('click',()=>{
         
         
@@ -661,9 +672,13 @@ function addListeners(){
                         delete_turno(GlobalSelectedIdTurno);
                     };
 
-                    receta_imprimir(GlobalCorrelativo);
+                    if(imprimeReceta=='SI'){
+                        receta_imprimir(GlobalCorrelativo);
+                    }
+                    
 
                     getCorrelativoCoddoc();
+                    imprimeReceta ='NO';
                     await delete_all_TempReceta();
 
                     
@@ -678,6 +693,9 @@ function addListeners(){
             }
         })
     });
+
+
+
 
     document.getElementById('btnIrReceta').addEventListener('click',()=>{document.getElementById('receta-tab').click()})
 
