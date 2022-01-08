@@ -282,8 +282,13 @@ function getView(){
                             </div>
                             
                             <div class="tab-pane fade" id="tconsgraficas" role="tabpanel" aria-labelledby="receta-tab">
-                                <canvas id="containerGraficaPeso" height="100"></canvas>
-
+                                <div class="" id="containerGrafPeso">
+                                
+                                </div>
+                                <hr class="solid">
+                                <div class="" id="containerGrafTalla">
+                                
+                                </div>
                               
                             </div>
                         </div>
@@ -372,9 +377,7 @@ function getView(){
                     <label>Receta No.</label><label class="negrita text-danger" id="lbCorrelativo">0</label>
                 </div>                     
 
-                <hr class="solid">
-
-                <div class="card shadow">
+                <div class="card shadow p-2">
                     <label id="">Agregue un Medicamento</label>                                   
                         
                     <div class="row">
@@ -390,9 +393,9 @@ function getView(){
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-sm-2 col-md-6 col-lg-6 col-xl-6">
                         </div>
-                        <div class="col-6" align="right">
+                        <div class="col-sm-10 col-md-6 col-lg-6 col-xl-6" align="right">
                             <button class="btn btn-success btn-md shadow hand col-6" id="btnAgregarMedicamento">Agregar(+)</button>
                         </div>
                     </div>
@@ -1077,6 +1080,7 @@ function getTblHistorial(idcliente,nomclie){
         container.innerHTML = str;
         try {
             grafica_peso(data);
+            grafica_talla(data);
         } catch (error) {
             
         }
@@ -1185,8 +1189,10 @@ function receta_eliminar(id){
 function grafica_peso(data){
    
   
-    let container = document.getElementById('containerGraficaPeso').innerHTML = '';
-    container.innerHTML ='';
+    let container = document.getElementById('containerGrafPeso');
+    
+    container.innerHTML = '';
+    container.innerHTML ='<canvas id="containerGraficaPeso" height="100"></canvas>';
 
     //container.innerHTML = '<canvas id="myChart1" width="40" height="40"></canvas>';
 
@@ -1225,6 +1231,86 @@ function grafica_peso(data){
                   title: {
                     display: true,
                     text: 'GRAFICA POR PESO'
+                  },
+                // Change options for ALL labels of THIS CHART
+                datalabels: {
+                  anchor:'end',
+                  align:'end',
+                  listeners: {
+                    click: function(context) {
+                      // Receives `click` events only for labels of the first dataset.
+                      // The clicked label index is available in `context.dataIndex`.
+                      console.log(context);
+                    }
+                  },
+                  formatter: function(value) {
+                    return value;
+                    // eq. return ['line1', 'line2', value]
+                  },
+                  color: function(context) {
+                    return context.dataset.backgroundColor;
+                  },
+                  //borderColor: 'white',
+                  borderRadius: 25,
+                  borderWidth: 0,
+                  font: {
+                    weight: 'bold'
+                  }
+                }
+            }
+        }
+    });
+
+
+    
+
+};
+
+function grafica_talla(data){
+   
+  
+    let container = document.getElementById('containerGrafTalla');
+    
+    container.innerHTML = '';
+    container.innerHTML ='<canvas id="containerGraficaTalla" height="100"></canvas>';
+
+    //container.innerHTML = '<canvas id="myChart1" width="40" height="40"></canvas>';
+
+    let label = []; let valor = []; let bgColor = [];
+      
+    data.map((r)=>{
+            label.push(r.IDRECETA);
+            valor.push( Number(r.TALLA));
+            bgColor.push('blue')
+    })
+
+    console.log(valor);
+
+    var ctx = document.getElementById('containerGraficaTalla').getContext('2d');
+    var myChart = new Chart(ctx, {
+        plugins: [ChartDataLabels],
+        type: 'line',
+        data: {
+            labels: label.reverse(),
+            datasets: [{
+                data:valor.reverse(),
+                borderColor: 'blue',
+                backgroundColor:bgColor
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: 'GRAFICA POR TALLA'
                   },
                 // Change options for ALL labels of THIS CHART
                 datalabels: {
