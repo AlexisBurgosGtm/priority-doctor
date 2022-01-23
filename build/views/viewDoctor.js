@@ -6,27 +6,45 @@ function getView(){
 
                     <ul class="nav nav-tabs" id="myTabHome" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active negrita text-info" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
+                            <a class="nav-link active negrita text-success" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
+                                <i class="fal fa-list"></i>Turnos Espera</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link negrita text-danger" id="tab-preconsultas" data-toggle="tab" href="#preconsultas" role="tab" aria-controls="home" aria-selected="true">
+                                <i class="fal fa-comments"></i>Pre-Consultas</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link negrita text-info" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
                                 <i class="fal fa-edit"></i>Pacientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link negrita text-success" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
-                                <i class="fal fa-list"></i>Turnos Espera</a>
-                        </li>             
+                            <a class="nav-link negrita text-warning" id="tab-reportes" data-toggle="tab" href="#reportes" role="tab" aria-controls="profile" aria-selected="false">
+                                <i class="fal fa-chart-pie"></i>Reportes</a>
+                        </li> 
+                                
                     </ul>
 
                     <div class="tab-content" id="myTabHomeContent">
-                        <div class="tab-pane fade show active" id="pacientes" role="tabpanel" aria-labelledby="home-tab">
-                                   
-                            ${view.homePacientes()}
-                                   
-                        </div>
-                           
-                        <div class="tab-pane fade" id="espera" role="tabpanel" aria-labelledby="receta-tab">
+                        <div class="tab-pane fade show active" id="espera" role="tabpanel" aria-labelledby="receta-tab">
 
                             ${view.homeEspera()}
 
                         </div>
+                        <div class="tab-pane fade" id="preconsultas" role="tabpanel" aria-labelledby="home-tab">
+                            ${view.homePreconsultas()}
+                        </div>
+
+                        <div class="tab-pane fade" id="pacientes" role="tabpanel" aria-labelledby="home-tab">
+                                   
+                            ${view.homePacientes()}
+                                   
+                        </div>
+                        <div class="tab-pane fade" id="reportes" role="tabpanel" aria-labelledby="tab-reportes">
+
+                            ${view.homeReportes()}
+
+                        </div>
+                    
                     </div>
 
                 </div>
@@ -106,6 +124,77 @@ function getView(){
             `
 
         },
+        homePreconsultas:()=>{
+            return `
+            <div class="card shadow p-4">
+                <h5 class="negrita text-danger">Pre-Consultas Pendientes Disponibles</h5>
+               
+
+                <div class="card-body p-0">
+                    <table class="table table-responsive">
+                        <thead class="bg-danger text-white">
+                            <tr>
+                                <td>Fecha</td>
+                                <td>Paciente</td>
+                                <td>Consulta</td>
+                                <td>Eliminar</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tblPreconsultas"></tbody>
+                    </table>                
+                  
+                </div>
+            </div>
+            `
+
+        },
+        homeReportes:()=>{
+            return `
+            <div class="card shadow p-4">
+                <h5 class="negrita text-warning">Reportes Disponibles</h5>
+                <div class="row">
+                    <div class="col-lg-2 col-xl-2 col-md-4 col-sm-5">
+                        <div class="form-group">
+                            <label>Fecha Inicio</label>
+                            <input type="date" id="txtFechaInicio" class="form-control">
+                        </div>
+                       
+                    </div>
+                    <div class="col-lg-2 col-xl-2 col-md-4 col-sm-5">
+                        <div class="form-group">
+                            <label>Fecha Final</label>
+                            <input type="date" id="txtFechaFinal" class="form-control">
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-auto">
+                            <button class="btn btn-outline-info shadow" id="btnRptConsultas">
+                                Consultas Atendidas
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-outline-success shadow" id="btnRptMorbilidades">
+                                Morbilidades Encontradas
+                            </button> 
+                        </div>
+                    </div>
+
+                    <div class="row" id="containerReports">
+                    
+                    </div>
+                      
+                  
+                </div>
+            </div>
+            `
+
+        },
         modalNuevaReceta:()=>{
             return `
             <div class="modal fade" id="modalNuevaReceta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -136,6 +225,13 @@ function getView(){
                                                 <i class="fal fa-arrow-right"></i>
                                             </button>
                                         </div>
+
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-danger btn-xl btn-circle hand shadow" id="btnGuardarPreconsulta">
+                                                <i class="fal fa-save"></i>
+                                            </button>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                            
@@ -523,18 +619,7 @@ function getView(){
 
 function addListeners(){
 
-    /* 
-    $('#myTab a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
-
-    $('#myTabHome a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
-    */
-
+   
     let txtBuscarReceta = document.getElementById('txtBuscarReceta');
     txtBuscarReceta.addEventListener('keydown',()=>{
         funciones.FiltrarTabla('tblPacientes','txtBuscarReceta');
@@ -675,6 +760,11 @@ function addListeners(){
                         delete_turno(GlobalSelectedIdTurno);
                     };
 
+                    if(Number(GlobalSelectedIdPreconsulta)==0){
+                    }else{
+                        delete_preconsulta(GlobalSelectedIdPreconsulta);
+                    }
+
                     if(imprimeReceta=='SI'){
                         receta_imprimir(GlobalCorrelativo);
                     }
@@ -684,7 +774,7 @@ function addListeners(){
                     imprimeReceta ='NO';
                     await delete_all_TempReceta();
 
-                    
+                    GlobalSelectedIdPreconsulta = 0;
 
                 })
                 .catch(()=>{
@@ -711,7 +801,67 @@ function addListeners(){
 
     funciones.slideAnimationTabs();
 
+    // REPORTES
+    document.getElementById('txtFechaInicio').value = funciones.getFecha();
+    document.getElementById('txtFechaFinal').value = funciones.getFecha();
 
+
+    //preconsultas
+    getTblPreconsultas();
+
+    let btnGuardarPreconsulta = document.getElementById('btnGuardarPreconsulta');
+    btnGuardarPreconsulta.addEventListener('click',()=>{
+
+        funciones.hablar('Está a punto de guardar los datos de consulta, sin guardar receta y generar un pre consulta, ¿Desea continuar?')
+        funciones.Confirmacion('¿Está seguro que desea Guardar esta Pre-Consulta?')
+        .then((value)=>{
+            if(value==true){
+        
+                btnGuardarPreconsulta.disabled = true;
+                btnGuardarPreconsulta.innerHTML = '<i class="fal fa-save fa-spin"></i>';
+
+
+                let peso = document.getElementById('txtCPeso').value || '0';
+                let talla = document.getElementById('txtCTalla').value || '0';
+                let motivo = funciones.limpiarTexto(document.getElementById('txtCMotivo').value) || 'SN';
+                let diagnostico = funciones.limpiarTexto(document.getElementById('txtCDiagnostico').value) || 'SN'
+
+                let txtCHEA = document.getElementById('txtCHEA').value || 'SN';
+                let txtCAntecedentes = document.getElementById('txtCAntecedentes').value || 'SN';
+                let txtCEF = document.getElementById('txtCEF').value || 'SN';
+                let txtCIC = document.getElementById('txtCIC').value || 'SN';
+                let txtCPTX = document.getElementById('txtCPTX').value || 'SN';
+
+                insert_preconsulta(GlobalSelectedCodPaciente,peso,talla,motivo,diagnostico,txtCHEA, txtCAntecedentes, txtCEF, txtCIC, txtCPTX)
+                .then(async()=>{
+                    funciones.Aviso('Pre-Consulta Guardada exitosamente!!');
+
+                    btnGuardarPreconsulta.disabled = false;
+                    btnGuardarPreconsulta.innerHTML = '<i class="fal fa-save"></i>';
+
+                    $("#modalNuevaReceta").modal('hide');
+                    
+                    //regresa a la tab inicial en la consulta
+                    document.getElementById('home-tab').click();
+
+                    socket.emit('preconsulta nueva', GlobalCodSucursal)
+                    GlobalSelectedIdPreconsulta = 0;
+
+                    getTblPreconsultas();
+
+                })
+                .catch(()=>{
+                    btnGuardarPreconsulta.disabled = false;
+                    btnGuardarPreconsulta.innerHTML = '<i class="fal fa-save"></i>';
+                    funciones.AvisoError('No se pudo guardar la pre-consulta')
+                })
+               
+            }
+        })
+
+
+    });
+    
 };
 
 function getCorrelativoCoddoc(){
@@ -812,6 +962,7 @@ function getNuevaReceta(idcliente,nombre,idturno, edad){
 
 
     GlobalSelectedIdTurno = Number(idturno);
+    GlobalSelectedIdPreconsulta = 0;
 
     getTblTempReceta();
 
@@ -1463,3 +1614,168 @@ function delete_turno(idturno){
  
 //********************* */
 //********************* */
+
+//***** PRECONSULTAS ******/
+function getDataPreconsultas(){
+    return new Promise((resolve, reject) => {
+
+        axios.post('/select_lista_preconsultas',{
+            sucursal:GlobalCodSucursal
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
+    
+};
+
+function getTblPreconsultas(){
+    
+
+    let container = document.getElementById('tblPreconsultas');
+    container.innerHTML = GlobalLoader;
+   
+
+    let str = '';
+ 
+    getDataPreconsultas()
+    .then((data)=>{
+        data.map((r)=>{
+            str += `
+                <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
+                    <td>${funciones.convertDate(r.FECHA)}</td>
+
+                    <td>${r.NOMCLIE}
+
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="negrita text-danger">Peso: ${r.PESO}</small>
+                            </div>
+                            <div class="col-6">
+                                <small class="negrita text-danger">Talla: ${r.TALLA}</small>
+                            </div>
+                           
+                        </div>
+                      
+                    </td>
+
+                    <td>
+                        <button class="btn btn-circle btn-lg btn-info shadow" 
+                        onclick="getDatosPreconsulta(${r.CODCLIENTE},'${r.NOMCLIE}',${r.ID},'${funciones.getEdad(r.FECHANACIMIENTO)}', '${r.PESO}', '${r.TALLA}', '${r.MOTIVO}','${r.DIAGNOSTICO}','${r.HISTORIAENF}','${r.ANTECEDENTES}','${r.EXAMENFISICO}','${r.IMPRESIONCLINICA}','${r.PLANTX}')">
+                            <i class="fal fa-notes-medical"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-circle btn-lg btn-danger shadow" onclick="eliminar_preconsulta(${r.ID})">
+                            <i class="fal fa-trash"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            `
+        })
+        container.innerHTML = str;
+       
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...'
+    })
+    
+
+    
+};
+
+function insert_preconsulta(idcliente,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
+    return new Promise((resolve,reject)=>{
+        axios.post('/insert_preconsulta',{
+            sucursal:GlobalCodSucursal,
+            idcliente:idcliente,
+            fecha:funciones.getFecha(),
+            hora:funciones.getHora(),
+            peso:peso,
+            talla:talla,
+            motivo:motivo,
+            diagnostico: diagnostico,
+            historia:historia,
+            antecedentes:antecedentes,
+            examenf:examenf,
+            impclinica:impclinica,
+            plantx:plantx,
+            idmorbilidad:0
+        })
+        .then((response) => {          
+            resolve();             
+        }, (error) => {
+            reject();
+        });
+    });
+};
+
+function eliminar_preconsulta(id){
+    funciones.Confirmacion('¿Está seguro que desea ELIMINAR esta Pre-Consulta?')
+    .then((value)=>{
+        if(value==true){
+            delete_preconsulta(id)
+            .then(()=>{
+                funciones.Aviso('Pre-consulta eliminada exitosamente!!');
+            })
+            .catch(()=>{
+                funciones.AvisoError('No se pudo eliminar esta Pre-Consulta');
+            })
+        }
+
+    })
+};
+
+function delete_preconsulta(id){
+
+    axios.post('/delete_preconsulta',{
+        sucursal:GlobalCodSucursal,
+        id:id
+        })
+    .then(async(response) => {          
+       
+        GlobalSelectedIdPreconsulta = 0;
+        
+        await getTblPreconsultas();             
+    }, (error) => {
+        console.log('turno no eliminado');
+    });
+
+};
+
+function getDatosPreconsulta(idcliente,nombre,idpreconsulta, edad, peso, talla, motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
+
+    GlobalSelectedCodPaciente = idcliente;
+    document.getElementById('lbPaciente').innerText = nombre;
+    document.getElementById('lbEdadPaciente').innerText = edad;
+
+    document.getElementById('txtRecetaObs').value = '';
+
+    document.getElementById('txtCPeso').value = peso;
+    document.getElementById('txtCTalla').value = talla;
+    document.getElementById('txtCMotivo').value = motivo;
+    document.getElementById('txtCDiagnostico').value = diagnostico;
+
+    document.getElementById('txtCHEA').value = historia;
+    document.getElementById('txtCAntecedentes').value = antecedentes;
+    document.getElementById('txtCEF').value = examenf;
+    document.getElementById('txtCIC').value = impclinica;
+    document.getElementById('txtCPTX').value = plantx;
+
+
+    GlobalSelectedIdTurno = 0;
+    GlobalSelectedIdPreconsulta = idpreconsulta;
+
+    getTblTempReceta();
+
+    $('#modalNuevaReceta').modal('show');
+
+
+};
+
+/************ */

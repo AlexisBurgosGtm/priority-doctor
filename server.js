@@ -208,6 +208,31 @@ app.post("/insert_receta",function(req,res){
 
 });
 
+app.post("/insert_preconsulta",function(req,res){
+
+  const {sucursal,idcliente,fecha,hora, peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad} = req.body; 
+  
+  let qry = `INSERT INTO RECETAS_PRECONSULTA 
+    (TOKEN,FECHA,CODCLIENTE,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD) 
+      VALUES 
+    ('${sucursal}','${fecha}',${idcliente},${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad});`;
+  
+  execute.query(qry, res);
+
+});
+
+app.post("/delete_preconsulta",function(req,res){
+
+  const {sucursal, id} = req.body; 
+  
+  let qry = `DELETE FROM RECETAS_PRECONSULTA WHERE ID=${id} AND TOKEN='${sucursal}'; 
+             `;
+             
+  execute.query(qry, res);
+
+});
+
+
 app.post("/delete_receta",function(req,res){
 
   const {sucursal, id} = req.body; 
@@ -254,6 +279,41 @@ app.post("/select_receta",function(req,res){
                 ON recetas.CODCLIENTE = clientes.IDCLIENTE
                   AND recetas.TOKEN= clientes.TOKEN
             WHERE recetas.IDRECETA = ${correlativo} and recetas.TOKEN='${sucursal}' `;
+
+  execute.query(qry, res);
+
+});
+
+app.post("/select_lista_preconsultas",function(req,res){
+
+  const {sucursal} = req.body; 
+  
+  let qry = `SELECT
+  recetas_preconsulta.ID,
+  recetas_preconsulta.FECHA,
+  recetas_preconsulta.CODCLIENTE,
+  clientes.NOMCLIE,
+  clientes.FECHANACIMIENTO,
+  clientes.TELEFONOS,
+  recetas_preconsulta.MOTIVO,
+  recetas_preconsulta.DIAGNOSTICO,
+  recetas_preconsulta.PESO,
+  recetas_preconsulta.TALLA,
+  recetas_preconsulta.HISTORIAENF,
+  recetas_preconsulta.ANTECEDENTES,
+  recetas_preconsulta.EXAMENFISICO,
+  recetas_preconsulta.PLANTX,
+  recetas_preconsulta.IMPRESIONCLINICA,
+  recetas_preconsulta.IDMORBILIDAD,
+  gen_morbilidades.MORBILIDAD,
+  recetas_preconsulta.TOKEN
+FROM recetas_preconsulta
+  LEFT OUTER JOIN clientes
+    ON recetas_preconsulta.TOKEN = clientes.TOKEN
+    AND recetas_preconsulta.CODCLIENTE = clientes.IDCLIENTE
+  LEFT OUTER JOIN gen_morbilidades
+    ON recetas_preconsulta.IDMORBILIDAD = gen_morbilidades.IDMORBILIDAD
+WHERE recetas_preconsulta.TOKEN = '${sucursal}' ORDER BY recetas_preconsulta.ID ASC `;
 
   execute.query(qry, res);
 
@@ -356,6 +416,10 @@ io.on('connection', function(socket){
 
   socket.on('turno finalizado doctor', function(token,id){
     io.emit('turno finalizado doctor', token, id)
+  })
+
+  socket.on('preconsulta nueva', function(token){
+    io.emit('preconsulta nueva', token)
   })
     
 });

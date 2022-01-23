@@ -9,13 +9,13 @@ let Navegar ={
         })
     },
     recetas: ()=>{
-        funciones.loadScript('./views/viewRecetas.js','root')
+        funciones.loadScript('./views/viewDoctor.js','root')
           .then(()=>{
             initView();
           })
     },
     recepcion: ()=>{
-        funciones.loadScript('./views/viewTurnos.js','root')
+        funciones.loadScript('./views/viewSecretaria.js','root')
         .then(()=>{
           initView();
         })
