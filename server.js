@@ -116,7 +116,10 @@ app.post("/delete_paciente",function(req,res){
 
   const {sucursal,id} = req.body; 
   
+  
   let qry = `DELETE FROM CLIENTES WHERE IDCLIENTE=${id} AND TOKEN='${sucursal}'`;
+  
+   
   execute.query(qry, res);
 
 }); 
