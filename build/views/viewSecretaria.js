@@ -21,7 +21,7 @@ function getView(){
                             <thead class="bg-info text-white">
                                 <tr>
                                     <td>PACIENTE</td>
-                                    <td>SEGURO</td>
+                                    <td>SEGURO/TIPO CONSULTA</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -94,7 +94,7 @@ function getView(){
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="negrita">¿Tiene seguro médico?</label>
+                                <label class="negrita">Seguro / Tipo de Consulta</label>
                                 <select class="form-control" id="cmbPacienteSeguro">
                                 
                                 </select>

@@ -121,7 +121,7 @@ function getView(){
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <td>Paciente</td>
-                                    <td>Seguro</td>
+                                    <td>Seguro/Tipo Consulta</td>
                                 </tr>
                             </thead>
                             <tbody id="tblEsperaData">

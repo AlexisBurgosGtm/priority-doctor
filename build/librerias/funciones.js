@@ -811,6 +811,7 @@ let funciones = {
     getComboSeguros:()=>{
       let seguros = `
         <option value="NINGUNO">NINGUNO</option>
+        <option value="CORTESIA">CORTESÍA</option>
         <option value="EPSS">EPSS</option>
         <option value="MAGISTERIO">MAGISTERIO</option>
         <option value="ESCOLAR">SEGURO ESCOLAR</option>
