@@ -126,18 +126,28 @@ app.post("/select_paciente",function(req,res){
 
   const {filtro,sucursal} = req.body; 
   
-  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE 
+  let qry = `SELECT TOKEN,IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE 
+  FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' `;
+
+  let qryOLD = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE 
   FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' AND TOKEN='${sucursal}'`;
+
+
   execute.query(qry, res);
 
 }); 
 
 app.post("/select_lista_pacientes",function(req,res){
 
-  const {sucursal} = req.body; 
+  const {sucursal,filtro} = req.body; 
   
-  let qry = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE
-           FROM CLIENTES WHERE TOKEN='${sucursal}' `;
+  let qry = `SELECT TOKEN, IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE
+           FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' `;
+
+  
+           let qryOLD = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE
+           FROM CLIENTES WHERE TOKEN='${sucursal}'`;
+
   execute.query(qry, res);
 
 }); 
@@ -247,11 +257,19 @@ app.post("/select_historial_recetas",function(req,res){
 
   const {sucursal,codclie} = req.body; 
   
-  let qry = `SELECT ID, IDRECETA, FECHA, HORA, OBS,PESO, TALLA, ifnull(MOTIVO,'SN') AS MOTIVO, ifnull(DIAGNOSTICO,'SN') AS DIAGNOSTICO,
+  let qry = `SELECT TOKEN, ID, IDRECETA, FECHA, HORA, OBS,PESO, TALLA, ifnull(MOTIVO,'SN') AS MOTIVO, ifnull(DIAGNOSTICO,'SN') AS DIAGNOSTICO,
+  ifnull(HISTORIAENF,'SN') AS HISTORIAENF, ifnull(ANTECEDENTES,'SN') AS ANTECEDENTES, ifnull(EXAMENFISICO,'SN') AS EXAMENFISICO, 
+  ifnull(PLANTX,'SN') AS PLANTX, ifnull(IMPRESIONCLINICA,'SN') AS IMPRESIONCLINICA
+   FROM RECETAS WHERE CODCLIENTE=${codclie}
+    ORDER BY ID DESC;`;
+
+    let qryOLD = `SELECT ID, IDRECETA, FECHA, HORA, OBS,PESO, TALLA, ifnull(MOTIVO,'SN') AS MOTIVO, ifnull(DIAGNOSTICO,'SN') AS DIAGNOSTICO,
   ifnull(HISTORIAENF,'SN') AS HISTORIAENF, ifnull(ANTECEDENTES,'SN') AS ANTECEDENTES, ifnull(EXAMENFISICO,'SN') AS EXAMENFISICO, 
   ifnull(PLANTX,'SN') AS PLANTX, ifnull(IMPRESIONCLINICA,'SN') AS IMPRESIONCLINICA
    FROM RECETAS WHERE CODCLIENTE=${codclie} AND TOKEN='${sucursal}'
     ORDER BY ID DESC;`;
+
+
   execute.query(qry, res);
 
 });
@@ -333,7 +351,9 @@ app.post("/select_lista_espera",function(req,res){
   temp_turnos.TEMPERATURA,
   temp_turnos.PA,
   temp_turnos.HORA,
-  clientes.FECHANACIMIENTO
+  clientes.FECHANACIMIENTO,
+  temp_turnos.SEGURO,
+  temp_turnos.CODIGO_SEGURO
 FROM temp_turnos
   LEFT OUTER JOIN clientes
     ON temp_turnos.IDCLIENTE = clientes.IDCLIENTE
@@ -346,10 +366,10 @@ WHERE temp_turnos.TOKEN = '${sucursal}'
 
 app.post("/insert_temp_espera",function(req,res){
 
-  const {sucursal,idcliente,temperatura,pa,hora} = req.body; 
+  const {sucursal,idcliente,temperatura,pa,hora,seguro,codigoseguro} = req.body; 
   
-  let qry = `INSERT INTO TEMP_TURNOS (TOKEN,IDCLIENTE,TEMPERATURA,PA,HORA)
-   VALUES ('${sucursal}', ${idcliente}, ${temperatura},'${pa}','${hora}'); select IDENT_CURRENT('TEMP_TURNOS') as id;`;
+  let qry = `INSERT INTO TEMP_TURNOS (TOKEN,IDCLIENTE,TEMPERATURA,PA,HORA,SEGURO,CODIGO_SEGURO)
+   VALUES ('${sucursal}', ${idcliente}, ${temperatura},'${pa}','${hora}','${seguro}','${codigoseguro}');`;
   execute.query(qry, res);
 
 }); 
@@ -365,6 +385,39 @@ app.post("/delete_temp_espera",function(req,res){
 }); 
 
 //TURNOS ESPERA
+
+//-----------------
+//REPORTES
+//-----------------
+app.post("/rpt_consultas",function(req,res){
+
+  const {sucursal,fi,ff} = req.body; 
+  
+  let qry = `SELECT
+  recetas.IDRECETA AS NOCASO,
+  recetas.FECHA,
+  recetas.HORA,
+  recetas.CODCLIENTE,
+  ifnull(clientes.NOMCLIE,'SN') as NOMCLIE,
+  recetas.TOKEN
+FROM recetas
+  LEFT OUTER JOIN clientes
+    ON recetas.CODCLIENTE = clientes.IDCLIENTE
+WHERE recetas.TOKEN = '${sucursal}' and recetas.FECHA BETWEEN '${fi}' and '${ff}'
+ORDER BY NOCASO`;
+
+  execute.query(qry, res);
+
+});
+
+
+
+
+
+//-----------------
+//REPORTES
+//-----------------
+
 
 app.post("/login",function(req,res){
 

@@ -27,6 +27,7 @@ let GlobalCorrelativo = 0;
 
 let GlobalSelectedIdTurno = 0;
 let GlobalSelectedIdPreconsulta = 0;
+let GlobalSelectedToken = '';
 
 let GlobalTipoUsuario = '';
 

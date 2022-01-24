@@ -21,6 +21,7 @@ function getView(){
                             <thead class="bg-info text-white">
                                 <tr>
                                     <td>PACIENTE</td>
+                                    <td>SEGURO</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -72,6 +73,7 @@ function getView(){
                     </div>
                                      
                     <hr class="solid">
+
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
@@ -86,8 +88,29 @@ function getView(){
                             </div>
                         </div>
                     </div>
+
+                    <hr class="solid">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="negrita">¿Tiene seguro médico?</label>
+                                <select class="form-control" id="cmbPacienteSeguro">
+                                
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label class="negrita">Código de Consulta</label>
+                                <input type="text" class="form-control" id="txtPacienteCodigoSeguro" value="SN">
+                            </div>
+                        </div>
+                    </div>
+
+
                     
-                    
+
                     <hr class="solid">
 
                 </div>
@@ -261,6 +284,17 @@ function addListeners(){
     document.getElementById('btnCerrarModalTurno').addEventListener('click',()=>{$('#modalNuevoTurno').modal('hide')});
     document.getElementById('btnCerrarModalListado').addEventListener('click',()=>{$('#modalPacientes').modal('hide')});
 
+    //cargo los nombres de los SEGUROS
+    let cmbPacienteSeguro = document.getElementById('cmbPacienteSeguro');
+    cmbPacienteSeguro.innerHTML = funciones.getComboSeguros();
+
+    cmbPacienteSeguro.addEventListener('change',()=>{
+        if(cmbPacienteSeguro.value=='NINGUNO'){
+            document.getElementById('txtPacienteCodigoSeguro').value = 'SN';
+        }
+    });
+
+
 
     let btnNuevoTurno = document.getElementById('btnNuevoTurno');
     btnNuevoTurno.addEventListener('click',()=>{
@@ -269,6 +303,9 @@ function addListeners(){
         document.getElementById('tPacienteNombre').value='';
         document.getElementById('tTemperatura').value='36';
         document.getElementById('tPA').value='0/0';
+        document.getElementById('cmbPacienteSeguro').value='NINGUNO';
+        document.getElementById('txtPacienteCodigoSeguro').value = 'SN';
+
 
         $('#modalNuevoTurno').modal('show');
 
@@ -310,9 +347,14 @@ function addListeners(){
 
                 let temperatura = document.getElementById('tTemperatura').value  || '36';
                 let pa = document.getElementById('tPA').value || '0/0';
+
+                let seguro = document.getElementById('cmbPacienteSeguro').value || 'NINGUNO';
+                let codigoseguro = document.getElementById('txtPacienteCodigoSeguro').value || 'SN';
+
                 btnGuardarTurno.disabled = true;
                 btnGuardarTurno.innerHTML =  '<i class="fal fa-save fa-spin"></i>';
-                insert_turno(codigo,temperatura,pa)
+
+                insert_turno(codigo,temperatura,pa,seguro,codigoseguro)
                 .then(()=>{
                     btnGuardarTurno.disabled = false;
                     btnGuardarTurno.innerHTML =  '<i class="fal fa-save"></i>';
@@ -552,6 +594,10 @@ function getTblTurnos(){
                        
                     </td>
                    
+                    <td>${r.SEGURO}
+                        <br>
+                        <small class="negrita text-info">Código: ${r.CODIGO_SEGURO}</small>
+                    </td>
       
                     <td>
                         <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
@@ -580,14 +626,16 @@ function getTblTurnos(){
     
 };
 
-function insert_turno(idcliente,temperatura,pa){
+function insert_turno(idcliente,temperatura,pa,seguro,codigoseguro){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_temp_espera',{
             sucursal:GlobalCodSucursal,
             idcliente:idcliente,
             temperatura:temperatura,
             pa:pa,
-            hora:funciones.getHora()
+            hora:funciones.getHora(),
+            seguro:seguro,
+            codigoseguro:codigoseguro
         })
         .then((response) => {     
             resolve();             

@@ -58,7 +58,17 @@ function getView(){
                 
                 <div class="row">
                     <div class="form-group col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <input type="text" class="form-control" id="txtBuscarReceta" placeholder="Escriba para Buscar...">
+
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtBuscarReceta" placeholder="Escriba para Buscar...">
+                            <div class="input-group-append">
+                                <button class="btn btn-info shadow" id="btnBuscarP">
+                                    <i class="fal fa-search"></i>Buscar
+                                </button>    
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                 
                 </div>
@@ -111,6 +121,7 @@ function getView(){
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <td>Paciente</td>
+                                    <td>Seguro</td>
                                 </tr>
                             </thead>
                             <tbody id="tblEsperaData">
@@ -620,13 +631,11 @@ function getView(){
 function addListeners(){
 
    
-    let txtBuscarReceta = document.getElementById('txtBuscarReceta');
-    txtBuscarReceta.addEventListener('keydown',()=>{
-        funciones.FiltrarTabla('tblPacientes','txtBuscarReceta');
-        if(txtBuscarReceta.value==''){
-            funciones.OcultarRows('tblPacientes');  
-        }
-        //funciones.OcultarRows('tblPacientes');
+    let btnBuscarP = document.getElementById('btnBuscarP');
+    btnBuscarP.addEventListener('click',()=>{
+
+        getTblPacientes();
+
     });
 
     document.getElementById('FechaNacimiento').value = funciones.getFecha();
@@ -665,6 +674,8 @@ function addListeners(){
                     btnGuardarCliente.disabled = false;
                     btnGuardarCliente.innerHTML = '<i class="fal fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
+
+                    document.getElementById('txtBuscarReceta').value = nombre;
                     getTblPacientes();
                 })
                 .catch(()=>{
@@ -721,7 +732,8 @@ function addListeners(){
     btnGuardarRecetaPrint.addEventListener('click',()=>{
         imprimeReceta = 'SI';
         btnGuardarReceta.click();
-    })
+    });
+
     btnGuardarReceta.addEventListener('click',()=>{
         
         
@@ -788,8 +800,6 @@ function addListeners(){
     });
 
 
-
-
     document.getElementById('btnIrReceta').addEventListener('click',()=>{document.getElementById('receta-tab').click()})
 
     getCorrelativoCoddoc();
@@ -801,11 +811,7 @@ function addListeners(){
 
     funciones.slideAnimationTabs();
 
-    // REPORTES
-    document.getElementById('txtFechaInicio').value = funciones.getFecha();
-    document.getElementById('txtFechaFinal').value = funciones.getFecha();
-
-
+  
     //preconsultas
     getTblPreconsultas();
 
@@ -861,6 +867,22 @@ function addListeners(){
 
 
     });
+
+    // Reportes
+    document.getElementById('txtFechaInicio').value = funciones.getFecha();
+    document.getElementById('txtFechaFinal').value = funciones.getFecha();
+
+    let btnRptConsultas = document.getElementById('btnRptConsultas');
+    btnRptConsultas.addEventListener('click',()=>{
+        getTblRptConsulta();
+    });
+
+    let btnRptMorbilidades = document.getElementById('btnRptMorbilidades');
+    btnRptMorbilidades.addEventListener('click',()=>{
+        funciones.hablar('Próximamente tendrás disponible esta funcionalidad');
+        funciones.Aviso('Próximamente tendrás disponible esta funcionalidad');
+    });
+
     
 };
 
@@ -879,13 +901,20 @@ function getCorrelativoCoddoc(){
 function initView(){
     getView();
     addListeners();
-    getTblPacientes();
+    //getTblPacientes();
     getTblTurnos();
+    getTblPreconsultas();
+    
 };
 
 
 function getTblPacientes(){
     
+    let filtro = document.getElementById('txtBuscarReceta').value || '';
+    if(filtro==''){
+        return;
+    };
+
 
     let container = document.getElementById('tblListaPacientes');
     container.innerHTML = GlobalLoader;
@@ -973,10 +1002,15 @@ function getNuevaReceta(idcliente,nombre,idturno, edad){
 
 
 function getDataPacientes(){
+
+   
+    let filtro = document.getElementById('txtBuscarReceta').value;
+
     return new Promise((resolve, reject) => {
 
         axios.post('/select_lista_pacientes',{
-            sucursal:GlobalCodSucursal
+            sucursal:GlobalCodSucursal,
+            filtro:filtro
         })
         .then((response) => {   
             let data = response.data; 
@@ -1579,6 +1613,10 @@ function getTblTurnos(){
                             
                         </div>
                     </td>
+                    <td>${r.SEGURO}
+                        <br>
+                        <small class="negrita text-info">Código: ${r.CODIGO_SEGURO}</small>
+                    </td>
                    
                 </tr>
             `
@@ -1779,3 +1817,77 @@ function getDatosPreconsulta(idcliente,nombre,idpreconsulta, edad, peso, talla, 
 };
 
 /************ */
+
+
+
+/***** REPORTES ****/
+function getDataRptConsultas(){
+
+    let fi = funciones.devuelveFecha('txtFechaInicio');
+    let ff = funciones.devuelveFecha('txtFechaFinal');
+
+    return new Promise((resolve, reject) => {
+
+        axios.post('/rpt_consultas',{
+            sucursal:GlobalCodSucursal,
+            fi:fi,
+            ff:ff
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
+    
+};
+
+function getTblRptConsulta(){
+    
+
+    let container = document.getElementById('containerReports');
+    container.innerHTML = GlobalLoader;
+   
+
+    let str = '';
+ 
+    getDataRptConsultas()
+    .then((data)=>{
+        data.map((r)=>{
+            str += `
+                <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
+                    <td>${r.NOCASO}
+                        <br>
+                        <small class="negrita text-danger">Hora: ${r.HORA}</small>
+                    </td>
+                    <td>${funciones.convertDate(r.FECHA)}</td>
+                    <td>${r.NOMCLIE}</td>
+                </tr>
+            `
+        })
+
+        let table = `<table class="table table-responsive col-12">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <td>NO.CASO</td>
+                                <td>FECHA</td>
+                                <td>PACIENTE</td>
+                            </tr>
+                        </thead>
+                        <tbody>${str}</tbody>
+                    </table>`
+
+        container.innerHTML = table;
+       
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...'
+    })
+    
+
+    
+};
+
+/***** REPORTES ****/

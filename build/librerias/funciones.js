@@ -807,6 +807,18 @@ let funciones = {
     },
     quitarEnter:(texto)=>{
       return texto.replace(/(\r\n|\n|\r)/gm, "");
+    },
+    getComboSeguros:()=>{
+      let seguros = `
+        <option value="NINGUNO">NINGUNO</option>
+        <option value="EPSS">EPSS</option>
+        <option value="MAGISTERIO">MAGISTERIO</option>
+        <option value="ESCOLAR">SEGURO ESCOLAR</option>
+        <option value="IGSS">SEGURO IGSS</option>
+        <option value="ROBLE">SEGUROS EL ROBLE</option>
+      `
+
+      return seguros;
     }
 };
 
