@@ -484,13 +484,15 @@ function getTblPaciente(filtro){
     let container = document.getElementById('tblPacientesData');
     container.innerHTML = GlobalLoader;
     let str = '';
+    let stclass = '';
 
     getDataPaciente(filtro)
     .then((data)=>{
         data.map((r)=>{
+            if(r.TOKEN==GlobalCodSucursal){stclass=''}else{stclass='text-danger'};
             str += `
                 <tr>
-                    <td>${r.NOMCLIE}
+                    <td class="${stclass}">${r.NOMCLIE}
                         <br><small class="negrita text-danger">${r.TELEFONOS}</small>
                         <br>
                         <button class="btn btn-info btn-sm hand shadow" onclick="agregar_espera('${r.IDCLIENTE}','${r.NOMCLIE}')">

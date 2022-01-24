@@ -920,12 +920,15 @@ function getTblPacientes(){
     container.innerHTML = GlobalLoader;
     let str = '';
 
+    let stclass = '';
+
     getDataPacientes()
     .then((data)=>{
         data.map((r)=>{
+            if(r.TOKEN==GlobalCodSucursal){stclass=''}else{stclass='text-danger'};
             str += `
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
-                    <td>${r.NOMCLIE}
+                    <td class="${stclass}">${r.NOMCLIE}
                         <br>
                             <small class="negrita text-danger">${funciones.getEdad(r.FECHANACIMIENTO)} (${funciones.convertDate(r.FECHANACIMIENTO)})</small>
                         <br>
