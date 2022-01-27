@@ -215,6 +215,8 @@ function getView(){
                         <div class="modal-body">
                                 <h5 class="text-danger" id="lbPaciente">Consumidor Final</h5>
                                 <h5 class="text-info" id="lbEdadPaciente">-</h5>
+                                
+                              
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active negrita text-info" id="home-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="home" aria-selected="true">
@@ -223,6 +225,11 @@ function getView(){
                                 <li class="nav-item">
                                     <a class="nav-link negrita text-primary" id="receta-tab" data-toggle="tab" href="#receta" role="tab" aria-controls="profile" aria-selected="false">
                                         <i class="fal fa-print"></i>Receta</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link negrita text-secondary" id="historial-tab" data-toggle="tab" href="#historialp" role="tab" aria-controls="profile" aria-selected="false">
+                                        <i class="fal fa-list"></i>Consultas Previas</a>
                                 </li>
                                
                             </ul>
@@ -270,6 +277,24 @@ function getView(){
 
                                     </div>
                                 </div>
+
+                                <div class="tab-pane fade" id="historialp" role="tabpanel" aria-labelledby="historial-tab">
+                                    <div class="card shadow card-rounded p-4">
+                                        <div class="table-responsive">
+                                            <table class="table table-responsive">
+                                                <thead class="bg-secondary text-white">
+                                                    <tr>
+                                                        <td>Consultas anteriores</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="containerHistorialP">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+
 
                             </div>
                         </div>
@@ -724,7 +749,7 @@ function addListeners(){
             btnAgregarMedicamento.innerHTML = 'Agregar(+)';
         })
 
-    })
+    });
 
     let imprimeReceta = 'NO';
     let btnGuardarReceta = document.getElementById('btnGuardarReceta');
@@ -978,7 +1003,7 @@ function getTblPacientes(){
 
 
 
-function getNuevaReceta(idcliente,nombre,idturno, edad){
+async function getNuevaReceta(idcliente,nombre,idturno, edad){
 
     GlobalSelectedCodPaciente = idcliente;
     document.getElementById('lbPaciente').innerText = nombre;
@@ -1003,11 +1028,17 @@ function getNuevaReceta(idcliente,nombre,idturno, edad){
 
     getTblTempReceta();
 
+    await getTblHistorialConsultas(idcliente)
+
     $('#modalNuevaReceta').modal('show');
 
 
 };
 
+function getHistorialConsultas(){
+
+
+};
 
 function getDataPacientes(){
 
@@ -1287,6 +1318,87 @@ function getTblHistorial(idcliente,nomclie){
     $('#modalHistorialRecetas').modal('show');
 
 };
+
+
+function getDataHistorialConsultas(codcliente){
+    return new Promise((resolve, reject) => {
+
+        axios.post('/select_historial_consultas',{
+            sucursal:GlobalCodSucursal,
+            codclie:codcliente
+        })
+        .then((response) => {   
+            let data = response.data; 
+            resolve(data);
+        }, (error) => {
+            reject(error);
+        });
+    })
+    
+};
+
+function getTblHistorialConsultas(idcliente){
+
+    GlobalSelectedCodPaciente = idcliente;
+  
+    let container = document.getElementById('containerHistorialP');
+    container.innerHTML = GlobalLoader;
+
+    // '','','','',''
+ 
+    let str ='';
+    getDataHistorialConsultas(idcliente)
+    .then(async(data)=> {  
+        data.map((r)=> {
+            str += `<tr class="border-primary border-left-0 border-right-0 border-top-0 border-bottom">
+                        <td><b class="negrita text-danger">${funciones.convertDate(r.FECHA)} - Hora:${r.HORA}</b>
+                            <div class="row">
+                                <div class="col-6">
+                                    PESO: ${r.PESO}
+                                </div>
+                                <div class="col-6">
+                                    TALLA: ${r.TALLA}
+                                </div>
+                            </div>
+                                    <br>
+                                <small class="negrita">Motivo:</small>
+                                <label>${funciones.quitarEnter(r.MOTIVO)}</label>
+                                <br>
+                                <small class="negrita">Historia de la Enfermedad:</small>
+                                <label>${funciones.quitarEnter(r.HISTORIAENF)}</label>
+                                <br>
+                                <small class="negrita">Antecedentes:</small>
+                                <label>${funciones.quitarEnter(r.ANTECEDENTES)}</label>
+                                <br>
+                                <small class="negrita">Exámen Físico:</small>
+                                <label>${funciones.quitarEnter(r.EXAMENFISICO)}</label>
+                                <br>
+                                <small class="negrita">Plan Diagnóstico:</small>
+                                <label>${funciones.quitarEnter(r.DIAGNOSTICO)}</label>                             
+                                <br>
+                                <small class="negrita">Historia Clínica:</small>
+                                <label>${funciones.quitarEnter(r.IMPRESIONCLINICA)}</label>
+                                <br>
+                                <small class="negrita">Plan Tratamiento:</small>
+                                <label>${funciones.quitarEnter(r.PLANTX)}</label>
+                            </div>
+                        </td>
+            
+                    </tr>`
+        })
+        container.innerHTML = str;
+       
+       
+    })
+    .catch(()=> {
+        container.innerHTML = 'No se pudieron cargar los datos...';
+    })
+
+
+};
+
+
+
 
 
 function receta_consulta(fecha,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){

@@ -277,6 +277,22 @@ app.post("/select_historial_recetas",function(req,res){
 
 });
 
+app.post("/select_historial_consultas",function(req,res){
+
+  const {sucursal,codclie} = req.body; 
+  
+  let qry = `SELECT TOKEN, ID, IDRECETA, FECHA, HORA, OBS,PESO, TALLA, ifnull(MOTIVO,'SN') AS MOTIVO, ifnull(DIAGNOSTICO,'SN') AS DIAGNOSTICO,
+  ifnull(HISTORIAENF,'SN') AS HISTORIAENF, ifnull(ANTECEDENTES,'SN') AS ANTECEDENTES, ifnull(EXAMENFISICO,'SN') AS EXAMENFISICO, 
+  ifnull(PLANTX,'SN') AS PLANTX, ifnull(IMPRESIONCLINICA,'SN') AS IMPRESIONCLINICA
+   FROM RECETAS WHERE CODCLIENTE=${codclie}
+    ORDER BY ID DESC LIMIT 10;`;
+
+   
+
+  execute.query(qry, res);
+
+});
+
 app.post("/select_receta",function(req,res){
 
   const {sucursal,correlativo} = req.body; 
