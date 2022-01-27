@@ -846,6 +846,11 @@ function addListeners(){
                     btnGuardarPreconsulta.innerHTML = '<i class="fal fa-save"></i>';
 
                     $("#modalNuevaReceta").modal('hide');
+
+                    if(Number(GlobalSelectedIdTurno)==0){
+                    }else{
+                        delete_turno(GlobalSelectedIdTurno);
+                    };
                     
                     //regresa a la tab inicial en la consulta
                     document.getElementById('home-tab').click();
@@ -1829,6 +1834,9 @@ function getDataRptConsultas(){
     let fi = funciones.devuelveFecha('txtFechaInicio');
     let ff = funciones.devuelveFecha('txtFechaFinal');
 
+    console.log(fi);
+    console.log(ff);
+    
     return new Promise((resolve, reject) => {
 
         axios.post('/rpt_consultas',{
@@ -1854,10 +1862,12 @@ function getTblRptConsulta(){
    
 
     let str = '';
+    let conteo = 0;
  
     getDataRptConsultas()
     .then((data)=>{
         data.map((r)=>{
+            conteo += 1;
             str += `
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td>${r.NOCASO}
@@ -1870,7 +1880,11 @@ function getTblRptConsulta(){
             `
         })
 
-        let table = `<table class="table table-responsive col-12">
+        let table = `
+                    <div class="row">
+                        <h4 class="text-danger">Total Consultas: ${conteo}</h4>
+                    </div>
+                    <table class="table table-responsive col-12">
                         <thead class="bg-info text-white">
                             <tr>
                                 <td>NO.CASO</td>

@@ -645,7 +645,8 @@ let funciones = {
     },
     devuelveFecha: (idInputFecha)=>{
       let fe = new Date(document.getElementById(idInputFecha).value);
-      let ae = fe.getFullYear();
+      let ae = fe.getUTCFullYear();//fe.getFullYear();
+      
       let me = fe.getUTCMonth()+1;
       let de = fe.getUTCDate() 
       let fret = ae + '-' + me + '-' + de;
@@ -810,12 +811,12 @@ let funciones = {
     },
     getComboSeguros:()=>{
       let seguros = `
-        <option value="NINGUNO">NINGUNO</option>
+        <option value="PARTICULAR">PARTICULAR</option>
         <option value="CORTESIA">CORTESÍA</option>
         <option value="EPSS">EPSS</option>
         <option value="MAGISTERIO">MAGISTERIO</option>
         <option value="ESCOLAR">SEGURO ESCOLAR</option>
-        <option value="IGSS">SEGURO IGSS</option>
+        <option value="IGS">SEGURO IGS</option>
         <option value="ROBLE">SEGUROS EL ROBLE</option>
       `
 
