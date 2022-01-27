@@ -330,8 +330,7 @@ app.post("/select_lista_preconsultas",function(req,res){
   recetas_preconsulta.TOKEN
 FROM recetas_preconsulta
   LEFT OUTER JOIN clientes
-    ON recetas_preconsulta.TOKEN = clientes.TOKEN
-    AND recetas_preconsulta.CODCLIENTE = clientes.IDCLIENTE
+    ON recetas_preconsulta.CODCLIENTE = clientes.IDCLIENTE
   LEFT OUTER JOIN gen_morbilidades
     ON recetas_preconsulta.IDMORBILIDAD = gen_morbilidades.IDMORBILIDAD
 WHERE recetas_preconsulta.TOKEN = '${sucursal}' ORDER BY recetas_preconsulta.ID ASC `;

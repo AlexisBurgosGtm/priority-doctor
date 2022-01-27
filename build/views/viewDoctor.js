@@ -1836,7 +1836,7 @@ function getDataRptConsultas(){
 
     console.log(fi);
     console.log(ff);
-    
+
     return new Promise((resolve, reject) => {
 
         axios.post('/rpt_consultas',{
@@ -1881,8 +1881,12 @@ function getTblRptConsulta(){
         })
 
         let table = `
+                    
                     <div class="row">
+                        <br><br>
+                        <hr class="solid">
                         <h4 class="text-danger">Total Consultas: ${conteo}</h4>
+                        <hr class="solid">
                     </div>
                     <table class="table table-responsive col-12">
                         <thead class="bg-info text-white">
