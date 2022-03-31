@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-const config = {
+const configx = {
     connectionLimit : 1000,
     host            : '127.0.0.1',
     user            : 'root',
@@ -9,7 +9,7 @@ const config = {
     max_user_connections:1000
   };
 
-  const configx = {
+  const config = {
     connectionLimit : 1000,
     host            : 'mysql5027.site4now.net',
     user            : 'a6478c_medical',

@@ -4,28 +4,28 @@ function getView(){
             return `
             <div class="row col-12">
                 <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
-                    <div class="card card-rounded shadow hand bg-success text-white" onclick="document.getElementById('tab-espera').click()">
+                    <div id="men1" class="card card-rounded shadow hand bg-success text-white" onclick="document.getElementById('tab-espera').click()">
                         <div class="card-body">
                             <i class="fal fa-list"></i>Espera (<label class="negrita" id="lbMenTotalEspera">-</label>)
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
-                    <div class="card card-rounded shadow hand bg-danger text-white" onclick="document.getElementById('tab-preconsultas').click()">
+                    <div id="men2" class="card card-rounded shadow hand bg-danger text-white" onclick="document.getElementById('tab-preconsultas').click()">
                         <div class="card-body">
                             <i class="fal fa-comments"></i>PlanDx (<label class="negrita" id="lbMenTotalDx">-</label>)
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
-                    <div class="card card-rounded shadow hand bg-info text-white" onclick="document.getElementById('tab-pacientes').click()">
+                    <div id="men3" class="card card-rounded shadow hand bg-info text-white" onclick="document.getElementById('tab-pacientes').click()">
                         <div class="card-body">
                             <i class="fal fa-edit"></i>Pacientes
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
-                    <div class="card card-rounded shadow hand bg-warning text-white" onclick="document.getElementById('tab-reportes').click()">
+                    <div id="men4" class="card card-rounded shadow hand bg-warning text-white" onclick="document.getElementById('tab-reportes').click()">
                         <div class="card-body">
                             <i class="fal fa-chart-pie"></i>Reportes</a>
                         </div>
@@ -693,7 +693,12 @@ function getView(){
 
 function addListeners(){
 
-   
+    funciones.animateCSS('men1','bounceInLeft');
+    funciones.animateCSS('men2','bounceInLeft');
+    funciones.animateCSS('men3','bounceInLeft');
+    funciones.animateCSS('men4','bounceInLeft');
+ 
+    
     let btnBuscarP = document.getElementById('btnBuscarP');
     btnBuscarP.addEventListener('click',()=>{
 
