@@ -20,9 +20,7 @@ function getView(){
                         <table class="table table-responsive table-hover table-bordered" id="tblTurnos">
                             <thead class="bg-info text-white">
                                 <tr>
-                                    <td>PACIENTE</td>
-                                    <td>SEGURO/TIPO CONSULTA</td>
-                                    <td></td>
+                                    <td>PACIENTE / TIPO SEGURO</td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -582,30 +580,25 @@ function getTblTurnos(){
             str += `
                 <tr>
                     <td>${r.NOMCLIE}
+                        <br>
+                        <small class="negrita text-info">${r.SEGURO} / ${r.CODIGO_SEGURO}</small>
                         <div class="row">
                             <div class="col-4">
-                                <small class="negrita text-danger">Temp: ${r.TEMPERATURA}</small>
+                                <small class="negrita text-danger">T: ${r.TEMPERATURA}</small>
                             </div>
                             <div class="col-4">
                                 <small class="negrita text-danger">P/A: ${r.PA}</small>
                             </div>
                             <div class="col-4">
-                                <small class="negrita text-info">Hora: ${r.HORA}</small>
+                                <small class="negrita text-info">H: ${r.HORA}</small>
                             </div>
                         </div>
-                       
-                    </td>
-                   
-                    <td>${r.SEGURO}
                         <br>
-                        <small class="negrita text-info">Código: ${r.CODIGO_SEGURO}</small>
+                        <button class="btn btn-info btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
+                            <i class="fal fa-bullhorn"></i> Llamar a Consulta
+                        </button>                       
                     </td>
       
-                    <td>
-                        <button class="btn btn-info btn-circle btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
-                            <i class="fal fa-bullhorn"></i>
-                        </button>
-                    </td>
 
                     <td>
                         <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="eliminar_turno('${rowid}','${r.ID}')" id='${rowid}'>
