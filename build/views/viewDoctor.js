@@ -176,9 +176,8 @@ function getView(){
         homePreconsultas:()=>{
             return `
             <div class="card shadow p-4">
-                <h5 class="negrita text-danger">Pre-Consultas Pendientes Disponibles</h5>
+                <h5 class="negrita text-danger">Plan Dx Pendientes</h5>
                
-
                 <div class="card-body p-0">
                     <table class="table table-responsive">
                         <thead class="bg-danger text-white">
@@ -693,10 +692,10 @@ function getView(){
 
 function addListeners(){
 
-    funciones.animateCSS('men1','bounceInLeft');
-    funciones.animateCSS('men2','bounceInLeft');
-    funciones.animateCSS('men3','bounceInLeft');
-    funciones.animateCSS('men4','bounceInLeft');
+    funciones.animateCSS('men1','fadeInBottomLeft');
+    funciones.animateCSS('men2','fadeInBottomLeft');
+    funciones.animateCSS('men3','fadeInBottomLeft');
+    funciones.animateCSS('men4','fadeInBottomLeft');
  
     
     let btnBuscarP = document.getElementById('btnBuscarP');
@@ -1046,9 +1045,11 @@ function getTblPacientes(){
 
 
 
-async function getNuevaReceta(idcliente,nombre,idturno, edad){
+async function getNuevaReceta(idcliente,nombre,idturno, edad,seguro){
 
     GlobalSelectedCodPaciente = idcliente;
+    GlobalSelectedConsultaSeguro = seguro;
+
     document.getElementById('lbPaciente').innerText = nombre;
     document.getElementById('lbEdadPaciente').innerText = edad;
 
@@ -1259,7 +1260,8 @@ function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico,h
             examenf:examenf,
             impclinica:impclinica,
             plantx:plantx,
-            idmorbilidad:0
+            idmorbilidad:0,
+            seguro: GlobalSelectedConsultaSeguro
         })
         .then((response) => {          
             resolve();             
@@ -1767,7 +1769,7 @@ function getTblTurnos(){
                                 </button>        
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}','${funciones.getEdad(r.FECHANACIMIENTO)}')">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}','${funciones.getEdad(r.FECHANACIMIENTO)}','${r.SEGURO}')">
                                     <i class="fal fa-edit"></i>Consul
                                 </button>
                             </div>
@@ -2000,9 +2002,6 @@ function getDataRptConsultas(){
     let fi = funciones.devuelveFecha('txtFechaInicio');
     let ff = funciones.devuelveFecha('txtFechaFinal');
 
-    console.log(fi);
-    console.log(ff);
-
     return new Promise((resolve, reject) => {
 
         axios.post('/rpt_consultas',{
@@ -2036,12 +2035,13 @@ function getTblRptConsulta(){
             conteo += 1;
             str += `
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
-                    <td>${r.NOCASO}
+                    <td>${funciones.convertDate(r.FECHA)}
                         <br>
                         <small class="negrita text-danger">Hora: ${r.HORA}</small>
                     </td>
-                    <td>${funciones.convertDate(r.FECHA)}</td>
                     <td>${r.NOMCLIE}</td>
+                    <td>${r.SEGURO}                 
+                    </td>
                 </tr>
             `
         })
@@ -2057,9 +2057,9 @@ function getTblRptConsulta(){
                     <table class="table table-responsive col-12">
                         <thead class="bg-info text-white">
                             <tr>
-                                <td>NO.CASO</td>
                                 <td>FECHA</td>
                                 <td>PACIENTE</td>
+                                <td>TIPO</td>
                             </tr>
                         </thead>
                         <tbody>${str}</tbody>

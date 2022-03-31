@@ -207,13 +207,13 @@ app.post("/delete_all_temp_receta",function(req,res){
 
 app.post("/insert_receta",function(req,res){
 
-  const {sucursal,correlativo,idcliente,obs,fecha,hora, coddoc,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad} = req.body; 
+  const {sucursal,correlativo,idcliente,obs,fecha,hora, coddoc,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad, seguro} = req.body; 
   let nuevocorrelativo = Number(correlativo) + 1;
 
   let qryR = `INSERT INTO RECETAS 
-    (TOKEN,IDRECETA,FECHA,HORA,CODCLIENTE,OBS,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD) 
+    (TOKEN,IDRECETA,FECHA,HORA,CODCLIENTE,OBS,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD,SEGURO) 
       VALUES 
-    ('${sucursal}',${correlativo},'${fecha}','${hora}',${idcliente},'${obs}',${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad});`;
+    ('${sucursal}',${correlativo},'${fecha}','${hora}',${idcliente},'${obs}',${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad},'${seguro}');`;
   let qryD = `INSERT INTO RECETAS_DETALLE (TOKEN,IDRECETA,MEDICAMENTO,DOSIS,DURACION) SELECT '${sucursal}' AS TOKEN, ${correlativo} AS IDRECETA,TEMP_RECETA.MEDICAMENTO,TEMP_RECETA.DOSIS,TEMP_RECETA.DURACION FROM TEMP_RECETA;`
   let qryDoc = `UPDATE TIPODOCUMENTOS SET CORRELATIVO=${nuevocorrelativo} WHERE CODDOC='${coddoc}' AND TOKEN='${sucursal}';`
 
@@ -417,6 +417,7 @@ app.post("/rpt_consultas",function(req,res){
   recetas.HORA,
   recetas.CODCLIENTE,
   ifnull(clientes.NOMCLIE,'SN') as NOMCLIE,
+  ifnull(recetas.SEGURO,'-') as SEGURO,
   recetas.TOKEN
 FROM recetas
   LEFT OUTER JOIN clientes

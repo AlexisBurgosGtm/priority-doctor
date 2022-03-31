@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+
 const configx = {
     connectionLimit : 1000,
     host            : '127.0.0.1',
