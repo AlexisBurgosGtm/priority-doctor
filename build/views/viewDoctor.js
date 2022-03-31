@@ -356,23 +356,37 @@ function getView(){
 
                         <div class="form-group">
                             <label class="negrita">Nombre del Paciente</label>
-                            <input type="text" class="form-control" id="Nombre">
+                            <input type="text" class="form-control" id="Nombre" autocomplete="false">
                         </div>
+
+                        <div class="form-group">
+                            <label class="negrita">Domicilio / Dirección</label>
+                            <input type="text" class="form-control" id="Direccion" placeholder="Escriba la dirección del paciente" autocomplete="false">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="negrita">Departamento</label>
+                            <select class="form-control" id="cmbDepartamento"></select>
+                        </div>
+
 
                         <hr class="solid">
 
-
-                        <div class="form-group col-8">
-                            <label class="negrita">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="FechaNacimiento">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <label class="negrita">Fecha de nacimiento</label>
+                                    <input type="date" class="form-control" id="FechaNacimiento">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <label class="negrita">Teléfono del Paciente</label>
+                                    <input type="number" class="form-control" id="Telefono">
+                                </div>
+                            </div>
                         </div>
-                       
-                        <hr class="solid">
 
-                        <div class="form-group col-8">
-                            <label class="negrita">Teléfono del Paciente</label>
-                            <input type="number" class="form-control" id="Telefono">
-                        </div>
                         
                         <hr class="solid">
 
@@ -388,6 +402,78 @@ function getView(){
                               
 
                                 <button type="button" class="btn btn-info btn-xl btn-circle hand shadow" id="btnGuardarCliente">
+                                    <i class="fal fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                       
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+            `
+        },
+        modalEditarPaciente:()=>{
+            return `
+            <div class="modal fade" id="modalEditarPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-right modal-lg" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header bg-success">
+                        <h5 class="modal-title  text-white">Editar Datos Paciente</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <hr class="solid">
+
+                        <div class="form-group">
+                            <label class="negrita">Nombre del Paciente</label>
+                            <input type="text" class="form-control" id="txtEditNomclie" autocomplete="false">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="negrita">Domicilio / Dirección</label>
+                            <input type="text" class="form-control" id="txtEditDirclie" placeholder="Escriba la dirección del paciente" autocomplete="false">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="negrita">Departamento</label>
+                            <select class="form-control" id="cmbEditDepartamento"></select>
+                        </div>
+
+
+                        <hr class="solid">
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <label class="negrita">Fecha de nacimiento</label>
+                                    <input type="date" class="form-control" id="txtEditFechaNacimiento">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <label class="negrita">Teléfono del Paciente</label>
+                                    <input type="number" class="form-control" id="txtEditTelefono">
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <hr class="solid">
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-secondary btn-xl btn-circle hand shadow" id="" data-dismiss="modal">
+                                    <i class="fal fa-angle-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                              
+
+                                <button type="button" class="btn btn-success btn-xl btn-circle hand shadow" id="btnEditarCliente">
                                     <i class="fal fa-save"></i>
                                 </button>
                             </div>
@@ -687,7 +773,7 @@ function getView(){
         }
     }
 
-    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalHistorialRecetas() + view.modalDatosConsulta() + view.modalNuevoPaciente();
+    root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalHistorialRecetas() + view.modalDatosConsulta() + view.modalNuevoPaciente() + view.modalEditarPaciente();
 };
 
 function addListeners(){
@@ -710,12 +796,16 @@ function addListeners(){
     btnNuevoPaciente.addEventListener('click',()=>{
 
         document.getElementById('Nombre').value='';
+        document.getElementById('Direccion').value = '';
         document.getElementById('FechaNacimiento').value = funciones.getFecha();
         document.getElementById('Telefono').value=0;
 
         $('#modalNuevoPaciente').modal('show');
     });
 
+    //Combo departamentos
+    document.getElementById('cmbDepartamento').innerHTML = funciones.getComboDepartamentos();
+    document.getElementById('cmbEditDepartamento').innerHTML = funciones.getComboDepartamentos();
 
     document.getElementById('btnCerrarModalClienteNuevo').addEventListener('click',()=>{$('#modalNuevoPaciente').modal('hide')});
 
@@ -729,20 +819,23 @@ function addListeners(){
         .then((value)=>{
             if(value==true){
                 let nombre = document.getElementById('Nombre');
+                let direccion = document.getElementById('Direccion').value || 'SN';
+                let cmbDepartamento = document.getElementById('cmbDepartamento');
+
                 let fechanacimiento = funciones.devuelveFecha('FechaNacimiento');
                 let telefono = document.getElementById('Telefono') || '0';
 
                 btnGuardarCliente.disabled = true;
                 btnGuardarCliente.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
-                insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value)
+                insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value,funciones.limpiarTexto(direccion),cmbDepartamento.value)
                 .then(()=>{
                     funciones.Aviso('Cliente agregado exitosamente!!')
                     btnGuardarCliente.disabled = false;
                     btnGuardarCliente.innerHTML = '<i class="fal fa-save"></i>';
                     $('#modalNuevoPaciente').modal('hide');
 
-                    document.getElementById('txtBuscarReceta').value = nombre;
+                    document.getElementById('txtBuscarReceta').value = nombre.value;
                     getTblPacientes();
                 })
                 .catch(()=>{
@@ -955,6 +1048,49 @@ function addListeners(){
         funciones.Aviso('Próximamente tendrás disponible esta funcionalidad');
     });
 
+
+    //EDICION DE PACIENTES
+
+    let btnEditarCliente = document.getElementById('btnEditarCliente');
+    btnEditarCliente.addEventListener('click',()=>{
+        
+       
+
+        funciones.Confirmacion('¿Está seguro que desea EDITAR este Paciente?')
+        .then((value)=>{
+            if(value==true){
+
+                let nombre = document.getElementById('txtEditNomclie');
+                let direccion = document.getElementById('txtEditDirclie').value || 'SN';
+                let cmbDepartamento = document.getElementById('cmbEditDepartamento');
+
+                let fechanacimiento = funciones.devuelveFecha('txtEditFechaNacimiento');
+                let telefono = document.getElementById('txtEditTelefono').value || '0';
+
+                btnEditarCliente.disabled = true;
+                btnEditarCliente.innerHTML = '<i class="fal fa-save fa-spin"></i>';
+
+                edit_paciente(GlobalSelectedCodPaciente,funciones.limpiarTexto(nombre.value),fechanacimiento,telefono,funciones.limpiarTexto(direccion),cmbDepartamento.value)
+                .then(()=>{
+                    funciones.Aviso('Paciente editado exitosamente!!')
+                    btnEditarCliente.disabled = false;
+                    btnEditarCliente.innerHTML = '<i class="fal fa-save"></i>';
+                    $('#modalEditarPaciente').modal('hide');
+
+                    document.getElementById('txtBuscarReceta').value = nombre.value;
+                    getTblPacientes();
+                })
+                .catch(()=>{
+                    funciones.AvisoError('No se pudo guardar')
+                    btnEditarCliente.disabled = false;
+                    btnEditarCliente.innerHTML = '<i class="fal fa-save"></i>';
+                })
+               
+            }
+        })
+    });
+
+    //EDICION DE PACIENTES
     
 };
 
@@ -1002,20 +1138,27 @@ function getTblPacientes(){
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td class="${stclass}">${r.NOMCLIE}
                         <br>
+                            <small class="">${r.DIRCLIE})</small>
+                        <br>
                             <small class="negrita text-danger">${funciones.getEdad(r.FECHANACIMIENTO)} (${funciones.convertDate(r.FECHANACIMIENTO)})</small>
                         <br>
                             <small class="negrita text-primary">${r.TELEFONOS}</small>
                         <br>
 
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0','${funciones.getEdad(r.FECHANACIMIENTO)}')">
                                     <i class="fal fa-edit"></i> Consulta
                                 </button>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
                                     <i class="fal fa-list"></i>Historial
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-success btn-sm hand shadow" onclick="getDataPaciente('${r.IDCLIENTE}','${r.NOMCLIE}','${r.DIRCLIE}','${r.CODDEPTO}','${r.FECHANACIMIENTO}','${r.TELEFONOS}')">
+                                    <i class="fal fa-edit"></i>Editar
                                 </button>
                             </div>
                         </div>
@@ -1084,6 +1227,23 @@ function getHistorialConsultas(){
 
 };
 
+function getDataPaciente(id,nombre,direccion,coddepto,fechanacimiento,telefono){
+
+    console.log('revisar..');
+    console.log(fechanacimiento);
+
+    GlobalSelectedCodPaciente = Number(id);
+    document.getElementById('txtEditNomclie').value = nombre;
+    document.getElementById('txtEditDirclie').value = direccion;
+    document.getElementById('cmbEditDepartamento').value = coddepto;
+    document.getElementById('txtEditTelefono').value = telefono;
+    document.getElementById('txtEditFechaNacimiento').value = fechanacimiento.replace('T06:00:00.000Z','');    
+
+        
+    $('#modalEditarPaciente').modal('show');
+
+};
+
 function getDataPacientes(){
 
    
@@ -1105,13 +1265,34 @@ function getDataPacientes(){
     
 };
 
-function insert_paciente(nombre,fechanacimiento,telefono){
+function insert_paciente(nombre,fechanacimiento,telefono,direccion,coddepto){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_paciente',{
             sucursal:GlobalCodSucursal,
             nombre:nombre,
             fechanacimiento:fechanacimiento,
-            telefonos:telefono
+            telefonos:telefono,
+            direccion:direccion,
+            coddepto:coddepto
+        })
+        .then((response) => {          
+            resolve();             
+        }, (error) => {
+            reject();
+        });
+    });
+};
+
+function edit_paciente(id,nombre,fechanacimiento,telefono,direccion,coddepto){
+    return new Promise((resolve,reject)=>{
+        axios.post('/edit_paciente',{
+            sucursal:GlobalCodSucursal,
+            nombre:nombre,
+            fechanacimiento:fechanacimiento,
+            telefonos:telefono,
+            direccion:direccion,
+            coddepto:coddepto,
+            id:id
         })
         .then((response) => {          
             resolve();             

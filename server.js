@@ -105,9 +105,22 @@ app.get("/receta",function(req,res){
 
 app.post("/insert_paciente",function(req,res){
 
-  const {nombre,telefonos,fecha,fechanacimiento,sucursal} = req.body; 
+  const {nombre,telefonos,fecha,fechanacimiento,direccion,coddepto,sucursal} = req.body; 
   
-  let qry = `INSERT INTO CLIENTES (NOMCLIE,TELEFONOS,FECHANACIMIENTO,TOKEN) VALUES ('${nombre}','${telefonos}','${fechanacimiento}','${sucursal}')`;
+  let qry = `INSERT INTO CLIENTES
+   (NOMCLIE,TELEFONOS,FECHANACIMIENTO,DIRCLIE,CODDEPTO,TOKEN)
+    VALUES ('${nombre}','${telefonos}','${fechanacimiento}','${direccion}',${coddepto},'${sucursal}')`;
+  execute.query(qry, res);
+
+}); 
+
+
+app.post("/edit_paciente",function(req,res){
+
+  const {id,nombre,telefonos,fecha,fechanacimiento,direccion,coddepto,sucursal} = req.body; 
+  
+  let qry = `UPDATE CLIENTES SET NOMCLIE='${nombre}',DIRCLIE='${direccion}',TELEFONOS='${telefonos}',
+              CODDEPTO=${coddepto},FECHANACIMIENTO='${fechanacimiento}' WHERE IDCLIENTE=${id};`;
   execute.query(qry, res);
 
 }); 
@@ -129,11 +142,11 @@ app.post("/select_paciente",function(req,res){
 
   const {filtro,sucursal} = req.body; 
   
-  let qry = `SELECT TOKEN,IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE 
+  let qry = `SELECT TOKEN,IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, 
+          ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE, ifnull(CODDEPTO,0) AS CODDEPTO,
+          ifnull(DIABETES,0) AS DIABETES, ifnull(HIPERTENSION,0) AS HIPERTENSION, ifnull(CARDIOPATIAS,0) AS CARDIOPATIAS
   FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' `;
 
-  let qryOLD = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE 
-  FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' AND TOKEN='${sucursal}'`;
 
 
   execute.query(qry, res);
@@ -144,13 +157,13 @@ app.post("/select_lista_pacientes",function(req,res){
 
   const {sucursal,filtro} = req.body; 
   
-  let qry = `SELECT TOKEN, IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE
+  let qry = `SELECT TOKEN, IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE,
+          ifnull(CODDEPTO,0) AS CODDEPTO,
+          ifnull(DIABETES,0) AS DIABETES, ifnull(HIPERTENSION,0) AS HIPERTENSION, ifnull(CARDIOPATIAS,0) AS CARDIOPATIAS
            FROM CLIENTES WHERE NOMCLIE LIKE '%${filtro}%' `;
 
   
-           let qryOLD = `SELECT IDCLIENTE,NOMCLIE,TELEFONOS,FECHANACIMIENTO, ifnull(DIRCLIE,'CIUDAD') AS DIRCLIE
-           FROM CLIENTES WHERE TOKEN='${sucursal}'`;
-
+         
   execute.query(qry, res);
 
 }); 

@@ -226,23 +226,36 @@ function getView(){
 
                         <div class="form-group">
                             <label class="negrita">Nombre del Paciente</label>
-                            <input type="text" class="form-control" id="Nombre">
+                            <input type="text" class="form-control" id="Nombre" autocomplete="false">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="negrita">Domicilio / Dirección</label>
+                            <input type="text" class="form-control" id="Direccion" placeholder="Escriba la dirección del paciente" autocomplete="false">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="negrita">Departamento</label>
+                            <select class="form-control" id="cmbDepartamento"></select>
                         </div>
 
                         <hr class="solid">
 
-
-                        <div class="form-group col-8">
-                            <label class="negrita">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="FechaNacimiento">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <label class="negrita">Fecha de nacimiento</label>
+                                    <input type="date" class="form-control" id="FechaNacimiento">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <label class="negrita">Teléfono del Paciente</label>
+                                    <input type="number" class="form-control" id="Telefono">
+                                </div>
+                            </div>
                         </div>
-                       
-                        <hr class="solid">
-
-                        <div class="form-group col-8">
-                            <label class="negrita">Teléfono del Paciente</label>
-                            <input type="number" class="form-control" id="Telefono">
-                        </div>
+                                               
                         
                         <hr class="solid">
 
@@ -278,6 +291,8 @@ function getView(){
 
 function addListeners(){
 
+    //llena los departamentos
+    document.getElementById('cmbDepartamento').innerHTML = funciones.getComboDepartamentos();
 
     document.getElementById('btnCerrarModalTurno').addEventListener('click',()=>{$('#modalNuevoTurno').modal('hide')});
     document.getElementById('btnCerrarModalListado').addEventListener('click',()=>{$('#modalPacientes').modal('hide')});
@@ -385,6 +400,8 @@ function addListeners(){
     btnNuevoPaciente.addEventListener('click',()=>{
 
         document.getElementById('Nombre').value='';
+        document.getElementById('Direccion').value='';
+
         document.getElementById('FechaNacimiento').value = funciones.getFecha();
         document.getElementById('Telefono').value=0;
 
@@ -404,13 +421,16 @@ function addListeners(){
         .then((value)=>{
             if(value==true){
                 let nombre = document.getElementById('Nombre');
+                let direccion = document.getElementById('Direccion').value || 'SN';
+                let cmbDepartamento = document.getElementById('cmbDepartamento');
+
                 let fechanacimiento = funciones.devuelveFecha('FechaNacimiento');
                 let telefono = document.getElementById('Telefono') || '0';
 
                 btnGuardarCliente.disabled = true;
                 btnGuardarCliente.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
-                insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value)
+                insert_paciente(funciones.limpiarTexto(nombre.value),fechanacimiento,telefono.value, funciones.limpiarTexto(direccion),cmbDepartamento.value)
                 .then(()=>{
                     funciones.Aviso('Cliente agregado exitosamente!!')
                     btnGuardarCliente.disabled = false;
@@ -522,13 +542,15 @@ function agregar_espera(codigo,nombre){
     $('#modalPacientes').modal('hide');
 };
 
-function insert_paciente(nombre,fechanacimiento,telefono){
+function insert_paciente(nombre,fechanacimiento,telefono,direccion,departamento){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_paciente',{
             sucursal:GlobalCodSucursal,
             nombre:nombre,
             fechanacimiento:fechanacimiento,
-            telefonos:telefono
+            telefonos:telefono,
+            direccion:direccion,
+            coddepto:departamento
         })
         .then((response) => {
 

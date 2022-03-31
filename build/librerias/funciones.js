@@ -1,5 +1,5 @@
 let funciones = {
-  animateCSS: (element, animation, prefix = 'animate__') =>
+    animateCSS: (element, animation, prefix = 'animate__') =>
     // We create a Promise and return it
     new Promise((resolve, reject) => {
       const animationName = `${prefix}${animation}`;
@@ -178,31 +178,6 @@ let funciones = {
   
 
 
-      });
-
-    },
-    GetDataNIS: async (NIS,idTxtPropietario,idTxtDireccion)=>{
-
-      return new Promise((resolve, reject) => {
-        
-        let url = 'https://oficinavirtual.energuate.com/mifactura/GetHistorial?nisrad=' + NIS;
-        
-        axios.get(url)
-        .then((response) => {
-            let json = response.data.dataPersonBill;
-            //console.log(response.data.dataPersonBill);
-            
-            //document.getElementById(idTxtPropietario).value = json.TITULAR_SERVICIO;
-            //document.getElementById(idTxtDireccion).value = json.DIRECCION_SERVICIO;    
-  
-            resolve(json);
-        }, (error) => {
-            console.log(error);
-            reject(error);
-        });
-  
-  
-  
       });
 
     },
@@ -835,6 +810,17 @@ let funciones = {
         <option value="ESCOLAR">SEGURO ESCOLAR</option>
         <option value="IGS">SEGURO IGS</option>
         <option value="ROBLE">SEGUROS EL ROBLE</option>
+      `
+
+      return seguros;
+    },
+    getComboDepartamentos:()=>{
+      let seguros = `
+        <option value="1">RETALHULEU</option>
+        <option value="2">SUCHITEPEQUEZ</option>
+        <option value="3">QUETZALTENANGO</option>
+        <option value="4">SAN MARCOS</option>
+        <option value="5">ESCUINTLA</option>
       `
 
       return seguros;
