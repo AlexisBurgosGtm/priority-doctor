@@ -1237,7 +1237,7 @@ function getDataPaciente(id,nombre,direccion,coddepto,fechanacimiento,telefono){
     document.getElementById('txtEditDirclie').value = direccion;
     document.getElementById('cmbEditDepartamento').value = coddepto;
     document.getElementById('txtEditTelefono').value = telefono;
-    document.getElementById('txtEditFechaNacimiento').value = fechanacimiento.replace('T06:00:00.000Z','');    
+    document.getElementById('txtEditFechaNacimiento').value = fechanacimiento.replace('T06:00:00.000Z','').replace('T00:00:00.000Z','');    
 
         
     $('#modalEditarPaciente').modal('show');
