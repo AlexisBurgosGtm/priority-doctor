@@ -1,32 +1,50 @@
 function getView(){
     let view = {
+        menu:()=>{
+            return `
+            <div class="row col-12">
+                <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
+                    <div class="card card-rounded shadow hand bg-success text-white" onclick="document.getElementById('tab-espera').click()">
+                        <div class="card-body">
+                            <i class="fal fa-list"></i>Espera (<label class="negrita" id="lbMenTotalEspera">-</label>)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
+                    <div class="card card-rounded shadow hand bg-danger text-white" onclick="document.getElementById('tab-preconsultas').click()">
+                        <div class="card-body">
+                            <i class="fal fa-comments"></i>PlanDx (<label class="negrita" id="lbMenTotalDx">-</label>)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
+                    <div class="card card-rounded shadow hand bg-info text-white" onclick="document.getElementById('tab-pacientes').click()">
+                        <div class="card-body">
+                            <i class="fal fa-edit"></i>Pacientes
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
+                    <div class="card card-rounded shadow hand bg-warning text-white" onclick="document.getElementById('tab-reportes').click()">
+                        <div class="card-body">
+                            <i class="fal fa-chart-pie"></i>Reportes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            `
+        },
         body:()=>{
             return `
+                ${view.menu()}
+
+                <br>
+
                 <div class="col-12 p-0 shadow bg-white card-rounded">
-
-                    <ul class="nav nav-tabs" id="myTabHome" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active negrita text-success" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
-                                <i class="fal fa-list"></i>Turnos Espera</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link negrita text-danger" id="tab-preconsultas" data-toggle="tab" href="#preconsultas" role="tab" aria-controls="home" aria-selected="true">
-                                <i class="fal fa-comments"></i>Pre-Consultas</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link negrita text-info" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
-                                <i class="fal fa-edit"></i>Pacientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link negrita text-warning" id="tab-reportes" data-toggle="tab" href="#reportes" role="tab" aria-controls="profile" aria-selected="false">
-                                <i class="fal fa-chart-pie"></i>Reportes</a>
-                        </li> 
-                                
-                    </ul>
-
+                    
                     <div class="tab-content" id="myTabHomeContent">
                         <div class="tab-pane fade show active" id="espera" role="tabpanel" aria-labelledby="receta-tab">
-
+                            
                             ${view.homeEspera()}
 
                         </div>
@@ -46,6 +64,26 @@ function getView(){
                         </div>
                     
                     </div>
+
+                    <ul class="nav nav-tabs hidden" id="myTabHome" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active negrita text-success" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
+                                <i class="fal fa-list"></i>Turnos Espera</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link negrita text-danger" id="tab-preconsultas" data-toggle="tab" href="#preconsultas" role="tab" aria-controls="home" aria-selected="true">
+                                <i class="fal fa-comments"></i>Pre-Consultas</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link negrita text-info" id="tab-pacientes" data-toggle="tab" href="#pacientes" role="tab" aria-controls="home" aria-selected="true">
+                                <i class="fal fa-edit"></i>Pacientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link negrita text-warning" id="tab-reportes" data-toggle="tab" href="#reportes" role="tab" aria-controls="profile" aria-selected="false">
+                                <i class="fal fa-chart-pie"></i>Reportes</a>
+                        </li> 
+                                
+                    </ul>
 
                 </div>
                
@@ -1692,6 +1730,9 @@ function getTblTurnos(){
     let lbTotalTurnos = document.getElementById('lbTotalTurnos');
     lbTotalTurnos.innerText = '--';
 
+    let lbMenTotalEspera = document.getElementById('lbMenTotalEspera');
+    lbMenTotalEspera.innerText= '-';
+
     let str = '';
     let conteo = 0;
 
@@ -1743,10 +1784,13 @@ function getTblTurnos(){
         })
         container.innerHTML = str;
         lbTotalTurnos.innerText = conteo;
+        lbMenTotalEspera.innerText = conteo;
     })
     .catch((error)=>{
         console.log(error);
-        container.innerHTML = 'No se pudieron cargar los datos...'
+        container.innerHTML = 'No se pudieron cargar los datos...';
+        lbTotalTurnos.innerText = conteo;
+        lbMenTotalEspera.innerText = conteo;
     })
     
 
@@ -1796,12 +1840,16 @@ function getTblPreconsultas(){
     let container = document.getElementById('tblPreconsultas');
     container.innerHTML = GlobalLoader;
    
+    let lbMenTotalDx = document.getElementById('lbMenTotalDx');
+    lbMenTotalDx.innerText = "-";
 
     let str = '';
- 
+    let conteo = 0;
+
     getDataPreconsultas()
     .then((data)=>{
         data.map((r)=>{
+            conteo += 1;
             str += `
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td>${funciones.convertDate(r.FECHA)}</td>
@@ -1836,11 +1884,12 @@ function getTblPreconsultas(){
             `
         })
         container.innerHTML = str;
-       
+        lbMenTotalDx.innerText = conteo;
     })
     .catch((error)=>{
         console.log(error);
-        container.innerHTML = 'No se pudieron cargar los datos...'
+        container.innerHTML = 'No se pudieron cargar los datos...';
+        lbMenTotalDx.innerText = conteo;
     })
     
 

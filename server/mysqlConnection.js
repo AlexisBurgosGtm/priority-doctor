@@ -1,6 +1,16 @@
 var mysql = require('mysql');
 const config = {
     connectionLimit : 1000,
+    host            : '127.0.0.1',
+    user            : 'root',
+    password        : '',
+    database        : 'onne-doctor',
+    multipleStatements: true,
+    max_user_connections:1000
+  };
+
+  const configx = {
+    connectionLimit : 1000,
     host            : 'mysql5027.site4now.net',
     user            : 'a6478c_medical',
     password        : 'razors1805',
