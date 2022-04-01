@@ -53,6 +53,50 @@ let funciones = {
         //api.digitadorDetallePedidoWhatsapp(fecha,coddoc,correlativo,stn);
     })
     },
+    enviarRecetaWhatsapp2: function(idreceta,telefono){
+      swal({
+        text: 'Escriba el número a donde se enviará:',
+        content: {
+          element: "input",
+          attributes: {
+            placeholder: "Número de whatsapp",
+            type: "text",
+            value: telefono
+          },
+          button: {
+            text: "Whatsapp",
+            closeModal: true,
+          },
+        }
+      })
+      .then(numero => {
+        if (!numero) throw null;
+          let destino = '502' + numero.toString();
+          let strmensaje = '';
+          let msg = '';
+         
+          let footer = '';
+  
+          get_data_receta(idreceta)
+          .then((data)=>{
+            
+              data.map((r)=>{
+                strmensaje += `* ${r.MEDICAMENTO} - ${r.DOSIS} - ${r.DURACION}` + "\n" + '--------------' + "\n";
+                footer = r.OBS + "\n" + 'NO CAMBIAR LA RECETA SIN AUTORIZACIÓN DE SU MÉDICO' + "\n";
+              })   
+      
+              msg = GlobalEncabezadoReceta + strmensaje + footer + GlobalFooterReceta;
+              msg = encodeURIComponent(msg);
+              window.open('https://api.whatsapp.com/send?phone='+destino+'&text='+msg);
+          })
+          .catch((error)=>{
+            console.log(error)
+            funciones.AvisoError('No se enviará la receta...')
+          })
+  
+          //api.digitadorDetallePedidoWhatsapp(fecha,coddoc,correlativo,stn);
+      })
+      },
     enviarPedidoWhatsapp:(fecha,coddoc,correlativo)=>{
 
     var apiwha = (navigator.contacts || navigator.mozContacts);

@@ -1152,7 +1152,7 @@ function getTblPacientes(){
                                 </button>
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
+                                <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}','${r.TELEFONOS}')">
                                     <i class="fal fa-list"></i>Historial
                                 </button>
                             </div>
@@ -1191,7 +1191,7 @@ function getTblPacientes(){
 async function getNuevaReceta(idcliente,nombre,idturno, edad,seguro){
 
     GlobalSelectedCodPaciente = idcliente;
-    GlobalSelectedConsultaSeguro = seguro;
+    GlobalSelectedConsultaSeguro = 'DOCTOR';
 
     document.getElementById('lbPaciente').innerText = nombre;
     document.getElementById('lbEdadPaciente').innerText = edad;
@@ -1487,13 +1487,14 @@ function getDataHistorialReceta(codcliente){
     
 };
 
-function getTblHistorial(idcliente,nomclie){
+function getTblHistorial(idcliente,nomclie,telefono){
 
     GlobalSelectedCodPaciente = idcliente;
     GlobalSelectedNomPaciente = nomclie;
 
     let container = document.getElementById('tblHistorialRecetas');
     container.innerHTML = GlobalLoader;
+
     let str ='';
     getDataHistorialReceta(idcliente)
     .then(async(data)=> {  
@@ -1511,7 +1512,7 @@ function getTblHistorial(idcliente,nomclie){
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}')">
+                            <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}','${telefono}')">
                                 <i class="fal fa-whatsapp"></i>w
                             </button>
                         </td>
@@ -1645,11 +1646,11 @@ function receta_consulta(fecha,peso,talla,motivo,diagnostico,historia,antecedent
 
 };
 
-function receta_whatsapp(idreceta){
+function receta_whatsapp(idreceta,telefono){
 
     $('#modalHistorialRecetas').modal('hide');
 
-    funciones.enviarRecetaWhatsapp(idreceta);
+    funciones.enviarRecetaWhatsapp2(idreceta,telefono);
 
 };
 
@@ -1735,7 +1736,6 @@ function grafica_peso(data){
             bgColor.push('red')
     })
 
-    console.log(valor);
 
     var ctx = document.getElementById('containerGraficaPeso').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -2058,7 +2058,7 @@ function getTblPreconsultas(){
 
                     <td>
                         <button class="btn btn-circle btn-lg btn-info shadow" 
-                        onclick="getDatosPreconsulta(${r.CODCLIENTE},'${r.NOMCLIE}',${r.ID},'${funciones.getEdad(r.FECHANACIMIENTO)}', '${r.PESO}', '${r.TALLA}', '${r.MOTIVO}','${r.DIAGNOSTICO}','${r.HISTORIAENF}','${r.ANTECEDENTES}','${r.EXAMENFISICO}','${r.IMPRESIONCLINICA}','${r.PLANTX}')">
+                        onclick="getDatosPreconsulta(${r.CODCLIENTE},'${r.NOMCLIE}',${r.ID},'${funciones.getEdad(r.FECHANACIMIENTO)}', '${r.PESO}', '${r.TALLA}', '${r.MOTIVO}','${r.DIAGNOSTICO}','${r.HISTORIAENF}','${r.ANTECEDENTES}','${r.EXAMENFISICO}','${r.IMPRESIONCLINICA}','${r.PLANTX}','${r.SEGURO}')">
                             <i class="fal fa-notes-medical"></i>
                         </button>
                     </td>
@@ -2100,7 +2100,8 @@ function insert_preconsulta(idcliente,peso,talla,motivo,diagnostico,historia,ant
             examenf:examenf,
             impclinica:impclinica,
             plantx:plantx,
-            idmorbilidad:0
+            idmorbilidad:0,
+            seguro:GlobalSelectedConsultaSeguro
         })
         .then((response) => {          
             resolve();             
@@ -2143,7 +2144,7 @@ function delete_preconsulta(id){
 
 };
 
-function getDatosPreconsulta(idcliente,nombre,idpreconsulta, edad, peso, talla, motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
+function getDatosPreconsulta(idcliente,nombre,idpreconsulta, edad, peso, talla, motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,seguro){
 
     GlobalSelectedCodPaciente = idcliente;
     document.getElementById('lbPaciente').innerText = nombre;
@@ -2162,6 +2163,7 @@ function getDatosPreconsulta(idcliente,nombre,idpreconsulta, edad, peso, talla, 
     document.getElementById('txtCIC').value = impclinica;
     document.getElementById('txtCPTX').value = plantx;
 
+    GlobalSelectedConsultaSeguro = seguro;
 
     GlobalSelectedIdTurno = 0;
     GlobalSelectedIdPreconsulta = idpreconsulta;

@@ -236,12 +236,12 @@ app.post("/insert_receta",function(req,res){
 
 app.post("/insert_preconsulta",function(req,res){
 
-  const {sucursal,idcliente,fecha,hora, peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad} = req.body; 
+  const {sucursal,idcliente,fecha,hora, peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad,seguro} = req.body; 
   
   let qry = `INSERT INTO RECETAS_PRECONSULTA 
-    (TOKEN,FECHA,CODCLIENTE,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD) 
+    (TOKEN,FECHA,CODCLIENTE,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD,SEGURO) 
       VALUES 
-    ('${sucursal}','${fecha}',${idcliente},${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad});`;
+    ('${sucursal}','${fecha}',${idcliente},${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad},'${seguro}');`;
   
   execute.query(qry, res);
 
@@ -355,6 +355,7 @@ app.post("/select_lista_preconsultas",function(req,res){
   recetas_preconsulta.PLANTX,
   recetas_preconsulta.IMPRESIONCLINICA,
   recetas_preconsulta.IDMORBILIDAD,
+  ifnull(recetas_preconsulta.SEGURO,'--') AS SEGURO,
   gen_morbilidades.MORBILIDAD,
   recetas_preconsulta.TOKEN
 FROM recetas_preconsulta
