@@ -454,9 +454,8 @@ ORDER BY NOCASO`;
 
 app.post("/login",function(req,res){
 
-  const {usuario,pass} = req.body; 
+  const {tipo,usuario,pass} = req.body; 
   
-  let qryX = `SELECT TOKEN, USER, TIPO FROM USUARIOS WHERE USER='${usuario}' AND PASS='${pass}' `;
 
   let qry = `
   SELECT
@@ -471,7 +470,7 @@ app.post("/login",function(req,res){
 FROM usuarios
   LEFT OUTER JOIN tokens
     ON usuarios.TOKEN = tokens.TOKEN
-    WHERE usuarios.USER='${usuario}' AND usuarios.PASS='${pass}' 
+    WHERE usuarios.TOKEN='${usuario}' AND usuarios.TIPO='${tipo}' AND usuarios.PASS='${pass}' 
     AND tokens.HABILITADO='SI';
   `
   execute.query(qry, res);
