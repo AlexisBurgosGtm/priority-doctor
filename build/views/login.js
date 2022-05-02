@@ -10,8 +10,17 @@ function getView(){
                     
                         <div class="form-group">
                             <label>Usuario</label>
+                            <select class="form-control" id="cmbTipo">
+                                <option value="DOCTOR">DOCTOR</option>
+                                <option value="SECRETARIA">SECRETARIA</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Consultorio:</label>
                             <input type="text" class="form-control" id="txtU">
                         </div>
+
                         <div class="form-group">
                             <label>Contraseña</label>
                             <input type="password" class="form-control" id="txtP">
@@ -44,6 +53,7 @@ function addListeners(){
     btnIniciar.addEventListener('click',()=>{
 
 
+        let tipo = document.getElementById('cmbTipo');
         let u = document.getElementById('txtU').value || 'SN';
         let p = document.getElementById('txtP').value || 'SN';
 
@@ -54,10 +64,10 @@ function addListeners(){
         btnIniciar.innerHTML = '<i class="fal fa-unlock fa-spin"></i>';
         let us = '';
 
-        login(u,p)
+        login(tipo.value,u,p)
         .then((data)=>{         
             data.map((r)=>{
-                us = r.USER;
+                us = r.TIPO;
                 GlobalCodSucursal = r.TOKEN;
                 GlobalTipoUsuario = r.TIPO;
                 GlobalRecetaEmpresa = r.EMPRESA;
@@ -65,8 +75,13 @@ function addListeners(){
                 GlobalRecetaTelefono = r.TELEFONO;
                 GlobalRecetaLogo = r.LOGO;
             })
-            let resultado = us.toString()==u.toString();
-           
+            let resultado = us.toString()==tipo.value.toString();
+            //GlobalTipoUsuario = cmbTipo.value;
+            
+            console.log(resultado);
+            console.log(data);
+
+
             if(resultado==false){
                 funciones.AvisoError('Usuario o clave incorrecta'); 
             }else{
@@ -101,10 +116,11 @@ function InicializarVista(){
 
 
 
-function login(usuario,pass){
+function login(tipo,usuario,pass){
     return new Promise((resolve, reject) => {
 
         axios.post('/login',{
+            tipo:tipo,
             usuario:usuario,
             pass:pass
         })
