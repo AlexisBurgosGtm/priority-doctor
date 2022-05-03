@@ -4,7 +4,7 @@ function getView(){
             return `
                 <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 card-rounded shadow">
                     <div class="card-header text-center bg-white">
-                         <img src="../favicon.png" with="120" height="120">
+                         <img src="../favicon.png" with="80" height="80">
                     </div>
                     <div class="card-body">
                     
@@ -93,8 +93,8 @@ function addListeners(){
             }
             console.log(resultado);
             
-            btnIniciar.disabled = false;
-            btnIniciar.innerHTML = '<i class="fal fa-lock"></i> Iniciar';
+            //btnIniciar.disabled = false;
+            //btnIniciar.innerHTML = '<i class="fal fa-lock"></i> Iniciar';
         })
         .catch(()=>{
             funciones.AvisoError('No se pudo iniciar sesión');

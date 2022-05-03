@@ -286,6 +286,7 @@ function getView(){
     }
 
     root.innerHTML = view.body() + view.modalNuevoTurno() + view.modalListaPacientes() + view.modalNuevoPaciente();
+    rootMenuFooter.innerHTML = ''
 
 };
 

@@ -1,6 +1,7 @@
 
 let root = document.getElementById('root');
 let rootImpresion = document.getElementById('rootImpresion');
+let rootMenuFooter = document.getElementById('rootMenuFooter');
 
 let GlobalLoader = `
     <div class="spinner-grow text-info" role="status">

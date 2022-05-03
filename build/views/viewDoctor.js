@@ -1,6 +1,6 @@
 function getView(){
     let view = {
-        menu:()=>{
+        menu_old:()=>{
             return `
             <div class="row col-12">
                 <div class="col-6 col-sm-6 col-md-3 col-xl-3 col-lg-3">
@@ -34,37 +34,47 @@ function getView(){
             </div>  
             `
         },
+        menu:()=>{
+            return `
+                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-espera').click()">
+                    <i class="fal fa-shopping-cart"></i>
+                    Espera
+                </button>
+                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-preconsultas').click()">
+                    <i class="fal fa-cog"></i>
+                    PlanDx
+                </button>
+                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-pacientes').click()">
+                    <i class="fal fa-cog"></i>
+                    Pacientes
+                </button>
+                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-reportes').click()">
+                    <i class="fal fa-cog"></i>
+                    Reportes
+                </button>
+            `
+        },
         body:()=>{
             return `
-                ${view.menu()}
+             <!-- view menu  br -->
 
-                <br>
+                 <div class="col-12 p-0 shadow bg-white card-rounded">
 
-                <div class="col-12 p-0 shadow bg-white card-rounded">
-                    
                     <div class="tab-content" id="myTabHomeContent">
-                        <div class="tab-pane fade show active" id="espera" role="tabpanel" aria-labelledby="receta-tab">
-                            
+                        <div class="tab-pane fade show active" id="espera" role="tabpanel" aria-labelledby="receta-tab">    
                             ${view.homeEspera()}
-
                         </div>
                         <div class="tab-pane fade" id="preconsultas" role="tabpanel" aria-labelledby="home-tab">
                             ${view.homePreconsultas()}
                         </div>
-
-                        <div class="tab-pane fade" id="pacientes" role="tabpanel" aria-labelledby="home-tab">
-                                   
+                        <div class="tab-pane fade" id="pacientes" role="tabpanel" aria-labelledby="home-tab">  
                             ${view.homePacientes()}
-                                   
                         </div>
                         <div class="tab-pane fade" id="reportes" role="tabpanel" aria-labelledby="tab-reportes">
-
                             ${view.homeReportes()}
-
                         </div>
-                    
                     </div>
-
+                    
                     <ul class="nav nav-tabs hidden" id="myTabHome" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active negrita text-success" id="tab-espera" data-toggle="tab" href="#espera" role="tab" aria-controls="profile" aria-selected="false">
@@ -84,6 +94,8 @@ function getView(){
                         </li> 
                                 
                     </ul>
+
+                  
 
                 </div>
                
@@ -175,24 +187,8 @@ function getView(){
         },
         homePreconsultas:()=>{
             return `
-            <div class="card shadow p-4">
-                <h5 class="negrita text-danger">Plan Dx Pendientes</h5>
-               
-                <div class="card-body p-0">
-                    <table class="table table-responsive">
-                        <thead class="bg-danger text-white">
-                            <tr>
-                                <td>Fecha</td>
-                                <td>Paciente</td>
-                                <td>Consulta</td>
-                                <td>Eliminar</td>
-                            </tr>
-                        </thead>
-                        <tbody id="tblPreconsultas"></tbody>
-                    </table>                
-                  
-                </div>
-            </div>
+            <h5 class="text-danger text-center negrita">Lista de Preconsultas (Plan Dx)</h5>
+            <div class="p-2" id="tblPreconsultas"></div>
             `
 
         },
@@ -774,14 +770,15 @@ function getView(){
     }
 
     root.innerHTML = view.body() + view.modalNuevaReceta() + view.modalHistorialRecetas() + view.modalDatosConsulta() + view.modalNuevoPaciente() + view.modalEditarPaciente();
+    rootMenuFooter.innerHTML = view.menu();
 };
 
 function addListeners(){
 
-    funciones.animateCSS('men1','fadeInBottomLeft');
-    funciones.animateCSS('men2','fadeInBottomLeft');
-    funciones.animateCSS('men3','fadeInBottomLeft');
-    funciones.animateCSS('men4','fadeInBottomLeft');
+    //funciones.animateCSS('men1','fadeInBottomLeft');
+    //funciones.animateCSS('men2','fadeInBottomLeft');
+    //funciones.animateCSS('men3','fadeInBottomLeft');
+    //funciones.animateCSS('men4','fadeInBottomLeft');
  
     
     let btnBuscarP = document.getElementById('btnBuscarP');
@@ -2039,6 +2036,63 @@ function getTblPreconsultas(){
         data.map((r)=>{
             conteo += 1;
             str += `
+                <div class="card card-rounded shadow hand">
+                    <div class="card-body p-2">
+                        
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Paciente:</td>
+                                    <td class="negrita">${r.NOMCLIE}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha:</td>
+                                    <td class="negrita">${funciones.convertDate(r.FECHA)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="negrita text-danger">Peso: ${r.PESO}</small>
+                            </div>
+                            <div class="col-6">
+                                <small class="negrita text-danger">Talla: ${r.TALLA}</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-circle btn-lg btn-info shadow" 
+                                onclick="getDatosPreconsulta(${r.CODCLIENTE},'${r.NOMCLIE}',${r.ID},'${funciones.getEdad(r.FECHANACIMIENTO)}', '${r.PESO}', '${r.TALLA}', '${r.MOTIVO}','${r.DIAGNOSTICO}','${r.HISTORIAENF}','${r.ANTECEDENTES}','${r.EXAMENFISICO}','${r.IMPRESIONCLINICA}','${r.PLANTX}','${r.SEGURO}')">
+                                    <i class="fal fa-notes-medical"></i>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-circle btn-lg btn-danger shadow" onclick="eliminar_preconsulta(${r.ID})">
+                                    <i class="fal fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> 
+                <hr class="solid">
+            `
+        })
+        container.innerHTML = str;
+        lbMenTotalDx.innerText = conteo;
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...';
+        lbMenTotalDx.innerText = conteo;
+    })
+    
+
+    /**
+     * 
+       str += `
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td>${funciones.convertDate(r.FECHA)}</td>
 
@@ -2070,17 +2124,8 @@ function getTblPreconsultas(){
 
                 </tr>
             `
-        })
-        container.innerHTML = str;
-        lbMenTotalDx.innerText = conteo;
-    })
-    .catch((error)=>{
-        console.log(error);
-        container.innerHTML = 'No se pudieron cargar los datos...';
-        lbMenTotalDx.innerText = conteo;
-    })
-    
-
+     * 
+     */
     
 };
 
