@@ -36,22 +36,23 @@ function getView(){
         },
         menu:()=>{
             return `
-                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-espera').click()">
-                    <i class="fal fa-shopping-cart"></i>
-                    Espera
+        
+                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-espera').click()">
+                    <i class="fal fa-list"></i>    
+                    <small>Espera(<label class="negrita" id="lbMenTotalEspera">-</label>)</small>
                 </button>
-                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-preconsultas').click()">
-                    <i class="fal fa-cog"></i>
-                    PlanDx
+                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-preconsultas').click()">
+                    <i class="fal fa-comments"></i>    
+                    <small>PlanDx(<label class="negrita" id="lbMenTotalDx">-</label>)</small>
                 </button>
-                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-pacientes').click()">
-                    <i class="fal fa-cog"></i>
-                    Pacientes
+                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-pacientes').click()">
+                    <i class="fal fa-edit"></i> 
+                    <small>Pacientes</small>
                 </button>
-                <button class="btn btn-md border-white text-white" onclick="document.getElementById('tab-reportes').click()">
-                    <i class="fal fa-cog"></i>
-                    Reportes
+                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-reportes').click()">
+                    <i class="fal fa-chart-pie"></i><small>Reportes</small>
                 </button>
+              
             `
         },
         body:()=>{
@@ -1509,12 +1510,12 @@ function getTblHistorial(idcliente,nomclie,telefono){
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.IDRECETA}','${telefono}')">
+                            <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.TOKEN}','${r.IDRECETA}','${telefono}')">
                                 <i class="fal fa-whatsapp"></i>w
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-info btn-circle btn-md hand shadow" onclick="receta_imprimir('${r.IDRECETA}')">
+                            <button class="btn btn-info btn-circle btn-md hand shadow" onclick="receta_imprimir('${r.TOKEN}','${r.IDRECETA}')">
                                 <i class="fal fa-print"></i>
                             </button>
                         </td>
@@ -1643,15 +1644,15 @@ function receta_consulta(fecha,peso,talla,motivo,diagnostico,historia,antecedent
 
 };
 
-function receta_whatsapp(idreceta,telefono){
+function receta_whatsapp(sucursal,idreceta,telefono){
 
     $('#modalHistorialRecetas').modal('hide');
 
-    funciones.enviarRecetaWhatsapp2(idreceta,telefono);
+    funciones.enviarRecetaWhatsapp2(sucursal,idreceta,telefono);
 
 };
 
-function receta_imprimir(idreceta){
+function receta_imprimir(sucursal,idreceta){
   
     $('#modalHistorialRecetas').modal('hide');
 
@@ -1660,7 +1661,7 @@ function receta_imprimir(idreceta){
     let str = '';
     let fecha = ''; let paciente = ''; let obs = '';
 
-    get_data_receta(idreceta)
+    get_data_receta(sucursal,idreceta)
     .then((data)=>{
         //console.log(data);
         data.map((r)=>{

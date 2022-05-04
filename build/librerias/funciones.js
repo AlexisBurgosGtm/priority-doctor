@@ -53,7 +53,7 @@ let funciones = {
         //api.digitadorDetallePedidoWhatsapp(fecha,coddoc,correlativo,stn);
     })
     },
-    enviarRecetaWhatsapp2: function(idreceta,telefono){
+    enviarRecetaWhatsapp2: function(sucursal,idreceta,telefono){
       swal({
         text: 'Escriba el número a donde se enviará:',
         content: {
@@ -77,7 +77,7 @@ let funciones = {
          
           let footer = '';
   
-          get_data_receta(idreceta)
+          get_data_receta(sucursal,idreceta)
           .then((data)=>{
             
               data.map((r)=>{
@@ -85,7 +85,7 @@ let funciones = {
                 footer = r.OBS + "\n" + 'NO CAMBIAR LA RECETA SIN AUTORIZACIÓN DE SU MÉDICO' + "\n";
               })   
       
-              msg = GlobalEncabezadoReceta + strmensaje + footer + GlobalFooterReceta;
+              msg = GlobalRecetaEmpresa + GlobalRecetaDireccion + strmensaje + footer + GlobalRecetaTelefono;
               msg = encodeURIComponent(msg);
               window.open('https://api.whatsapp.com/send?phone='+destino+'&text='+msg);
           })

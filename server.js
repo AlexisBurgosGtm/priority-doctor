@@ -29,7 +29,7 @@ router.use(function (req,res,next) {
         // Set to true if you need the website to include cookies in the requests sent
       res.setHeader('Access-Control-Allow-Credentials', true);
 */
-  console.log("/" + req.toString());
+  //console.log("/" + req.toString());
   next();
 });
 
@@ -278,13 +278,6 @@ app.post("/select_historial_recetas",function(req,res){
   ifnull(PLANTX,'SN') AS PLANTX, ifnull(IMPRESIONCLINICA,'SN') AS IMPRESIONCLINICA
    FROM RECETAS WHERE CODCLIENTE=${codclie}
     ORDER BY ID DESC;`;
-
-    let qryOLD = `SELECT ID, IDRECETA, FECHA, HORA, OBS,PESO, TALLA, ifnull(MOTIVO,'SN') AS MOTIVO, ifnull(DIAGNOSTICO,'SN') AS DIAGNOSTICO,
-  ifnull(HISTORIAENF,'SN') AS HISTORIAENF, ifnull(ANTECEDENTES,'SN') AS ANTECEDENTES, ifnull(EXAMENFISICO,'SN') AS EXAMENFISICO, 
-  ifnull(PLANTX,'SN') AS PLANTX, ifnull(IMPRESIONCLINICA,'SN') AS IMPRESIONCLINICA
-   FROM RECETAS WHERE CODCLIENTE=${codclie} AND TOKEN='${sucursal}'
-    ORDER BY ID DESC;`;
-
 
   execute.query(qry, res);
 

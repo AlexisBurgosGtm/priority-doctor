@@ -19,10 +19,10 @@ function get_correlativo(coddoc){
 };
 
 
-function get_data_receta(idreceta){
+function get_data_receta(sucursal,idreceta){
     return new Promise((resolve,reject)=>{
         axios.post('/select_receta',{
-            sucursal:GlobalCodSucursal,
+            sucursal:sucursal,
             correlativo:idreceta
         })
         .then((response) => {
@@ -100,6 +100,49 @@ function getFormatoReceta(sucursal,fecha,paciente,data,obs){
             break;
     
         default:
+            view = `
+           
+            <div class="row p-4">
+                <div class="col-3">
+                    <img src="./favicon.png" width="100" height="100">
+                </div>
+                <div class="col-6 text-center">
+                    <h5 class="negrita cursiva">Onne Doctor</h5>
+                    <h4>Onne Business</h4>
+                   
+                </div>
+                <div class="col-3">
+                </div>
+            </div> 
+            <h5>_________________________________________________________________________________</h5> 
+           
+            <div class="row p-4" style="font-size:80%">
+                <h5>Fecha: ${fecha}</h5>
+                <h5>Nombre del Paciente: ${paciente}</h5>
+            </div>  
+            <h5>_________________________________________________________________________________</h5>
+           
+            <div class="row p-4">
+                <div class="col-12">
+                    ${data}
+                </div>
+            
+            </div>
+            <br><br><br>
+            <div class="row p-4">
+                <div class="form-group">
+                    <label class="negrita">Observaciones:</label>
+                    <br>
+                    <label>${obs}</label>
+                </div>
+            </div>
+            <br>
+             
+            <div class="row footer text-center p-4">
+                <small>FORMATO GENÉRICO DE RECETA</small>
+            </div>  
+  
+            `
             break;
     }
 

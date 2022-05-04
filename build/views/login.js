@@ -45,7 +45,7 @@ function getView(){
     //root es una variable que representa el contenedor principal
     // ahi dibulo el html 
     root.innerHTML = view.formLogin();
-
+    rootMenuFooter.innerHTML = 'Onne Business';
 }
 
 function addListeners(){
