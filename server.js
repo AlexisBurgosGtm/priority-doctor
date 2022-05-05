@@ -130,7 +130,7 @@ app.post("/delete_paciente",function(req,res){
   const {sucursal,id} = req.body; 
   
   
-  let qry = `DELETE FROM CLIENTES WHERE IDCLIENTE=${id} AND TOKEN='${sucursal}'`;
+  let qry = `DELETE FROM CLIENTES WHERE IDCLIENTE=${id} AND TOKEN='${sucursal}' `;
   
    
   execute.query(qry, res);
@@ -372,7 +372,7 @@ app.post("/select_lista_espera",function(req,res){
   let qry = `SELECT
   temp_turnos.ID,
   temp_turnos.IDCLIENTE,
-  clientes.NOMCLIE,
+  ifnull(clientes.NOMCLIE,'PACIENTE ELIMINADO') as NOMCLIE,
   temp_turnos.TEMPERATURA,
   temp_turnos.PA,
   temp_turnos.HORA,

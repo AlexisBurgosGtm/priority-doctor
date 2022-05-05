@@ -313,12 +313,20 @@ function getView(){
                                 </div>
 
                                 <div class="tab-pane fade" id="historialp" role="tabpanel" aria-labelledby="historial-tab">
-                                    <h3 class="text-danger">Consultas anteriores</h3>
-                                         
-                                    <div id="containerHistorialP">
-                                    </div>
-                                     
+                                    <div class="card shadow card-rounded p-4">
+                                        <div class="table-responsive">
+                                            <table class="table table-responsive">
+                                                <thead class="bg-secondary text-white">
+                                                    <tr>
+                                                        <td>Consultas anteriores</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="containerHistorialP">
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     
+                                    </div>
                                 </div>
 
 
@@ -503,13 +511,26 @@ function getView(){
 
                         <div class="tab-content" id="myTabHomeContent">
                             <div class="tab-pane fade show active" id="tconslistado" role="tabpanel" aria-labelledby="home-tab">
-
-                                <br>
-
-                                <div id="tblHistorialRecetas">
-                                            
                                 
-                                </div>                                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-secondary text-white">
+                                                <tr>
+                                                    <td>Fecha</td>
+                                                    <td>C</td>
+                                                    <td>W</td>
+                                                    <td>P</td>
+                                                    <td>E</td>
+                                                </tr>
+                                                </thead>         
+                                            <tbody id="tblHistorialRecetas">
+                                            
+                                            </tbody>                       
+                                        </table>
+                                
+                                    </div>
+                                            
+                                                                  
                             </div>
                             
                             <div class="tab-pane fade" id="tconsgraficas" role="tabpanel" aria-labelledby="receta-tab">
@@ -1130,7 +1151,7 @@ function getTblPacientes(){
                             </div>
                             <div class="col-4">
                                 <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}','${r.TELEFONOS}')">
-                                    <i class="fal fa-folder-open"></i>Historial
+                                    <i class="fal fa-list"></i>Historial
                                 </button>
                             </div>
                             <div class="col-4">
@@ -1162,6 +1183,8 @@ function getTblPacientes(){
 
     
 };
+
+
 
 async function getNuevaReceta(idcliente,nombre,idturno, edad,seguro){
 
@@ -1278,46 +1301,29 @@ function edit_paciente(id,nombre,fechanacimiento,telefono,direccion,coddepto){
 };
 
 function delete_paciente(id){
-   
-    funciones.solicitarClave()
-    .then((name)=>{
-        if(name==GlobalConfPa){
+    funciones.Confirmacion("¿Está seguro que desea ELIMINAR este Paciente y todo su historial?")
+    .then((value)=>{
+        if(value==true){
+            let btn = document.getElementById('p' + id.toString())
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
+            
+                axios.post('/delete_paciente',{
+                    sucursal:GlobalCodSucursal,
+                    id:id
+                })
+                .then((response) => {   
+                    let data = response.data; 
+                    getTblPacientes();
+                }, (error) => {
+                    funciones.AvisoError('No se pudo eliminar este item')
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fal fa-trash"></i>`;
+                
+                });
 
-            funciones.Confirmacion("¿Está seguro que desea ELIMINAR este Paciente y todo su historial?")
-            .then((value)=>{
-                if(value==true){
-                    let btn = document.getElementById('p' + id.toString())
-                    btn.disabled = true;
-                    btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
-                    
-                        axios.post('/delete_paciente',{
-                            sucursal:GlobalCodSucursal,
-                            id:id
-                        })
-                        .then((response) => {   
-                            let data = response.data; 
-                            getTblPacientes();
-                        }, (error) => {
-                            funciones.AvisoError('No se pudo eliminar este item')
-                            btn.disabled = false;
-                            btn.innerHTML = `<i class="fal fa-trash"></i>`;
-                        
-                        });
-        
-                }
-            })
-
-        }else{
-            funciones.AvisoError('Clave inválida');
-            return;
         }
     })
-    .catch((name)=>{
-        funciones.AvisoError('Clave inválida');
-        return;
-    })
-    
-   
     
     
 };
@@ -1491,57 +1497,34 @@ function getTblHistorial(idcliente,nomclie,telefono){
     getDataHistorialReceta(idcliente)
     .then(async(data)=> {  
         data.map((r)=> {
-            str += `
-                <div class="card card-rounded shadow hand p-2 bg-carpeta">
-                    
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label class="">Fecha:</label>
-                                <b>${funciones.convertDate(r.FECHA)}</b>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <small class="negrita">Hora:${r.HORA}</small>
-                                <br>
-                                <small class="negrita">No.:${r.IDRECETA}</small>
-                            </div>
-                        </div>
-
-                        <div class="col-2"> 
+            str += `<tr>
+                        <td>${funciones.convertDate(r.FECHA)}
+                            <br>
+                            <small class="negrita">Hora:${r.HORA}</small>
+                            <br>
+                            <small class="negrita">No.:${r.IDRECETA}</small>
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary btn-circle btn-md hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "*-")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "*-")}','${funciones.quitarEnter(r.HISTORIAENF)}','${funciones.quitarEnter(r.ANTECEDENTES)}','${funciones.quitarEnter(r.EXAMENFISICO)}','${funciones.quitarEnter(r.IMPRESIONCLINICA)}','${funciones.quitarEnter(r.PLANTX)}')">
+                                <i class="fal fa-edit"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-circle btn-md hand shadow" onclick="receta_whatsapp('${r.TOKEN}','${r.IDRECETA}','${telefono}')">
+                                <i class="fal fa-whatsapp"></i>w
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-circle btn-md hand shadow" onclick="receta_imprimir('${r.TOKEN}','${r.IDRECETA}')">
+                                <i class="fal fa-print"></i>
+                            </button>
+                        </td>
+                        <td>
                             <button class="btn btn-danger btn-circle btn-md hand shadow" onclick="receta_eliminar('${r.IDRECETA}')" id="${'r' + r.IDRECETA.toString()}">
                                 <i class="fal fa-trash"></i>
                             </button>
-                        </div> 
-
-                    </div>
-                    <i class="fal fa-folder-open big-centered-icon"></i>
-                    <br>
-                    <div class="row">
-
-                        <div class="col-4">  
-                            <button class="btn btn-secondary btn-sm hand shadow" onclick="receta_consulta('${funciones.convertDate(r.FECHA)}','${r.PESO}','${r.TALLA}','${r.MOTIVO.replace(/(\r\n|\n|\r)/gm, "*-")}','${r.DIAGNOSTICO.replace(/(\r\n|\n|\r)/gm, "*-")}','${funciones.quitarEnter(r.HISTORIAENF)}','${funciones.quitarEnter(r.ANTECEDENTES)}','${funciones.quitarEnter(r.EXAMENFISICO)}','${funciones.quitarEnter(r.IMPRESIONCLINICA)}','${funciones.quitarEnter(r.PLANTX)}')">
-                                <i class="fal fa-edit"></i>Consulta
-                            </button>
-                        </div>
-                        <div class="col-4"> 
-                            <button class="btn btn-success btn-sm hand shadow" onclick="receta_whatsapp('${r.TOKEN}','${r.IDRECETA}','${telefono}')">
-                                <i class="fal fa-paper-plane"></i>Whatsapp
-                            </button>
-                        </div>
-                        <div class="col-4"> 
-                            <button class="btn btn-info btn-sm hand shadow" onclick="receta_imprimir('${r.TOKEN}','${r.IDRECETA}')">
-                                <i class="fal fa-print"></i>Imprimir
-                            </button>
-                        </div>
-                       
-
-                    </div>
-
-                </div>
-                <hr class="solid">  
-                   `
+                        </td>
+                    </tr>`
         })
         container.innerHTML = str;
         try {
@@ -1579,7 +1562,7 @@ function getDataHistorialConsultas(codcliente){
     
 };
 
-function getTblHistorialConsultas(idcliente){0
+function getTblHistorialConsultas(idcliente){
 
     GlobalSelectedCodPaciente = idcliente;
   
@@ -1592,11 +1575,7 @@ function getTblHistorialConsultas(idcliente){0
     getDataHistorialConsultas(idcliente)
     .then(async(data)=> {  
         data.map((r)=> {
-            str += `
-            <div class="card card-rounded shadow p-2 bg-carpeta">
-                <i class="fal fa-folder-open big-centered-icon"></i>
-                <table><tbody>
-                    <tr class="">
+            str += `<tr class="border-primary border-left-0 border-right-0 border-top-0 border-bottom">
                         <td><b class="negrita text-danger">${funciones.convertDate(r.FECHA)} - Hora:${r.HORA}</b>
                             <div class="row">
                                 <div class="col-6">
@@ -1630,10 +1609,7 @@ function getTblHistorialConsultas(idcliente){0
                             </div>
                         </td>
             
-                    </tr>
-                </tbody></table>
-            </div>
-            <hr class"solid">`
+                    </tr>`
         })
         container.innerHTML = str;
        
@@ -1751,49 +1727,29 @@ function receta_imprimir(sucursal,idreceta){
 };
 
 function receta_eliminar(id){
+    funciones.Confirmacion("¿Está seguro que desea ELIMINAR esta receta?")
+    .then((value)=>{
+        if(value==true){
+            let btn = document.getElementById('r' + id.toString())
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
+            
+                axios.post('/delete_receta',{
+                    sucursal:GlobalCodSucursal,
+                    id:id
+                })
+                .then((response) => {   
+                    let data = response.data; 
+                    getTblHistorial(GlobalSelectedCodPaciente,GlobalSelectedNomPaciente);
+                }, (error) => {
+                    funciones.AvisoError('No se pudo eliminar esta Receta')
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fal fa-trash"></i>`;
+                
+                });
 
-    $('#modalHistorialRecetas').modal('hide');
-
-    funciones.solicitarClave()
-    .then((name)=>{
-        if(name==GlobalConfPa){
-
-            funciones.Confirmacion("¿Está seguro que desea ELIMINAR esta receta?")
-            .then((value)=>{
-                if(value==true){
-                    let btn = document.getElementById('r' + id.toString())
-                    btn.disabled = true;
-                    btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
-                    
-                        axios.post('/delete_receta',{
-                            sucursal:GlobalCodSucursal,
-                            id:id
-                        })
-                        .then((response) => {   
-                            let data = response.data; 
-                            getTblHistorial(GlobalSelectedCodPaciente,GlobalSelectedNomPaciente);
-                        }, (error) => {
-                            funciones.AvisoError('No se pudo eliminar esta Receta')
-                            btn.disabled = false;
-                            btn.innerHTML = `<i class="fal fa-trash"></i>`;
-                        
-                        });
-        
-                }
-            })
-
-        }else{
-            funciones.AvisoError('Clave inválida');
-            return;
         }
     })
-    .catch((name)=>{
-        funciones.AvisoError('Clave inválida');
-        return;
-    })
-
-  
-
 };
 
 
@@ -2027,7 +1983,7 @@ function getTblTurnos(){
                         <div class="row">
                             <div class="col-4">
                                 <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
-                                    <i class="fal fa-folder-open"></i>Histor
+                                    <i class="fal fa-list"></i>Histor
                                 </button>        
                             </div>
                             <div class="col-4">

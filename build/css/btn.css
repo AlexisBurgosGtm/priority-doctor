@@ -6,6 +6,27 @@
   padding:8px;
 }
 
+.bg-carpeta {
+  background-color: rgb(255, 255, 199);
+}
+
+.big-centered-icon {
+  font-size: 40px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex; /* add */
+  justify-content: center; /* add to align horizontal */
+  align-items: center; /* add to align vertical */
+  color: rgb(255, 250, 233);
+  }
+  
+  .class-box{ text-align:center;position:relative;margin:8px;width: 100%;padding-bottom: 75%}
+  div.class-box > div { position:absolute;top:0;bottom:0;left:0;right:0;overflow:hidden;padding-top:15%}
+  .class-box .title-bg{font-size:24px;color:rgb(204, 204, 204);}
+
 .nav-link-custom{
   color: rgb(107, 107, 107);
   background-color:white;

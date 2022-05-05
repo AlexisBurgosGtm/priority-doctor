@@ -49,6 +49,9 @@ function getView(){
 }
 
 function addListeners(){
+
+    GlobalConfPa = '';
+
     let btnIniciar = document.getElementById('btnIniciar');
     btnIniciar.addEventListener('click',()=>{
 
@@ -77,15 +80,13 @@ function addListeners(){
             })
             let resultado = us.toString()==tipo.value.toString();
             //GlobalTipoUsuario = cmbTipo.value;
-            
-            console.log(resultado);
-            console.log(data);
 
 
             if(resultado==false){
                 funciones.AvisoError('Usuario o clave incorrecta'); 
             }else{
                 if(GlobalTipoUsuario=='DOCTOR'){
+                    GlobalConfPa = p;
                     Navegar.recetas();
                 }else{
                     Navegar.recepcion();
