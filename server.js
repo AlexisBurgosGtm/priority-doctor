@@ -227,7 +227,7 @@ app.post("/insert_receta",function(req,res){
     (TOKEN,IDRECETA,FECHA,HORA,CODCLIENTE,OBS,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD,SEGURO) 
       VALUES 
     ('${sucursal}',${correlativo},'${fecha}','${hora}',${idcliente},'${obs}',${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad},'${seguro}');`;
-  let qryD = `INSERT INTO RECETAS_DETALLE (TOKEN,IDRECETA,MEDICAMENTO,DOSIS,DURACION) SELECT '${sucursal}' AS TOKEN, ${correlativo} AS IDRECETA,TEMP_RECETA.MEDICAMENTO,TEMP_RECETA.DOSIS,TEMP_RECETA.DURACION FROM TEMP_RECETA;`
+  let qryD = `INSERT INTO RECETAS_DETALLE (TOKEN,IDRECETA,MEDICAMENTO,DOSIS,DURACION) SELECT '${sucursal}' AS TOKEN, ${correlativo} AS IDRECETA,TEMP_RECETA.MEDICAMENTO,TEMP_RECETA.DOSIS,TEMP_RECETA.DURACION FROM TEMP_RECETA WHERE TEMP_RECETA.TOKEN='${sucursal}';`
   let qryDoc = `UPDATE TIPODOCUMENTOS SET CORRELATIVO=${nuevocorrelativo} WHERE CODDOC='${coddoc}' AND TOKEN='${sucursal}';`
 
   execute.query(qryD + qryR + qryDoc, res);
