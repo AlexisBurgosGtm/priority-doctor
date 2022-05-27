@@ -1,5 +1,5 @@
 {
-  "name": "onne-doctor",
+  "name": "priority-doctor",
   "version": "1.0.0",
   "description": "sistema para doctores",
   "main": "server.js",

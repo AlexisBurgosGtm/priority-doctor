@@ -12,10 +12,10 @@ const configx = {
 
   const config = {
     connectionLimit : 1000,
-    host            : 'mysql5027.site4now.net',
-    user            : 'a6478c_medical',
+    host            : 'mysql5046.site4now.net',
+    user            : 'a6478c_doctor',
     password        : 'razors1805',
-    database        : 'db_a6478c_medical',
+    database        : 'db_a6478c_doctor',
     multipleStatements: true,
     max_user_connections:1000
   };
