@@ -37,19 +37,19 @@ function getView(){
         menu:()=>{
             return `
         
-                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-espera').click()">
+                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-espera').click()">
                     <i class="fal fa-list"></i>    
                     <small>Espera(<label class="negrita" id="lbMenTotalEspera">-</label>)</small>
                 </button>
-                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-preconsultas').click()">
+                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-preconsultas').click()">
                     <i class="fal fa-comments"></i>    
                     <small>PlanDx(<label class="negrita" id="lbMenTotalDx">-</label>)</small>
                 </button>
-                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-pacientes').click()">
+                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-pacientes').click()">
                     <i class="fal fa-edit"></i> 
                     <small>Pacientes</small>
                 </button>
-                <button class="btn btn-sm border-white text-white" onclick="document.getElementById('tab-reportes').click()">
+                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-reportes').click()">
                     <i class="fal fa-chart-pie"></i><small>Reportes</small>
                 </button>
               

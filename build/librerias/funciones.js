@@ -862,6 +862,7 @@ let funciones = {
         <option value="ESCOLAR">SEGURO ESCOLAR</option>
         <option value="IGS">SEGURO IGS</option>
         <option value="ROBLE">SEGUROS EL ROBLE</option>
+        <option value="QUETZAL">SEGUROS QUETZAL</option>
       `
 
       return seguros;

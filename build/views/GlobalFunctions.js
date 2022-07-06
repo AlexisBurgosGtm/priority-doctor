@@ -46,7 +46,7 @@ function getFormatoReceta(sucursal,fecha,paciente,data,obs){
            
             <div class="row p-4">
                 <div class="col-3">
-                    <img src="./img/logoreceta.png" width="110" height="180">
+                    <img src="./logos/logo_ampie.png" width="110" height="180">
                 </div>
                 <div class="col-6 text-center">
                     <h5 class="negrita cursiva">Clínica Médica "Niño Jesús"</h5>

@@ -35,7 +35,11 @@ function getView(){
 
                     </div>
                     <div class="card-footer p-4">
-                        <small class="negrita">por Alexis Burgos(+502-57255092) v03.22</small>
+                        <small class="negrita">Por José Andrés Ovalle (+502-53730084)</small>
+                        <br>
+                        <small class="negrita">Desarrollo Alexis Burgos(+502-57255092)</small>
+                        <br>
+                        <small class="negrita">Versión 2.0</small>
                     </div>
                 </div>
             `
