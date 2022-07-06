@@ -2,33 +2,33 @@ function getView(){
     let view = {
         formLogin:()=>{
             return `
-                <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 card-rounded shadow">
+                <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 card-rounded border-info shadow">
                     <div class="card-header text-center bg-white">
                          <img src="../favicon.png" with="80" height="80">
                     </div>
                     <div class="card-body">
                     
                         <div class="form-group">
-                            <label>Usuario</label>
-                            <select class="form-control" id="cmbTipo">
+                            <label class="text-info negrita">Usuario</label>
+                            <select class="form-control border-info" id="cmbTipo">
                                 <option value="DOCTOR">DOCTOR</option>
                                 <option value="SECRETARIA">SECRETARIA</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>Consultorio:</label>
-                            <input type="text" class="form-control" id="txtU">
+                            <label class="text-info negrita">Consultorio:</label>
+                            <input type="text" class="form-control border-info" id="txtU">
                         </div>
 
                         <div class="form-group">
-                            <label>Contraseña</label>
-                            <input type="password" class="form-control" id="txtP">
+                            <label class="text-info negrita">Contraseña</label>
+                            <input type="password" class="form-control border-info" id="txtP">
                         </div>
                         <br>
                         <div class="form-group text-right">
-                            <button class="btn btn-info shadow btn-lg" id="btnIniciar">
-                                <i class="fal fa-lock"></i> Iniciar
+                            <button class="btn btn-info shadow btn-xl btn-circle" id="btnIniciar">
+                                <i class="fal fa-lock"></i>
                             </button>
                         </div>
 
@@ -49,7 +49,7 @@ function getView(){
     //root es una variable que representa el contenedor principal
     // ahi dibulo el html 
     root.innerHTML = view.formLogin();
-    rootMenuFooter.innerHTML = 'Onne Business';
+    rootMenuFooter.innerHTML = '';
 }
 
 function addListeners(){
@@ -105,7 +105,7 @@ function addListeners(){
             funciones.AvisoError('No se pudo iniciar sesión');
             GlobalCodSucursal = '';
             btnIniciar.disabled = false;
-            btnIniciar.innerHTML = '<i class="fal fa-lock"></i> Iniciar';
+            btnIniciar.innerHTML = '<i class="fal fa-lock"></i>';
         })
         
         

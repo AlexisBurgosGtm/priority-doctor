@@ -37,19 +37,19 @@ function getView(){
         menu:()=>{
             return `
         
-                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-espera').click()">
+                <button class="btn btn-sm" onclick="document.getElementById('tab-espera').click()">
                     <i class="fal fa-list"></i>    
                     <small>Espera(<label class="negrita" id="lbMenTotalEspera">-</label>)</small>
                 </button>
-                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-preconsultas').click()">
+                <button class="btn btn-sm" onclick="document.getElementById('tab-preconsultas').click()">
                     <i class="fal fa-comments"></i>    
                     <small>PlanDx(<label class="negrita" id="lbMenTotalDx">-</label>)</small>
                 </button>
-                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-pacientes').click()">
+                <button class="btn btn-sm" onclick="document.getElementById('tab-pacientes').click()">
                     <i class="fal fa-edit"></i> 
                     <small>Pacientes</small>
                 </button>
-                <button class="btn btn-sm text-white" onclick="document.getElementById('tab-reportes').click()">
+                <button class="btn btn-sm" onclick="document.getElementById('tab-reportes').click()">
                     <i class="fal fa-chart-pie"></i><small>Reportes</small>
                 </button>
               
@@ -1643,45 +1643,6 @@ function getTblHistorialConsultas(idcliente){0
         container.innerHTML = 'No se pudieron cargar los datos...';
     })
 
-
-    /**
-    str += `<tr class="border-primary border-left-0 border-right-0 border-top-0 border-bottom">
-                        <td><b class="negrita text-danger">${funciones.convertDate(r.FECHA)} - Hora:${r.HORA}</b>
-                            <div class="row">
-                                <div class="col-6">
-                                    PESO: ${r.PESO}
-                                </div>
-                                <div class="col-6">
-                                    TALLA: ${r.TALLA}
-                                </div>
-                            </div>
-                                    <br>
-                                <small class="negrita">Motivo:</small>
-                                <label>${funciones.quitarEnter(r.MOTIVO)}</label>
-                                <br>
-                                <small class="negrita">Historia de la Enfermedad:</small>
-                                <label>${funciones.quitarEnter(r.HISTORIAENF)}</label>
-                                <br>
-                                <small class="negrita">Antecedentes:</small>
-                                <label>${funciones.quitarEnter(r.ANTECEDENTES)}</label>
-                                <br>
-                                <small class="negrita">Exámen Físico:</small>
-                                <label>${funciones.quitarEnter(r.EXAMENFISICO)}</label>
-                                <br>
-                                <small class="negrita">Plan Diagnóstico:</small>
-                                <label>${funciones.quitarEnter(r.DIAGNOSTICO)}</label>                             
-                                <br>
-                                <small class="negrita">Historia Clínica:</small>
-                                <label>${funciones.quitarEnter(r.IMPRESIONCLINICA)}</label>
-                                <br>
-                                <small class="negrita">Plan Tratamiento:</small>
-                                <label>${funciones.quitarEnter(r.PLANTX)}</label>
-                            </div>
-                        </td>
-            
-                    </tr>`
-
-     */
 
 };
 
