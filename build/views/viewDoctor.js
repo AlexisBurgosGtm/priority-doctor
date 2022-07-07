@@ -127,19 +127,8 @@ function getView(){
                 <br>
 
                 <div class="row">
-                    <div class="table-responsive col-12">
-                        <table class="table table-responsive table-hover" id="tblPacientes">
-                            <thead  class="bg-info text-white">
-                                <tr>
-                                    <td>Paciente / Teléfono / Edad</td>
-                                  
-                                    <td></td>
-                                </tr>
-                            </thead>
-                            <tbody id="tblListaPacientes">
-                        
-                            </tbody>
-                        </table>
+                    <div class="table-responsive col-12" id="tblListaPacientes">
+                      
                     </div>
                 </div>
 
@@ -155,6 +144,7 @@ function getView(){
                 <div class="card-body p-0">
                     <div class="p-4">
                         <h5 class="text-success negrita">Lista de Espera</h5>
+
                         <div class="row">
                             <div class="col-6">
                                 <button class="btn btn-lg btn-success btn-circle" onclick="getTblTurnos()">
@@ -162,26 +152,19 @@ function getView(){
                                 </button>    
                             </div>
                             <div class="col-6">
-                                <label class="negrita">Total Turnos: </label><h3 class="negrita text-danger" id="lbTotalTurnos">0</h3>
+                                <label class="negrita">Total Turnos: </label><h2 class="negrita text-danger" id="lbTotalTurnos">0</h2>
                             </div>
                         </div>
+
                     </div>
                                         
-                    <div class="table-responsive col-12">
-                        <table class="table table-responsive table-hover" id="tblEspera">
-                            <thead class="bg-secondary text-white">
-                                <tr>
-                                    <td>Paciente</td>
-                                    <td>Seguro/Tipo Consulta</td>
-                                </tr>
-                            </thead>
-                            <tbody id="tblEsperaData">
-                            
-                            </tbody>
-                        </table>
+                    <div class="table-responsive col-12"  id="tblEsperaData">
+                       
+
                     </div>
 
                 </div>
+
             </div>
             `
 
@@ -1112,6 +1095,78 @@ function getTblPacientes(){
         data.map((r)=>{
             if(r.TOKEN==GlobalCodSucursal){stclass=''}else{stclass='text-danger'};
             str += `
+                <div class="card card-rounded shadow border-info p-2 col-12 hand">
+                     
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-10 col-md-8 col-xl-8 col-lg-8">
+                                <label class="negrita">Paciente</label>
+                                <br>
+                                <label class="${stclass}">${r.NOMCLIE}</label>
+                                <br>
+                                <small>Dirección: ${r.DIRCLIE}</small>
+                            </div>
+
+                            <div class="col-sm-2 col-md-4 col-xl-4 col-lg-4" align="right">
+                                <button class="btn btn-danger btn-circle btn-sm hand shadow" onclick="delete_paciente('${r.IDCLIENTE}')" id="${'p' + r.IDCLIENTE.toString()}">
+                                    <i class="fal fa-trash"></i>
+                                </button>
+                               
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-6">
+                                <label class="negrita">Teléfono</label>
+                                <br>
+                                <label class="negrita text-primary">${r.TELEFONOS}</label>
+                            </div>
+                            <div class="col-6">
+                            
+                                <label class="negrita">Edad</label>
+                                <br>
+                                <label>${funciones.getEdad(r.FECHANACIMIENTO)} (${funciones.convertDate(r.FECHANACIMIENTO)})</label>
+                            </div>
+                       
+                        </div>
+                      
+                       
+                         <div class="row">
+                            <div class="col-4">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','0','${funciones.getEdad(r.FECHANACIMIENTO)}')">
+                                    <i class="fal fa-edit"></i> Consulta
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}','${r.TELEFONOS}')">
+                                    <i class="fal fa-folder-open"></i>Historial
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-success btn-sm hand shadow" onclick="getDataPaciente('${r.IDCLIENTE}','${r.NOMCLIE}','${r.DIRCLIE}','${r.CODDEPTO}','${r.FECHANACIMIENTO}','${r.TELEFONOS}')">
+                                    <i class="fal fa-edit"></i>Editar
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br>
+            `
+        })
+        container.innerHTML = str;
+        //funciones.OcultarRows('tblPacientes');
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...'
+    })
+    
+
+    /*
+    `
                 <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td class="${stclass}">${r.NOMCLIE}
                         <br>
@@ -1150,17 +1205,10 @@ function getTblPacientes(){
                     
                 </tr>
             `
-        })
-        container.innerHTML = str;
-        funciones.OcultarRows('tblPacientes');
-    })
-    .catch((error)=>{
-        console.log(error);
-        container.innerHTML = 'No se pudieron cargar los datos...'
-    })
-    
+    */
 
     
+            
 };
 
 async function getNuevaReceta(idcliente,nombre,idturno, edad,seguro){
@@ -1492,7 +1540,7 @@ function getTblHistorial(idcliente,nomclie,telefono){
     .then(async(data)=> {  
         data.map((r)=> {
             str += `
-                <div class="card card-rounded shadow hand p-2 bg-carpeta">
+                <div class="card card-rounded shadow hand p-2 bg-carpeta border-secondary">
                     
                     <div class="row">
                         <div class="col-6">
@@ -1971,7 +2019,74 @@ function getTblTurnos(){
         data.map((r)=>{
             conteo += 1;
             str += `
-                <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
+            <div class="card card-rounded shadow col-12 p-2 hand border-info">
+                <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="">(T:${conteo}) - ${r.NOMCLIE}</h5>
+                            </div>
+                            <div class="col-4">
+                                    ${r.SEGURO}
+                                    <br>
+                                    <small class="negrita text-info">Código: ${r.CODIGO_SEGURO}</small>
+                            </div>
+                        </div>
+                    
+                        <div class="row">
+
+                            <div class="col-4">
+                                <small class="negrita text-danger">Temp: ${r.TEMPERATURA}</small>
+                            </div>
+                            <div class="col-4">
+                                <small class="negrita text-danger">P/A: ${r.PA}</small>
+                            </div>
+                            <div class="col-4">
+                                <small class="negrita text-info">Hora: ${r.HORA}</small>
+                            </div>
+
+                        </div>
+
+                        <hr class="solid">
+                    
+                        <div class="row">
+                            <div class="col-4">
+                                <button class="btn btn-secondary btn-sm hand shadow" onclick="getTblHistorial('${r.IDCLIENTE}','${r.NOMCLIE}')">
+                                    <i class="fal fa-folder-open"></i>Historial
+                                </button>        
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-info btn-sm hand shadow" onclick="getNuevaReceta('${r.IDCLIENTE}','${r.NOMCLIE}','${r.ID}','${funciones.getEdad(r.FECHANACIMIENTO)}','${r.SEGURO}')">
+                                    <i class="fal fa-edit"></i>Consulta
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-success btn-sm hand shadow" onclick="funciones.hablar('Es el turno de ' + '${r.NOMCLIE}' + ', adelante por favor')">
+                                    <i class="fal fa-bullhorn"></i>Llamar
+                                </button>    
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+
+            <hr>
+            `
+        })
+        container.innerHTML = str;
+        lbTotalTurnos.innerText = conteo;
+        lbMenTotalEspera.innerText = conteo;
+    })
+    .catch((error)=>{
+        console.log(error);
+        container.innerHTML = 'No se pudieron cargar los datos...';
+        lbTotalTurnos.innerText = conteo;
+        lbMenTotalEspera.innerText = conteo;
+    })
+    
+
+    /*
+     <tr class="border-secondary border-bottom border-left-0 border-right-0 border-top-0">
                     <td>(T:${conteo}) - ${r.NOMCLIE}
                         <div class="row">
                             <div class="col-4">
@@ -2010,20 +2125,7 @@ function getTblTurnos(){
                     </td>
                    
                 </tr>
-            `
-        })
-        container.innerHTML = str;
-        lbTotalTurnos.innerText = conteo;
-        lbMenTotalEspera.innerText = conteo;
-    })
-    .catch((error)=>{
-        console.log(error);
-        container.innerHTML = 'No se pudieron cargar los datos...';
-        lbTotalTurnos.innerText = conteo;
-        lbMenTotalEspera.innerText = conteo;
-    })
-    
-
+    */
     
 };
 
