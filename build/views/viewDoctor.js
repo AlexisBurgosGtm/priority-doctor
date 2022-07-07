@@ -141,8 +141,8 @@ function getView(){
         homeEspera:()=>{
             return `
             <div class="card shadow p-0">
-                <div class="card-body p-0">
-                    <div class="p-4">
+                <div class="card-body p-4">
+                   
                         <h5 class="text-success negrita">Lista de Espera</h5>
 
                         <div class="row">
@@ -156,15 +156,21 @@ function getView(){
                             </div>
                         </div>
 
-                    </div>
+                  
                                         
-                    <div class="table-responsive col-12"  id="tblEsperaData">
-                       
+                   
+
+                </div>
+            </div>
+
+            <div class="card shadow p-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive col-sm-12 col-md-8 col-lg-6 col-xl-6"  id="tblEsperaData">
+                        
 
                     </div>
 
                 </div>
-
             </div>
             `
 
@@ -172,7 +178,9 @@ function getView(){
         homePreconsultas:()=>{
             return `
             <h5 class="text-danger text-center negrita">Lista de Preconsultas (Plan Dx)</h5>
-            <div class="p-2" id="tblPreconsultas"></div>
+            <div class="p-2 col-sm-12 col-md-8 col-lg-6 col-xl-6" id="tblPreconsultas">
+            
+            </div>
             `
 
         },
