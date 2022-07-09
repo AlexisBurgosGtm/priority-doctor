@@ -2,6 +2,17 @@ var mysql = require('mysql');
 
 
 
+  const configx = {
+    connectionLimit : 1000,
+    host            : 'localhost:8080',
+    user            : 'root',
+    password        : '',
+    database        : 'onne-doctor',
+    multipleStatements: true,
+    max_user_connections:1000
+  };
+
+
   const config = {
     connectionLimit : 1000,
     host            : 'mysql5046.site4now.net',
@@ -11,6 +22,7 @@ var mysql = require('mysql');
     multipleStatements: true,
     max_user_connections:1000
   };
+
 
 let execute = {
     query:(qry,res)=>{

@@ -599,18 +599,18 @@ function getView(){
                     <label>Receta No.</label><label class="negrita text-danger" id="lbCorrelativo">0</label>
                 </div>                     
 
-                <div class="card shadow p-2">
+                <div class="card shadow p-2 border-text">
                     <label id="">Agregue un Medicamento</label>                                   
                         
                     <div class="row">
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                            <input type="text" class="form-control" placeholder="Medicamento..." id="txtRecetaMedicamento"> 
+                            <input type="text" class="form-control border-text" placeholder="Medicamento..." id="txtRecetaMedicamento"> 
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                            <input type="text" class="form-control" placeholder="Dosis...Frecuencia" id="txtRecetaDosis">
+                            <input type="text" class="form-control border-text" placeholder="Dosis...Frecuencia" id="txtRecetaDosis">
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                            <input type="text" class="form-control" placeholder="Duración..." id="txtRecetaDuracion">
+                            <input type="text" class="form-control border-text" placeholder="Duración..." id="txtRecetaDuracion">
                         </div>
                     </div>
                     <br>
@@ -618,14 +618,14 @@ function getView(){
                         <div class="col-sm-2 col-md-6 col-lg-6 col-xl-6">
                         </div>
                         <div class="col-sm-10 col-md-6 col-lg-6 col-xl-6" align="right">
-                            <button class="btn btn-success btn-md shadow hand col-6" id="btnAgregarMedicamento">Agregar(+)</button>
+                            <button class="btn btn-info btn-md shadow hand col-6" id="btnAgregarMedicamento">Agregar(+)</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="card shadow p-2">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered border-secondary">
                             <thead class="bg-secondary text-white">
                                 <tr>
                                     <td>Medicamento</td>
@@ -832,7 +832,7 @@ function addListeners(){
         btnAgregarMedicamento.disabled = true;
         btnAgregarMedicamento.innerHTML = '<i class="fal fa-save fa-spin"></i>';
 
-        insert_temp_receta(funciones.limpiarTexto(medicamento),dosis,duracion)
+        db_insertTempReceta(funciones.limpiarTexto(medicamento),dosis,duracion)
         .then(()=>{
             btnAgregarMedicamento.disabled = false;
             btnAgregarMedicamento.innerHTML = 'Agregar(+)';
@@ -885,43 +885,53 @@ function addListeners(){
                 let txtCIC = document.getElementById('txtCIC').value || 'SN';
                 let txtCPTX = document.getElementById('txtCPTX').value || 'SN';
 
-                insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo,peso,talla,motivo,diagnostico,txtCHEA, txtCAntecedentes, txtCEF, txtCIC, txtCPTX)
-                .then(async()=>{
-                    funciones.Aviso('Receta Guardad exitosamente!!');
+                db_selectTempReceta()
+                .then((response)=>{
+                
+                    let rec = JSON.stringify(response);
+                   
+                    insert_receta(GlobalSelectedCodPaciente,funciones.limpiarTexto(obs),GlobalCorrelativo,peso,talla,motivo,diagnostico,txtCHEA, txtCAntecedentes, txtCEF, txtCIC, txtCPTX,rec)
+                    .then(async()=>{
+                        funciones.Aviso('Receta Guardad exitosamente!!');
+    
+                        btnGuardarReceta.disabled = false;
+                        btnGuardarReceta.innerHTML = '<i class="fal fa-save"></i>';
+                        $("#modalNuevaReceta").modal('hide');
+                        //regresa a la tab inicial en la consulta
+                        document.getElementById('home-tab').click();
+    
+                        if(Number(GlobalSelectedIdTurno)==0){
+                        }else{
+                            delete_turno(GlobalSelectedIdTurno);
+                        };
+    
+                        if(Number(GlobalSelectedIdPreconsulta)==0){
+                        }else{
+                            delete_preconsulta(GlobalSelectedIdPreconsulta);
+                        }
+    
+                        if(imprimeReceta=='SI'){
+                            receta_imprimir(GlobalCorrelativo);
+                        }
+                        
+    
+                        getCorrelativoCoddoc();
+                        imprimeReceta ='NO';
+                        db_deleteTempReceta();
+    
+                        GlobalSelectedIdPreconsulta = 0;
+    
+                    })
+                    .catch(()=>{
+                        btnGuardarReceta.disabled = false;
+                        btnGuardarReceta.innerHTML = '<i class="fal fa-save"></i>';
+                        funciones.AvisoError('No se pudo guardar la receta')
+                    })
 
-                    btnGuardarReceta.disabled = false;
-                    btnGuardarReceta.innerHTML = '<i class="fal fa-save"></i>';
-                    $("#modalNuevaReceta").modal('hide');
-                    //regresa a la tab inicial en la consulta
-                    document.getElementById('home-tab').click();
-
-                    if(Number(GlobalSelectedIdTurno)==0){
-                    }else{
-                        delete_turno(GlobalSelectedIdTurno);
-                    };
-
-                    if(Number(GlobalSelectedIdPreconsulta)==0){
-                    }else{
-                        delete_preconsulta(GlobalSelectedIdPreconsulta);
-                    }
-
-                    if(imprimeReceta=='SI'){
-                        receta_imprimir(GlobalCorrelativo);
-                    }
-                    
-
-                    getCorrelativoCoddoc();
-                    imprimeReceta ='NO';
-                    await delete_all_TempReceta();
-
-                    GlobalSelectedIdPreconsulta = 0;
-
+            
                 })
-                .catch(()=>{
-                    btnGuardarReceta.disabled = false;
-                    btnGuardarReceta.innerHTML = '<i class="fal fa-save"></i>';
-                    funciones.AvisoError('No se pudo guardar la receta')
-                })
+
+            
                
             }
         })
@@ -1253,10 +1263,6 @@ async function getNuevaReceta(idcliente,nombre,idturno, edad,seguro){
 
 };
 
-function getHistorialConsultas(){
-
-
-};
 
 function getDataPaciente(id,nombre,direccion,coddepto,fechanacimiento,telefono){
 
@@ -1378,21 +1384,7 @@ function delete_paciente(id){
     
 };
 
-function insert_temp_receta(medicamento,dosis,duracion){
-    return new Promise((resolve,reject)=>{
-        axios.post('/insert_temp_receta',{
-            sucursal:GlobalCodSucursal,
-            medicamento:medicamento,
-            dosis:dosis,
-            duracion:duracion
-        })
-        .then((response) => {          
-            resolve();             
-        }, (error) => {
-            reject();
-        });
-    });
-};
+
 
 function delete_TempReceta(id){
     funciones.Confirmacion("¿Está seguro que desea quitar este medicamento de la lista?")
@@ -1402,19 +1394,16 @@ function delete_TempReceta(id){
             btn.disabled = true;
             btn.innerHTML = `<i class="fal fa-trash fa-spin"></i>`;
             
-                axios.post('/delete_temp_receta',{
-                    sucursal:GlobalCodSucursal,
-                    id:id
-                })
-                .then((response) => {   
-                    let data = response.data; 
+            console.log('id del item ' + id.toString())
+                db_deleteTempReceta(id)
+                .then(()=>{
                     getTblTempReceta();
-                }, (error) => {
+                })
+                .catch(()=>{
                     funciones.AvisoError('No se pudo eliminar este item')
                     btn.disabled = false;
                     btn.innerHTML = `<i class="fal fa-trash"></i>`;
-                
-                });
+                })
 
         }
     })
@@ -1422,21 +1411,8 @@ function delete_TempReceta(id){
     
 };
 
-function getDataTempReceta(){
-    return new Promise((resolve, reject) => {
 
-        axios.post('/select_temp_receta',{
-            sucursal:GlobalCodSucursal
-        })
-        .then((response) => {   
-            let data = response.data; 
-            resolve(data);
-        }, (error) => {
-            reject(error);
-        });
-    })
-    
-};
+
 
 function getTblTempReceta(){
     let container = document.getElementById('tblReceta');
@@ -1444,12 +1420,12 @@ function getTblTempReceta(){
     
     let str = '';
 
-    getDataTempReceta()
+    db_selectTempReceta()
     .then((data) => {
         data.map((r)=>{
             str += `
-                <tr>
-                    <td>${r.MEDICAMENTO}</td>
+                <tr class="border-info border-top-0 border-right-0">
+                    <td>${r.DESPROD}</td>
                     <td>${r.DOSIS}</td>
                     <td>${r.DURACION}</td>
                     <td>
@@ -1470,7 +1446,46 @@ function getTblTempReceta(){
 
 
 
-function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
+function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,rec){
+
+
+
+
+        return new Promise((resolve,reject)=>{
+            axios.post('/insert_receta',{
+                sucursal:GlobalCodSucursal,
+                idcliente:idcliente,
+                obs:obs,
+                fecha:funciones.getFecha(),
+                hora:funciones.getHora(),
+                correlativo:correlativo,
+                coddoc:GlobalCoddoc,
+                peso:peso,
+                talla:talla,
+                motivo:motivo,
+                diagnostico: diagnostico,
+                historia:historia,
+                antecedentes:antecedentes,
+                examenf:examenf,
+                impclinica:impclinica,
+                plantx:plantx,
+                idmorbilidad:0,
+                seguro: GlobalSelectedConsultaSeguro,
+                receta: rec
+            })
+            .then((response) => {          
+                resolve();             
+            }, (error) => {
+                reject();
+            });
+        });
+
+ 
+   
+};
+
+
+function insert_receta_ONLINE(idcliente,obs,correlativo,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx){
     return new Promise((resolve,reject)=>{
         axios.post('/insert_receta',{
             sucursal:GlobalCodSucursal,
@@ -1500,20 +1515,7 @@ function insert_receta(idcliente,obs,correlativo,peso,talla,motivo,diagnostico,h
     });
 };
 
-function delete_all_TempReceta(){
-  
-                axios.post('/delete_all_temp_receta',{
-                    sucursal:GlobalCodSucursal
-                })
-                .then((response) => {   
-                    let data = response.data; 
-                    
-                }, (error) => {
-  
-                });
- 
-    
-};
+
 
 
 //Historial

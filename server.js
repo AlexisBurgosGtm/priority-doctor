@@ -220,6 +220,35 @@ app.post("/delete_all_temp_receta",function(req,res){
 
 app.post("/insert_receta",function(req,res){
 
+  const {sucursal,correlativo,idcliente,obs,fecha,hora, coddoc,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad, seguro, receta} = req.body; 
+  let nuevocorrelativo = Number(correlativo) + 1;
+  let det_receta = JSON.parse(receta);
+
+  let qryR = `INSERT INTO RECETAS 
+    (TOKEN,IDRECETA,FECHA,HORA,CODCLIENTE,OBS,PESO,TALLA,MOTIVO,DIAGNOSTICO,HISTORIAENF,ANTECEDENTES,EXAMENFISICO,PLANTX,IMPRESIONCLINICA,IDMORBILIDAD,SEGURO) 
+      VALUES 
+    ('${sucursal}',${correlativo},'${fecha}','${hora}',${idcliente},'${obs}',${peso},${talla},'${motivo}','${diagnostico}','${historia}','${antecedentes}','${examenf}','${plantx}','${impclinica}',${idmorbilidad},'${seguro}');`;
+ 
+    let qryD = "";
+    det_receta.map((r)=>{
+        qryD +=  `INSERT INTO RECETAS_DETALLE (TOKEN,IDRECETA,MEDICAMENTO,DOSIS,DURACION) 
+        VALUES ('${sucursal}', ${correlativo},'${r.DESPROD}','${r.DOSIS}','${r.DURACION}');`
+    })
+ 
+    
+ 
+ 
+  let qryDoc = `UPDATE TIPODOCUMENTOS SET CORRELATIVO=${nuevocorrelativo} WHERE CODDOC='${coddoc}' AND TOKEN='${sucursal}';`
+
+  execute.query(qryD + qryR + qryDoc, res);
+
+});
+
+
+
+
+app.post("/insert_receta_VIEJO",function(req,res){
+
   const {sucursal,correlativo,idcliente,obs,fecha,hora, coddoc,peso,talla,motivo,diagnostico,historia,antecedentes,examenf,impclinica,plantx,idmorbilidad, seguro} = req.body; 
   let nuevocorrelativo = Number(correlativo) + 1;
 
@@ -233,6 +262,9 @@ app.post("/insert_receta",function(req,res){
   execute.query(qryD + qryR + qryDoc, res);
 
 });
+
+
+
 
 app.post("/insert_preconsulta",function(req,res){
 
